@@ -4,5 +4,5 @@ public class FirstClass {
 
     private int s;
     private String b;
-    String sd;
+    String sd = "new branch try";
 }
