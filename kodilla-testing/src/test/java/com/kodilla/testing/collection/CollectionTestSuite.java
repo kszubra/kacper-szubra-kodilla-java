@@ -5,6 +5,7 @@ import org.junit.*;
 import java.util.*;
 
 public class CollectionTestSuite {
+    OddNumbersExterminator exterminator = new OddNumbersExterminator();
 
     @Before
     public void before(){
@@ -20,7 +21,6 @@ public class CollectionTestSuite {
     public void testOddNumbersExterminatorEmptyList(){
         //Given
         ArrayList<Integer> startList = new ArrayList<Integer>();
-        OddNumbersExterminator exterminator = new OddNumbersExterminator();
         //When
         List<Integer> result = exterminator.exterminate(startList);
         System.out.print(" input list is empty \r\n");
@@ -35,16 +35,10 @@ public class CollectionTestSuite {
         for (int i = 1; i<11; i++){
             startList.add(i);
         }
-        List<Integer> listWithoutOdd = new ArrayList<Integer>();
-        listWithoutOdd.add(2);
-        listWithoutOdd.add(4);
-        listWithoutOdd.add(6);
-        listWithoutOdd.add(8);
-        listWithoutOdd.add(10);
-        OddNumbersExterminator exterminator = new OddNumbersExterminator();
+        List<Integer> listWithoutOdd = Arrays.asList(2,4,6,8,10);
         //When
         List<Integer> result = exterminator.exterminate(startList);
-        System.out.print(" input list is has various elements \r\n");
+        System.out.print(" input list has various elements \r\n");
         //Then
         Assert.assertEquals(listWithoutOdd, result);
     }
