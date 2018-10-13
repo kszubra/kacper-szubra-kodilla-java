@@ -10,7 +10,7 @@ public class StatisticsCalculator {
     private double averagePostsPerUser;
     private double averageCommentsPerUser;
     private double averageCommentsPerPost;
-    private List<Double> allStatistics;
+
 
     public void calculateAdvStatistics(Statistics statistics){
         this.numberOfUsers = (double)statistics.usersNames().size();
@@ -30,12 +30,30 @@ public class StatisticsCalculator {
         } else{
             this.averageCommentsPerPost = numberOfComments / numberOfPosts;
         }
-
-        this.allStatistics = Arrays.asList((double)numberOfUsers, (double)numberOfPosts, (double)numberOfComments, averagePostsPerUser, averageCommentsPerUser, averageCommentsPerPost);
     }
 
-
-    public List<Double> getResults(){
-        return allStatistics;
+    public double getNumberOfUsers() {
+        return numberOfUsers;
     }
+
+    public double getNumberOfPosts() {
+        return numberOfPosts;
+    }
+
+    public double getNumberOfComments() {
+        return numberOfComments;
+    }
+
+    public double getAveragePostsPerUser() {
+        return averagePostsPerUser;
+    }
+
+    public double getAverageCommentsPerUser() {
+        return averageCommentsPerUser;
+    }
+
+    public double getAverageCommentsPerPost() {
+        return averageCommentsPerPost;
+    }
+
 }

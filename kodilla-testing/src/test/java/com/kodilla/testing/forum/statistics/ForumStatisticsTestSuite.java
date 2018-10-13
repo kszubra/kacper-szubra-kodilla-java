@@ -45,10 +45,19 @@ public class ForumStatisticsTestSuite {
         when(mockedStatistics.usersNames()).thenReturn(usernameList);
         testStatisticCalculator.calculateAdvStatistics(mockedStatistics);
         //When
-        List<Double> result = testStatisticCalculator.getResults();
-        List<Double> expectedResult = Arrays.asList(1000.0,0.0,0.0,0.0,0.0,0.0); //{users, posts, comments, post/person, comment/person, comment/post}
+        double expectedNumberOfUsers = 1000.0;
+        double expectedNumberOfPosts = 0.0;
+        double expectedNumberOfComments = 0.0;
+        double expectedAveragePostsPerUser = 0.0;
+        double expectedAverageCommentsPerUser = 0.0;
+        double expectedAverageCommentsPerPost = 0.0;
         //Then
-        Assert.assertEquals(expectedResult, result);
+        Assert.assertEquals(expectedNumberOfUsers, testStatisticCalculator.getNumberOfUsers(),0);
+        Assert.assertEquals(expectedNumberOfPosts, testStatisticCalculator.getNumberOfPosts(),0);
+        Assert.assertEquals(expectedNumberOfComments, testStatisticCalculator.getNumberOfComments(),0);
+        Assert.assertEquals(expectedAveragePostsPerUser, testStatisticCalculator.getAveragePostsPerUser(),0);
+        Assert.assertEquals(expectedAverageCommentsPerUser, testStatisticCalculator.getAverageCommentsPerUser(),0);
+        Assert.assertEquals(expectedAverageCommentsPerPost, testStatisticCalculator.getAverageCommentsPerPost(),0);
     }
 
     @Test
@@ -65,10 +74,19 @@ public class ForumStatisticsTestSuite {
         when(mockedStatistics.usersNames()).thenReturn(usernameList);
         testStatisticCalculator.calculateAdvStatistics(mockedStatistics);
         //When
-        List<Double> result = testStatisticCalculator.getResults();
-        List<Double> expectedResult = Arrays.asList(1000.0,1000.0,0.0,1.0,0.0,0.0); //{users, posts, comments, post/person, comment/person, comment/post}
+        double expectedNumberOfUsers = 1000.0;
+        double expectedNumberOfPosts = 1000.0;
+        double expectedNumberOfComments = 0.0;
+        double expectedAveragePostsPerUser = 1.0;
+        double expectedAverageCommentsPerUser = 0.0;
+        double expectedAverageCommentsPerPost = 0.0;
         //Then
-        Assert.assertEquals(expectedResult, result);
+        Assert.assertEquals(expectedNumberOfUsers, testStatisticCalculator.getNumberOfUsers(),0);
+        Assert.assertEquals(expectedNumberOfPosts, testStatisticCalculator.getNumberOfPosts(),0);
+        Assert.assertEquals(expectedNumberOfComments, testStatisticCalculator.getNumberOfComments(),0);
+        Assert.assertEquals(expectedAveragePostsPerUser, testStatisticCalculator.getAveragePostsPerUser(),0);
+        Assert.assertEquals(expectedAverageCommentsPerUser, testStatisticCalculator.getAverageCommentsPerUser(),0);
+        Assert.assertEquals(expectedAverageCommentsPerPost, testStatisticCalculator.getAverageCommentsPerPost(),0);
     }
 
     @Test
@@ -82,10 +100,19 @@ public class ForumStatisticsTestSuite {
         when(mockedStatistics.usersNames()).thenReturn(usernameList);
         testStatisticCalculator.calculateAdvStatistics(mockedStatistics);
         //When
-        List<Double> result = testStatisticCalculator.getResults();
-        List<Double> expectedResult = Arrays.asList(0.0,0.0,0.0,0.0,0.0,0.0); //{users, posts, comments, post/person, comment/person, comment/post}
+        double expectedNumberOfUsers = 0.0;
+        double expectedNumberOfPosts = 0.0;
+        double expectedNumberOfComments = 0.0;
+        double expectedAveragePostsPerUser = 0.0;
+        double expectedAverageCommentsPerUser = 0.0;
+        double expectedAverageCommentsPerPost = 0.0;
         //Then
-        Assert.assertEquals(expectedResult, result);
+        Assert.assertEquals(expectedNumberOfUsers, testStatisticCalculator.getNumberOfUsers(),0);
+        Assert.assertEquals(expectedNumberOfPosts, testStatisticCalculator.getNumberOfPosts(),0);
+        Assert.assertEquals(expectedNumberOfComments, testStatisticCalculator.getNumberOfComments(),0);
+        Assert.assertEquals(expectedAveragePostsPerUser, testStatisticCalculator.getAveragePostsPerUser(),0);
+        Assert.assertEquals(expectedAverageCommentsPerUser, testStatisticCalculator.getAverageCommentsPerUser(),0);
+        Assert.assertEquals(expectedAverageCommentsPerPost, testStatisticCalculator.getAverageCommentsPerPost(),0);
     }
 
     @Test
@@ -102,10 +129,19 @@ public class ForumStatisticsTestSuite {
         when(mockedStatistics.usersNames()).thenReturn(usernameList);
         testStatisticCalculator.calculateAdvStatistics(mockedStatistics);
         //When
-        List<Double> result = testStatisticCalculator.getResults();
-        List<Double> expectedResult = Arrays.asList(2000.0,1000.0,500.0,0.5,0.25,0.5); //{users, posts, comments, post/person, comment/person, comment/post}
+        double expectedNumberOfUsers = 2000.0;
+        double expectedNumberOfPosts = 1000.0;
+        double expectedNumberOfComments = 500.0;
+        double expectedAveragePostsPerUser = 0.5;
+        double expectedAverageCommentsPerUser = 0.25;
+        double expectedAverageCommentsPerPost = 0.5;
         //Then
-        Assert.assertEquals(expectedResult, result);
+        Assert.assertEquals(expectedNumberOfUsers, testStatisticCalculator.getNumberOfUsers(),0);
+        Assert.assertEquals(expectedNumberOfPosts, testStatisticCalculator.getNumberOfPosts(),0);
+        Assert.assertEquals(expectedNumberOfComments, testStatisticCalculator.getNumberOfComments(),0);
+        Assert.assertEquals(expectedAveragePostsPerUser, testStatisticCalculator.getAveragePostsPerUser(),0);
+        Assert.assertEquals(expectedAverageCommentsPerUser, testStatisticCalculator.getAverageCommentsPerUser(),0);
+        Assert.assertEquals(expectedAverageCommentsPerPost, testStatisticCalculator.getAverageCommentsPerPost(),0);
     }
 
     @Test
@@ -122,10 +158,19 @@ public class ForumStatisticsTestSuite {
         when(mockedStatistics.usersNames()).thenReturn(usernameList);
         testStatisticCalculator.calculateAdvStatistics(mockedStatistics);
         //When
-        List<Double> result = testStatisticCalculator.getResults();
-        List<Double> expectedResult = Arrays.asList(2000.0,500.0,1000.0,0.25,0.5,2.0); //{users, posts, comments, post/person, comment/person, comment/post}
+        double expectedNumberOfUsers = 2000.0;
+        double expectedNumberOfPosts = 500.0;
+        double expectedNumberOfComments = 1000.0;
+        double expectedAveragePostsPerUser = 0.25;
+        double expectedAverageCommentsPerUser = 0.5;
+        double expectedAverageCommentsPerPost = 2.0;
         //Then
-        Assert.assertEquals(expectedResult, result);
+        Assert.assertEquals(expectedNumberOfUsers, testStatisticCalculator.getNumberOfUsers(),0);
+        Assert.assertEquals(expectedNumberOfPosts, testStatisticCalculator.getNumberOfPosts(),0);
+        Assert.assertEquals(expectedNumberOfComments, testStatisticCalculator.getNumberOfComments(),0);
+        Assert.assertEquals(expectedAveragePostsPerUser, testStatisticCalculator.getAveragePostsPerUser(),0);
+        Assert.assertEquals(expectedAverageCommentsPerUser, testStatisticCalculator.getAverageCommentsPerUser(),0);
+        Assert.assertEquals(expectedAverageCommentsPerPost, testStatisticCalculator.getAverageCommentsPerPost(),0);
     }
 
 
