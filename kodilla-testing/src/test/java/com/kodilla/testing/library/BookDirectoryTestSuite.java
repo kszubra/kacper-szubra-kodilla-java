@@ -16,11 +16,36 @@ public class BookDirectoryTestSuite {
         return resultList;
     }
 
+    public static int testCounter = 0;
+    LibraryDatabase libraryDatabaseMock = mock(LibraryDatabase.class);
+    BookLibrary bookLibrary = new BookLibrary(libraryDatabaseMock);
+    LibraryUser userWithBooksBorrowed = new LibraryUser("Roman", "Kowalski","03987840328409");
+
+    @BeforeClass
+    public static void startTests(){
+        System.out.println("Starting tests");
+    }
+
+    @AfterClass
+    public static void endTests(){
+        System.out.println("Tests finished");
+    }
+
+    @Before
+    public void beforeCase(){
+        testCounter++;
+        System.out.print("Testing case #"+testCounter + ": ");
+    }
+
+    @After
+    public void afterCase(){
+        System.out.println("\r\nCase tested");
+    }
+
     @Test
     public void testListBooksWithConditionsReturnList() {
+        System.out.print("Results by title fragment");
         // Given
-        LibraryDatabase libraryDatabaseMock = mock(LibraryDatabase.class);
-        BookLibrary bookLibrary = new BookLibrary(libraryDatabaseMock);
         List<Book> resultListOfBooks = new ArrayList<Book>();
         Book book1 = new Book("Secrets of Alamo", "John Smith", 2008);
         Book book2 = new Book("Secretaries and Directors", "Dilbert Michigan", 2012);
@@ -42,9 +67,8 @@ public class BookDirectoryTestSuite {
 
     @Test
     public void testListBooksWithConditionMoreThan20() {
+        System.out.print("More than 20 results");
         // Given
-        LibraryDatabase libraryDatabaseMock = mock(LibraryDatabase.class);
-        BookLibrary bookLibrary = new BookLibrary(libraryDatabaseMock);
         List<Book> resultListOf0Books = new ArrayList<Book>();
         List<Book> resultListOf15Books = generateListOfNBooks(15);
         List<Book> resultListOf40Books = generateListOfNBooks(40);
@@ -68,9 +92,8 @@ public class BookDirectoryTestSuite {
 
     @Test
     public void testListBooksWithConditionFragmentShorterThan3() {
+        System.out.print("Searched phrase shorter than 3 characters");
         // Given
-        LibraryDatabase libraryDatabaseMock = mock(LibraryDatabase.class);
-        BookLibrary bookLibrary = new BookLibrary(libraryDatabaseMock);
         List<Book> resultListOf10Books = generateListOfNBooks(10);
         when(libraryDatabaseMock.listBooksWithCondition(anyString()))
                 .thenReturn(resultListOf10Books);
@@ -81,6 +104,52 @@ public class BookDirectoryTestSuite {
         // Then
         assertEquals(0, theListOfBooks10.size());
         verify(libraryDatabaseMock, times(0)).listBooksWithCondition(anyString());
+    }
+
+    @Test
+    public void testListBooksInHandsOfWith0Books(){
+        System.out.print("Result when user borrowed 0 books");
+        //Given
+        List<Book> borrowed0Books = generateListOfNBooks(0);
+        LibraryUser userWithBooksBorrowed = new LibraryUser("Roman", "Kowalski","03987840328409");
+        when(libraryDatabaseMock.listBooksInHandsOf(userWithBooksBorrowed)).thenReturn(borrowed0Books);
+
+        //When
+        int exptectedBooksNumber = 0;
+        int realBooksNumber = libraryDatabaseMock.listBooksInHandsOf(userWithBooksBorrowed).size();
+
+        //Then
+        Assert.assertEquals(exptectedBooksNumber, realBooksNumber);
+    }
+
+    @Test
+    public void testListBooksInHandsOfWith1Book(){
+        System.out.print("Result when user borrowed 1 book");
+        //Given
+        List<Book> borrowed1Books = generateListOfNBooks(1);
+        when(libraryDatabaseMock.listBooksInHandsOf(userWithBooksBorrowed)).thenReturn(borrowed1Books);
+
+        //When
+        int exptectedBooksNumber = 1;
+        int realBooksNumber = libraryDatabaseMock.listBooksInHandsOf(userWithBooksBorrowed).size();
+
+        //Then
+        Assert.assertEquals(exptectedBooksNumber, realBooksNumber);
+    }
+
+    @Test
+    public void testListBooksInHandsOfWith5Books(){
+        System.out.print("Result when user borrowed 5 books");
+        //Given
+        List<Book> borrowed5Books = generateListOfNBooks(5);
+        when(libraryDatabaseMock.listBooksInHandsOf(userWithBooksBorrowed)).thenReturn(borrowed5Books);
+
+        //When
+        int exptectedBooksNumber = 5;
+        int realBooksNumber = libraryDatabaseMock.listBooksInHandsOf(userWithBooksBorrowed).size();
+
+        //Then
+        Assert.assertEquals(exptectedBooksNumber, realBooksNumber);
     }
 
 
