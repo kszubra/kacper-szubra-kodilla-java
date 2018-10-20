@@ -71,20 +71,16 @@ public class BoardTestSuite {
         return project;
     }
 
+    Board project = prepareTestData();
+
     @Test
     public void testAddTaskList() {
-        //Given
-        Board project = prepareTestData();
-        //When
-
         //Then
         Assert.assertEquals(3, project.getTaskLists().size());
     }
 
     @Test
     public void testAddTaskListFindUsersTasks() { // create a list of tasks assigned to searched user
-        //Given
-        Board project = prepareTestData();
         //When
         User user = new User("developer1", "John Smith"); //user for search purpose
         List<Task> tasks = project.getTaskLists().stream()
@@ -99,9 +95,6 @@ public class BoardTestSuite {
 
     @Test
     public void testAddTaskListFindOutdatedTasks() {
-        //Given
-        Board project = prepareTestData();
-
         //When
         List<TaskList> undoneTasks = new ArrayList<>(); // temporal/working list containing names of lists we're looking for
         undoneTasks.add(new TaskList("To do"));
@@ -119,9 +112,6 @@ public class BoardTestSuite {
 
     @Test
     public void testAddTaskListFindLongTasks() { // tasks in progress for 10 days and more
-        //Given
-        Board project = prepareTestData();
-
         //When
         List<TaskList> inProgressTasks = new ArrayList<>();
         inProgressTasks.add(new TaskList("In progress"));
