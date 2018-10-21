@@ -3,6 +3,7 @@ package com.kodilla.stream.portfolio;
 import org.junit.Assert;
 import org.junit.Test;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,6 +73,7 @@ public class BoardTestSuite {
     }
 
     Board project = prepareTestData();
+    List<TaskList> inProgressTasks = new ArrayList<>();
 
     @Test
     public void testAddTaskList() {
@@ -113,7 +115,7 @@ public class BoardTestSuite {
     @Test
     public void testAddTaskListFindLongTasks() { // tasks in progress for 10 days and more
         //When
-        List<TaskList> inProgressTasks = new ArrayList<>();
+        inProgressTasks.clear(); //to ensure it's empty
         inProgressTasks.add(new TaskList("In progress"));
         long longTasks = project.getTaskLists().stream()
                 .filter(inProgressTasks::contains)// get only "in progress list"
@@ -124,6 +126,27 @@ public class BoardTestSuite {
 
         //Then
         Assert.assertEquals(2, longTasks);
+    }
+
+    @Test
+    public void testAddTaskListAverageWorkingOnTask(){
+        //When
+        inProgressTasks.clear(); //to ensure it's empty
+        inProgressTasks.add(new TaskList("In progress"));
+        double realAverageTimeInProgress = project.getTaskLists().stream()
+                .filter(inProgressTasks::contains)
+                .flatMap(tl -> tl.getTasks().stream())
+                .map(t -> Period.between(t.getCreated(), LocalDate.now()).getDays())
+                .mapToInt(Integer::intValue)
+                .average().getAsDouble();
+
+        double expectedAverageTimeInProgress =  (+ 20.0 //task 2
+                                                 + 10.0 //task 4
+                                                 + 0.0 //task 5
+                                                 )/3.0;
+        //Then
+        Assert.assertEquals(expectedAverageTimeInProgress, realAverageTimeInProgress, 0);
+
     }
 
 }
