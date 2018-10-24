@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.kodilla.stream.book.BookTestSuite" tests="3" skipped="0" failures="0" errors="0" timestamp="2018-10-24T10:07:37" hostname="DESKTOP-MOIRAR3" time="0.003">
+  <properties/>
+  <testcase name="testGetListUsingFor" classname="com.kodilla.stream.book.BookTestSuite" time="0.001"/>
+  <testcase name="testGetListUsingIntStreamSum" classname="com.kodilla.stream.book.BookTestSuite" time="0.001"/>
+  <testcase name="testGetListUsingIntStreamCount" classname="com.kodilla.stream.book.BookTestSuite" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

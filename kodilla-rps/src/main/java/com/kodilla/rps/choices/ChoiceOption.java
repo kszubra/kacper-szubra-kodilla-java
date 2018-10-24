@@ -1,9 +1,10 @@
 package com.kodilla.rps.choices;
 
 public enum ChoiceOption {
-    rock,
-    paper,
-    scissors,
-    spock,
-    lizard;
+
+    ROCK,
+    PAPER,
+    SCISSORS,
+    SPOCK,
+    LIZARD;
 }

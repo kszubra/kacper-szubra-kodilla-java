@@ -6,8 +6,11 @@ import com.kodilla.rps.handler.Rules;
 import java.util.Random;
 
 public class ComputerPlayer implements PlayerInterface {
-    private int wonRoundsNumber;
-    Random rng = new Random();
+    private static final Random RANDOM_GENERATOR = new Random();
+    private static final int INITIAL_WON_ROUNDS_COUNTER = 0;
+    private static final int BOUND = 3;
+    private int wonRoundsNumber = INITIAL_WON_ROUNDS_COUNTER;
+
 
     @Override
     public String getName() {
@@ -25,7 +28,7 @@ public class ComputerPlayer implements PlayerInterface {
     }
 
     public ChoiceOption getComputerChoice(ChoiceOption humanChoice){
-        int decider = rng.nextInt(3);
+        int decider = RANDOM_GENERATOR.nextInt(BOUND);
         ChoiceOption decision;
         switch (decider){
             case 0:

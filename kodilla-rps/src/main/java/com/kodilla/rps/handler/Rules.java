@@ -1,137 +1,94 @@
 package com.kodilla.rps.handler;
 
-import com.kodilla.rps.choices.ChoiceOption;
-import java.util.*;
-import java.util.List;
 
-import static com.kodilla.rps.choices.ChoiceOption.*;
+import com.kodilla.rps.choices.ChoiceOption;
+import com.kodilla.rps.choices.RoundResult;
+
+import java.util.*;
+
+import static com.kodilla.rps.choices.ChoiceOption.LIZARD;
+import static com.kodilla.rps.choices.ChoiceOption.PAPER;
+import static com.kodilla.rps.choices.ChoiceOption.ROCK;
+import static com.kodilla.rps.choices.ChoiceOption.SCISSORS;
+import static com.kodilla.rps.choices.ChoiceOption.SPOCK;
 
 public class Rules {
 
-    private static List<ChoiceOption> beatenByRock = new ArrayList<ChoiceOption>(){
-        {
-            add(scissors);
-            add(lizard);
-        }
-    };
+    private static final Random RANDOM = new Random();
 
-    private static List<ChoiceOption> beatenByPaper = new ArrayList<ChoiceOption>(){
-        {
-            add(rock);
-            add(spock);
-        }
-    };
+    private static final List<ChoiceOption> BEATEN_BY_ROCK = Arrays.asList(LIZARD, SCISSORS);
 
-    private static List<ChoiceOption> beatenByScissors = new ArrayList<ChoiceOption>(){
-        {
-            add(paper);
-            add(lizard);
-        }
-    };
+    private static final List<ChoiceOption> BEATEN_BY_PAPER = Arrays.asList(ROCK, SPOCK);
 
-    private static List<ChoiceOption> beatenBySpock = new ArrayList<ChoiceOption>(){
-        {
-            add(scissors);
-            add(rock);
-        }
-    };
+    private static final List<ChoiceOption> BEATEN_BY_SCISSORS = Arrays.asList(PAPER, LIZARD);
 
-    private static List<ChoiceOption> beatenByLizard = new ArrayList<ChoiceOption>(){
-        {
-            add(paper);
-            add(spock);
-        }
-    };
+    private static final List<ChoiceOption> BEATEN_BY_SPOCK = Arrays.asList(SCISSORS, ROCK);
+
+    private static final List<ChoiceOption> BEATEN_BY_LIZARD = Arrays.asList(PAPER, SPOCK);
 
     private static Map<ChoiceOption, List<ChoiceOption>> whoInputBeats = new HashMap<ChoiceOption, List<ChoiceOption>>(){
         {
-            put(rock, beatenByRock);
-            put(paper, beatenByPaper);
-            put(scissors, beatenByScissors);
-            put(spock, beatenBySpock);
-            put(lizard, beatenByLizard);
+            put(ROCK, BEATEN_BY_ROCK);
+            put(PAPER, BEATEN_BY_PAPER);
+            put(SCISSORS, BEATEN_BY_SCISSORS);
+            put(SPOCK, BEATEN_BY_SPOCK);
+            put(LIZARD, BEATEN_BY_LIZARD);
         }
     };
 
-    private static List<ChoiceOption> rockLosesTo = new ArrayList<ChoiceOption>(){
-        {
-            add(paper);
-            add(spock);
-        }
-    };
+    private static final List<ChoiceOption> ROCK_LOSES_TO = Arrays.asList(PAPER, SPOCK);
 
-    private static List<ChoiceOption> paperkLosesTo = new ArrayList<ChoiceOption>(){
-        {
-            add(lizard);
-            add(scissors);
-        }
-    };
 
-    private static List<ChoiceOption> scissorsLosesTo = new ArrayList<ChoiceOption>(){
-        {
-            add(spock);
-            add(rock);
-        }
-    };
+    private static final List<ChoiceOption> paperkLosesTo = Arrays.asList(LIZARD, SPOCK);
 
-    private static List<ChoiceOption> spockLosesTo = new ArrayList<ChoiceOption>(){
-        {
-            add(lizard);
-            add(paper);
-        }
-    };
+    private static final List<ChoiceOption> scissorsLosesTo = Arrays.asList(SPOCK, ROCK);
 
-    private static List<ChoiceOption> lizardLosesTo = new ArrayList<ChoiceOption>(){
-        {
-            add(rock);
-            add(scissors);
-        }
-    };
+    private static final List<ChoiceOption> spockLosesTo = Arrays.asList(LIZARD, PAPER);
+
+    private static final List<ChoiceOption> lizardLosesTo = Arrays.asList(ROCK, SCISSORS);
 
     private static Map<ChoiceOption, List<ChoiceOption>> whoInputLosesTo = new HashMap<ChoiceOption, List<ChoiceOption>>(){
         {
-            put(rock, rockLosesTo);
-            put(paper, paperkLosesTo);
-            put(scissors, scissorsLosesTo);
-            put(spock, spockLosesTo);
-            put(lizard, lizardLosesTo);
+            put(ROCK, ROCK_LOSES_TO);
+            put(PAPER, paperkLosesTo);
+            put(SCISSORS, scissorsLosesTo);
+            put(SPOCK, spockLosesTo);
+            put(LIZARD, lizardLosesTo);
         }
     };
 
     public static ChoiceOption giveRandomWinnerWith(ChoiceOption choice){
-        Random rng = new Random();
         int limit = whoInputLosesTo.get(choice).size();
-        return whoInputLosesTo.get(choice).get(rng.nextInt(limit));
+        return whoInputLosesTo.get(choice).get(RANDOM.nextInt(limit));
 
 
     }
 
     public static ChoiceOption giveRandomLoserWith(ChoiceOption choice){
-        Random rng = new Random();
         int limit = whoInputBeats.get(choice).size();
-        return whoInputBeats.get(choice).get(rng.nextInt(limit));
+        return whoInputBeats.get(choice).get(RANDOM.nextInt(limit));
 
     }
 
-    public static int tellWinner (ChoiceOption first, ChoiceOption second){
+    public static RoundResult tellWinner (ChoiceOption first, ChoiceOption second){
         if(first.equals(second)){ // draw
-            return 0;
+            return RoundResult.DRAW;
         } if (whoInputBeats.get(first).contains(second)){ // second is on the list of items beaten by first - wins first
-            return 1;
+            return RoundResult.HUMAN_WINS;
         } else{
-            return 2;
+            return RoundResult.COMPUTER_WINS;
         }
 
     }
 
     public static void displayRules(){
-        System.out.println("Welcome to the modified rock-paper-scissors game. In this game you can choose:");
+        System.out.println("Welcome to the modified ROCK-PAPER-SCISSORS game. In this game you can choose:");
         System.out.println(
-                "\n1: Rock. It beats scissors and lizard" +
-                "\n2: Paper. It beats rock and spock" +
-                "\n3: Scissors. It beats paper and lizard" +
-                "\n4: Spock. It beats scissors and rock"+
-                "\n5: Lizard. It beats paper and spock" +
+                "\n1: Rock. It beats SCISSORS and LIZARD" +
+                "\n2: Paper. It beats ROCK and SPOCK" +
+                "\n3: Scissors. It beats PAPER and LIZARD" +
+                "\n4: Spock. It beats SCISSORS and ROCK"+
+                "\n5: Lizard. It beats PAPER and SPOCK" +
                 "\nx: exit game" +
                 "\nn: start new game"+
                 "\r\n ------------------------------------------------------------------------------");
