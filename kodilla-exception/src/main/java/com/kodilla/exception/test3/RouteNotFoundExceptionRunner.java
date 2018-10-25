@@ -13,9 +13,13 @@ public class RouteNotFoundExceptionRunner {
             String departureAirportToWarsaw = flightfinder.findFlight(toWarsaw).getDepartureAirport();
             System.out.println("You can depart to Warsaw from: " + departureAirportToWarsaw);
 
-        }catch(RouteNotFoundException e) {
+        } catch (RouteNotFoundException e) {
             System.out.println(e.getMessage());
-        } finally {
+
+        } catch (RouteNotAvailableException e){
+            System.out.println(e.getMessage());
+        }
+        finally {
             System.out.println("Thank you for using our airlines.");
         }
 
@@ -25,9 +29,13 @@ public class RouteNotFoundExceptionRunner {
             String departureAirportToLondon = flightfinder.findFlight(toLondon).getDepartureAirport();
             System.out.println("You can depart to Warsaw from: " + departureAirportToLondon);
 
-        }catch(RouteNotFoundException e) {
+        } catch (RouteNotFoundException e) {
             System.out.println(e.getMessage());
-        } finally {
+
+        } catch (RouteNotAvailableException e){
+            System.out.println(e.getMessage());
+        }
+        finally {
             System.out.println("Thank you for using our airlines.");
         }
 
@@ -37,9 +45,13 @@ public class RouteNotFoundExceptionRunner {
             String departureAirportToMoscow = flightfinder.findFlight(toMoscow).getDepartureAirport();
             System.out.println("You can depart to Warsaw from: " + departureAirportToMoscow);
 
-        }catch(RouteNotFoundException e) {
+        } catch (RouteNotFoundException e) {
             System.out.println(e.getMessage());
-        } finally {
+
+        } catch (RouteNotAvailableException e){
+            System.out.println(e.getMessage());
+        }
+        finally {
             System.out.println("Thank you for using our airlines.");
         }
 

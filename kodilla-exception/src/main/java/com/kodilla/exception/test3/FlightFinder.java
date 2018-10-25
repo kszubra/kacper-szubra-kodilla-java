@@ -16,15 +16,14 @@ public class FlightFinder {
         flightMap.put("London", Boolean.FALSE);
     }
 
-    public Flight findFlight(Flight flightToFind) throws RouteNotFoundException {
+    public Flight findFlight(Flight flightToFind) throws RouteNotFoundException, RouteNotAvailableException {
 
-        if((flightMap.containsKey(flightToFind.getArrivalAirport())) == false) {
-            throw new RouteNotFoundException("We're sorry, this destination is not available");
+        if( ! flightMap.containsKey(flightToFind.getArrivalAirport()) ) {
+            throw new RouteNotFoundException("We're sorry, this destination was not found in our offer");
         }
 
-        if (flightMap.get(flightToFind.getArrivalAirport()).equals(Boolean.FALSE)) {
-
-            throw new RouteNotFoundException("We're sorry, this destination is not available");
+        if ( !flightMap.get(flightToFind.getArrivalAirport()) ) {
+            throw new RouteNotAvailableException("We're sorry, this destination is currently not available");
         }
 
         return flightToFind;
