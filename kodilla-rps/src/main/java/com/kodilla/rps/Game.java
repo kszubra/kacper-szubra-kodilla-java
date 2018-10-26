@@ -23,8 +23,8 @@ public class Game {
     private List<GameLog> gameLog;
     private RoundResult roundResult;
 
-    private void endGame(){
 
+    private void endGame(){
         this.end = true;
     }
 
@@ -87,6 +87,7 @@ public class Game {
         boolean properRoundNumber = false;
         computerPlayer = new ComputerPlayer();
         gameLog = new ArrayList<>();
+
         System.out.println("Starting new game. Please enter your name:");
         humanPlayer = new HumanPlayer(scanner.next());
 
