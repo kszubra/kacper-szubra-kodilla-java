@@ -11,10 +11,12 @@ import java.io.FileWriter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Game {
     private boolean end = false;
@@ -27,6 +29,7 @@ public class Game {
     private List<GameLog> gameLog;
     private RoundResult roundResult;
     private String gameLogPath;
+    private LocalDateTime gameStartTime;
 
 
     private void endGame(){
@@ -87,12 +90,12 @@ public class Game {
 
     }
 
-    /*public void saveLogToFile(){
+    public void saveLogToFile(){
 
         FileWriter fileWriter = null;
-        tring dataToSave = gameLog.stream()
+        String dataToSave = gameLog.stream()
                 .map(n->n.toString())
-                .
+                .collect(Collectors.joining("\r\n"));
 
         try {
             fileWriter = new FileWriter(gameLogPath);
@@ -114,10 +117,13 @@ public class Game {
 
 
 
-    } */
+    }
 
     public void startNewGame() {
-        gameLogPath = "/gamelog_" + LocalDate.now().toString() + "_" + LocalTime.now().toString() + ".txt";
+        gameStartTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+        gameLogPath = "/log_" + gameStartTime.format(formatter) + ".txt";
+
         Scanner scanner = new Scanner(System.in);
         boolean properRoundNumber = false;
         computerPlayer = new ComputerPlayer();
@@ -170,10 +176,12 @@ public class Game {
 
             if (humanPlayer.getWonRoundsNumber() == roundsToWinTheGame) {
                 System.out.println(humanPlayer.getName() + " won the game!");
+                saveLogToFile();
                 endGame();
             }
             if (computerPlayer.getWonRoundsNumber() == roundsToWinTheGame) {
                 System.out.println("Computer won the game!");
+                saveLogToFile();
                 endGame();
             }
 
