@@ -8,6 +8,7 @@ import com.kodilla.rps.players.ComputerPlayer;
 import com.kodilla.rps.players.HumanPlayer;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -74,14 +75,31 @@ public class Game {
 
     }
 
+    public void askRoundsToWinAmount () throws InputMismatchException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println(humanPlayer.getName() + ", till how many won rounds will the game last?");
+        roundsToWinTheGame = scanner.nextInt();
+
+    }
+
     public void startNewGame() {
         Scanner scanner = new Scanner(System.in);
+        boolean properRoundNumber = false;
         computerPlayer = new ComputerPlayer();
         gameLog = new ArrayList<>();
         System.out.println("Starting new game. Please enter your name:");
         humanPlayer = new HumanPlayer(scanner.next());
-        System.out.println(humanPlayer.getName() + ", till how many won rounds will the game last?");
-        roundsToWinTheGame = scanner.nextInt();
+
+        while(!properRoundNumber){
+            try{
+                askRoundsToWinAmount();
+                properRoundNumber = true;
+
+            } catch(InputMismatchException e){
+                System.out.println("This is not an integer value!");
+            }
+        }
+
         System.out.println("Thank you. Lets get the game started. You start:");
 
         while (!this.end) {
