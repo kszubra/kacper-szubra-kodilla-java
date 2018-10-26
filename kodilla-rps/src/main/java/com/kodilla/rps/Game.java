@@ -31,9 +31,9 @@ public class Game {
     private String gameLogPath;
     private LocalDateTime gameStartTime;
 
-
     private void endGame(){
-        this.end = true;
+
+        System.exit(0);
     }
 
     private ChoiceOption getHumanChoice() {
@@ -114,9 +114,6 @@ public class Game {
                 }
             }
         }
-
-
-
     }
 
     public void startNewGame() {
@@ -131,6 +128,21 @@ public class Game {
 
         System.out.println("Starting new game. Please enter your name:");
         humanPlayer = new HumanPlayer(scanner.next());
+        if(humanPlayer.getName().equals("x") || humanPlayer.getName().equals("X")) {
+            System.out.println("Are you sure you want to exit? Y/N");
+            char decision = scanner.next().charAt(0);
+            if(decision=='y' || decision == 'Y') {
+                endGame();
+            }
+        }
+
+        if(humanPlayer.getName().equals("n") || humanPlayer.getName().equals("N")) {
+            System.out.println("Are you sure you want to start a new game? Y/N");
+            char decision = scanner.next().charAt(0);
+            if(decision=='y' || decision == 'Y') {
+                startNewGame();
+            }
+        }
 
         while(!properRoundNumber){
             try{
@@ -184,8 +196,6 @@ public class Game {
                 saveLogToFile();
                 endGame();
             }
-
         }
-
     }
 }

@@ -38,7 +38,6 @@ public class Rules {
 
     private static final List<ChoiceOption> ROCK_LOSES_TO = Arrays.asList(PAPER, SPOCK);
 
-
     private static final List<ChoiceOption> paperkLosesTo = Arrays.asList(LIZARD, SPOCK);
 
     private static final List<ChoiceOption> scissorsLosesTo = Arrays.asList(SPOCK, ROCK);
@@ -60,14 +59,11 @@ public class Rules {
     public static ChoiceOption giveRandomWinnerWith(ChoiceOption choice){
         int limit = whoInputLosesTo.get(choice).size();
         return whoInputLosesTo.get(choice).get(RANDOM.nextInt(limit));
-
-
     }
 
     public static ChoiceOption giveRandomLoserWith(ChoiceOption choice){
         int limit = whoInputBeats.get(choice).size();
         return whoInputBeats.get(choice).get(RANDOM.nextInt(limit));
-
     }
 
     public static RoundResult tellWinner (ChoiceOption first, ChoiceOption second){
