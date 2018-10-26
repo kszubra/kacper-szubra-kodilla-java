@@ -6,7 +6,11 @@ import com.kodilla.rps.handler.GameLog;
 import com.kodilla.rps.handler.Rules;
 import com.kodilla.rps.players.ComputerPlayer;
 import com.kodilla.rps.players.HumanPlayer;
+
+import java.io.FileWriter;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -22,6 +26,7 @@ public class Game {
     private ChoiceOption computerChoice;
     private List<GameLog> gameLog;
     private RoundResult roundResult;
+    private String gameLogPath;
 
 
     private void endGame(){
@@ -82,7 +87,37 @@ public class Game {
 
     }
 
+    /*public void saveLogToFile(){
+
+        FileWriter fileWriter = null;
+        tring dataToSave = gameLog.stream()
+                .map(n->n.toString())
+                .
+
+        try {
+            fileWriter = new FileWriter(gameLogPath);
+            fileWriter.write(dataToSave);
+
+        } catch (Exception e){
+            System.out.println("Exception: " + e.toString());
+
+        } finally {
+
+            if(fileWriter != null){
+                try{
+                    fileWriter.close();
+                } catch (Exception e){
+                    System.out.println("Exception: " + e.toString());
+                }
+            }
+        }
+
+
+
+    } */
+
     public void startNewGame() {
+        gameLogPath = "/gamelog_" + LocalDate.now().toString() + "_" + LocalTime.now().toString() + ".txt";
         Scanner scanner = new Scanner(System.in);
         boolean properRoundNumber = false;
         computerPlayer = new ComputerPlayer();
