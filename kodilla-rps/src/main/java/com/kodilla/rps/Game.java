@@ -1,7 +1,7 @@
 package com.kodilla.rps;
 
-import com.kodilla.rps.choices.ChoiceOption;
-import com.kodilla.rps.choices.RoundResult;
+import com.kodilla.rps.enumerics.ChoiceOption;
+import com.kodilla.rps.enumerics.RoundResult;
 import com.kodilla.rps.handler.GameLog;
 import com.kodilla.rps.handler.IfNumber;
 import com.kodilla.rps.handler.Rules;
@@ -9,9 +9,7 @@ import com.kodilla.rps.players.ComputerPlayer;
 import com.kodilla.rps.players.HumanPlayer;
 
 import java.io.FileWriter;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;

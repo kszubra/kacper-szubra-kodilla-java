@@ -1,16 +1,16 @@
 package com.kodilla.rps.handler;
 
 
-import com.kodilla.rps.choices.ChoiceOption;
-import com.kodilla.rps.choices.RoundResult;
+import com.kodilla.rps.enumerics.ChoiceOption;
+import com.kodilla.rps.enumerics.RoundResult;
 
 import java.util.*;
 
-import static com.kodilla.rps.choices.ChoiceOption.LIZARD;
-import static com.kodilla.rps.choices.ChoiceOption.PAPER;
-import static com.kodilla.rps.choices.ChoiceOption.ROCK;
-import static com.kodilla.rps.choices.ChoiceOption.SCISSORS;
-import static com.kodilla.rps.choices.ChoiceOption.SPOCK;
+import static com.kodilla.rps.enumerics.ChoiceOption.LIZARD;
+import static com.kodilla.rps.enumerics.ChoiceOption.PAPER;
+import static com.kodilla.rps.enumerics.ChoiceOption.ROCK;
+import static com.kodilla.rps.enumerics.ChoiceOption.SCISSORS;
+import static com.kodilla.rps.enumerics.ChoiceOption.SPOCK;
 
 public class Rules {
 

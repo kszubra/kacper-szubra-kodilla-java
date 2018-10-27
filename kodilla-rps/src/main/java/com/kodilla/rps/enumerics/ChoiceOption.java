@@ -1,4 +1,4 @@
-package com.kodilla.rps.choices;
+package com.kodilla.rps.enumerics;
 
 public enum ChoiceOption {
 

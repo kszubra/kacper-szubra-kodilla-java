@@ -1,6 +1,6 @@
 package com.kodilla.rps.handler;
 
-import com.kodilla.rps.choices.ChoiceOption;
+import com.kodilla.rps.enumerics.ChoiceOption;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

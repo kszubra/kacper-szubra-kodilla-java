@@ -1,6 +1,6 @@
 package com.kodilla.rps.players;
 
-import com.kodilla.rps.choices.ChoiceOption;
+import com.kodilla.rps.enumerics.ChoiceOption;
 import com.kodilla.rps.handler.Rules;
 
 import java.util.Random;
