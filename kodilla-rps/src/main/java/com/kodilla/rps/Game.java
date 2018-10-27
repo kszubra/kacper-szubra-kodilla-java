@@ -3,6 +3,7 @@ package com.kodilla.rps;
 import com.kodilla.rps.choices.ChoiceOption;
 import com.kodilla.rps.choices.RoundResult;
 import com.kodilla.rps.handler.GameLog;
+import com.kodilla.rps.handler.IfNumber;
 import com.kodilla.rps.handler.Rules;
 import com.kodilla.rps.players.ComputerPlayer;
 import com.kodilla.rps.players.HumanPlayer;
@@ -80,14 +81,37 @@ public class Game {
 
         System.out.println("Your choice: " + choice);
         return choice;
-
     }
 
     public void askRoundsToWinAmount () throws InputMismatchException {
         Scanner scanner = new Scanner(System.in);
         System.out.println(humanPlayer.getName() + ", till how many won rounds will the game last?");
-        roundsToWinTheGame = scanner.nextInt();
+        String input = scanner.nextLine();
 
+        if(input.equals("x") || input.equals("X")) {
+            System.out.println("Are you sure you want to exit? Y/N");
+            char decision = scanner.next().charAt(0);
+            if(decision=='y' || decision == 'Y') {
+                endGame();
+            }
+        }
+
+        if(input.equals("n") || input.equals("N")) {
+            System.out.println("Are you sure you want to start a new game? Y/N");
+            char decision = scanner.next().charAt(0);
+            if(decision=='y' || decision == 'Y') {
+                startNewGame();
+            }
+        }
+
+        if(IfNumber.isItInteger(input)){
+
+            roundsToWinTheGame = Integer.parseInt(input);
+
+        } else {
+            System.out.println("This is not an integer value.");
+            askRoundsToWinAmount();
+        }
     }
 
     public void saveLogToFile(){
