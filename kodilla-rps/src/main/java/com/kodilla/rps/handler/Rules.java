@@ -38,21 +38,21 @@ public class Rules {
 
     private static final List<ChoiceOption> ROCK_LOSES_TO = Arrays.asList(PAPER, SPOCK);
 
-    private static final List<ChoiceOption> paperkLosesTo = Arrays.asList(LIZARD, SPOCK);
+    private static final List<ChoiceOption> PAPERK_LOSES_TO = Arrays.asList(LIZARD, SPOCK);
 
-    private static final List<ChoiceOption> scissorsLosesTo = Arrays.asList(SPOCK, ROCK);
+    private static final List<ChoiceOption> SCISSORS_LOSES_TO = Arrays.asList(SPOCK, ROCK);
 
-    private static final List<ChoiceOption> spockLosesTo = Arrays.asList(LIZARD, PAPER);
+    private static final List<ChoiceOption> SPOCK_LOSES_TO = Arrays.asList(LIZARD, PAPER);
 
-    private static final List<ChoiceOption> lizardLosesTo = Arrays.asList(ROCK, SCISSORS);
+    private static final List<ChoiceOption> LIZARD_LOSES_TO = Arrays.asList(ROCK, SCISSORS);
 
     private static Map<ChoiceOption, List<ChoiceOption>> whoInputLosesTo = new HashMap<ChoiceOption, List<ChoiceOption>>(){
         {
             put(ROCK, ROCK_LOSES_TO);
-            put(PAPER, paperkLosesTo);
-            put(SCISSORS, scissorsLosesTo);
-            put(SPOCK, spockLosesTo);
-            put(LIZARD, lizardLosesTo);
+            put(PAPER, PAPERK_LOSES_TO);
+            put(SCISSORS, SCISSORS_LOSES_TO);
+            put(SPOCK, SPOCK_LOSES_TO);
+            put(LIZARD, LIZARD_LOSES_TO);
         }
     };
 

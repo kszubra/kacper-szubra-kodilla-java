@@ -22,9 +22,8 @@ public class GameLog {
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return  logTime.format(formatter) +
-                ": player chose: " + humanChoice + '\'' +
-                ", computer chose: " + computerChoice + '\'' +
-                ", result: " + result + '\'' +
-                '}';
+                ": player chose: " + humanChoice +
+                ", computer chose: " + computerChoice +
+                ", result: " + result;
     }
 }
