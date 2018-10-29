@@ -59,6 +59,7 @@ public class Game {
                 choice = ChoiceOption.LIZARD;
                 break;
             case 'x':
+            case 'X':
                 System.out.println("Are you sure you want to exit? Y/N");
                 char decision = scanner.next().charAt(0);
                 if(decision=='y' || decision == 'Y') {
@@ -66,6 +67,7 @@ public class Game {
                 }
                 break;
             case 'n':
+            case 'N':
                 System.out.println("Are you sure you want to start a new game? Y/N");
                 decision = scanner.next().charAt(0);
                 if(decision=='y' || decision == 'Y') {
@@ -213,10 +215,12 @@ public class Game {
                 saveLogToFile();
                 System.out.println("Do you want to start a new game? Y/N");
                 char decision = scanner.next().charAt(0);
-                if(decision=='y' || decision == 'Y') {
-                    startNewGame();
-                } else {
-                    endGame();
+                switch (decision){
+                    case 'y':
+                    case 'Y':
+                        startNewGame();
+                    default:
+                        endGame();
                 }
             }
             if (computerPlayer.getWonRoundsNumber() == roundsToWinTheGame) {
@@ -224,10 +228,12 @@ public class Game {
                 saveLogToFile();
                 System.out.println("Do you want to start a new game? Y/N");
                 char decision = scanner.next().charAt(0);
-                if(decision=='y' || decision == 'Y') {
-                    startNewGame();
-                }else {
-                    endGame();
+                switch (decision){
+                    case 'y':
+                    case 'Y':
+                        startNewGame();
+                    default:
+                        endGame();
                 }
             }
         }
