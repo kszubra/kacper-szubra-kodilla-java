@@ -211,12 +211,24 @@ public class Game {
             if (humanPlayer.getWonRoundsNumber() == roundsToWinTheGame) {
                 System.out.println(humanPlayer.getName() + " won the game!");
                 saveLogToFile();
-                endGame();
+                System.out.println("Do you want to start a new game? Y/N");
+                char decision = scanner.next().charAt(0);
+                if(decision=='y' || decision == 'Y') {
+                    startNewGame();
+                } else {
+                    endGame();
+                }
             }
             if (computerPlayer.getWonRoundsNumber() == roundsToWinTheGame) {
                 System.out.println("Computer won the game!");
                 saveLogToFile();
-                endGame();
+                System.out.println("Do you want to start a new game? Y/N");
+                char decision = scanner.next().charAt(0);
+                if(decision=='y' || decision == 'Y') {
+                    startNewGame();
+                }else {
+                    endGame();
+                }
             }
         }
     }
