@@ -85,10 +85,12 @@ public class TickTackToeRunner extends Application {
         gameCellsList = new ArrayList<>();
 
         exitButton = new Button("Exit");
+        exitButton.setMinSize(300, 50);
         exitButton.setOnMouseClicked(e->handleButtonClick(e));
 
         newGameButton = new Button("New game");
-        exitButton.setOnMouseClicked(e->handleButtonClick(e));
+        newGameButton.setMinSize(300, 50);
+        newGameButton.setOnMouseClicked(e->handleButtonClick(e));
 
         buttons = new VBox(exitButton, newGameButton);
         buttons.setSpacing(50);
@@ -193,9 +195,8 @@ public class TickTackToeRunner extends Application {
 
         Scene scene = new Scene(borderPane, IMAGE_FOR_BACKGROUND.getWidth(), IMAGE_FOR_BACKGROUND.getHeight(), Color.BLACK);
 
-
         primaryStage.setTitle("Tick Tack Toe");
-        primaryStage.setResizable(false);
+        primaryStage.setResizable(true);
 
         primaryStage.setX(0);
         primaryStage.setY(0);
