@@ -1,7 +1,6 @@
 package ticktacktoe;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.ImageCursor;
@@ -19,7 +18,6 @@ import javafx.scene.image.Image;
 import javafx.stage.StageStyle;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -51,7 +49,7 @@ public class TickTackToeRunner extends Application {
     private ImageView cellImage33;
     private List<ImageView> gameCellsList;
 
-    public void handleButtonClick(ActionEvent event){
+    public void handleButtonClick(MouseEvent event){
 
         if(event.getSource().equals(exitButton)){
             System.exit(0);
@@ -63,10 +61,18 @@ public class TickTackToeRunner extends Application {
 
         ImageView eventObject = (ImageView) event.getSource();
 
-        if(gameCellsList.contains(eventObject)){
+        if(gameCellsList.contains(eventObject) && eventObject.getImage().equals(IMAGE_FOR_EMPTY_FIELD)){
             eventObject.setImage(ANIMATION_FOR_X);
         }
+    }
 
+    public void handleMouseExitsCell(MouseEvent event){
+
+        ImageView eventObject = (ImageView) event.getSource();
+
+        if(gameCellsList.contains(eventObject) && eventObject.getImage().equals(ANIMATION_FOR_X)){
+            eventObject.setImage(IMAGE_FOR_EMPTY_FIELD);
+        }
     }
 
     private HBox topScoreBoard;
@@ -79,15 +85,15 @@ public class TickTackToeRunner extends Application {
         gameCellsList = new ArrayList<>();
 
         exitButton = new Button("Exit");
-        exitButton.setOnAction(e->handleButtonClick(e));
+        exitButton.setOnMouseClicked(e->handleButtonClick(e));
 
         newGameButton = new Button("New game");
-        exitButton.setOnAction(e->handleButtonClick(e));
+        exitButton.setOnMouseClicked(e->handleButtonClick(e));
 
         buttons = new VBox(exitButton, newGameButton);
         buttons.setSpacing(50);
 
-        playerOneName = new Text("Player One");
+        playerOneName = new Text("Player One: ");
         playerOneName.setFont(Font.font("Verdana", 45));
         playerOneName.setFill(Color.AQUA);
 
@@ -106,11 +112,6 @@ public class TickTackToeRunner extends Application {
         topScoreBoard = new HBox(playerOneName, playerOneScore, playerTwoName, playerTwoScore);
         topScoreBoard.setSpacing(15);
 
-
-
-
-
-        /** setting background */
 
         BackgroundSize backgroundSize = new BackgroundSize(SCREEN_WIDTH*0.6,SCREEN_HEIGHT*0.6, true, true, true, false);
         BackgroundImage backgroundImage = new BackgroundImage(IMAGE_FOR_BACKGROUND, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
@@ -133,53 +134,65 @@ public class TickTackToeRunner extends Application {
         gameCellsList.add(cellImage11);
         gameBoardPane.add(cellImage11, 1,1);
         cellImage11.setOnMouseEntered(e->handleMouseEntersCell(e));
-        //cellImage11.setOnMouseExited();
+        cellImage11.setOnMouseExited(e->handleMouseExitsCell(e));
 
         cellImage12 = new ImageView(IMAGE_FOR_EMPTY_FIELD);
         gameCellsList.add(cellImage12);
         gameBoardPane.add(cellImage12, 2,1);
         cellImage12.setOnMouseEntered(e->handleMouseEntersCell(e));
+        cellImage12.setOnMouseExited(e->handleMouseExitsCell(e));
 
         cellImage13 = new ImageView(IMAGE_FOR_EMPTY_FIELD);
         gameCellsList.add(cellImage13);
         gameBoardPane.add(cellImage13, 3,1);
+        cellImage13.setOnMouseEntered(e->handleMouseEntersCell(e));
+        cellImage13.setOnMouseExited(e->handleMouseExitsCell(e));
 
         cellImage21 = new ImageView(IMAGE_FOR_O);
         gameCellsList.add(cellImage21);
         gameBoardPane.add(cellImage21, 1,2);
+        cellImage21.setOnMouseEntered(e->handleMouseEntersCell(e));
+        cellImage21.setOnMouseExited(e->handleMouseExitsCell(e));
 
         cellImage22 = new ImageView(IMAGE_FOR_EMPTY_FIELD);
         gameCellsList.add(cellImage22);
         gameBoardPane.add(cellImage22, 2,2);
+        cellImage22.setOnMouseEntered(e->handleMouseEntersCell(e));
+        cellImage22.setOnMouseExited(e->handleMouseExitsCell(e));
 
         cellImage23 = new ImageView(IMAGE_FOR_O);
         gameCellsList.add(cellImage23);
         gameBoardPane.add(cellImage23, 3,2);
+        cellImage23.setOnMouseEntered(e->handleMouseEntersCell(e));
+        cellImage23.setOnMouseExited(e->handleMouseExitsCell(e));
 
         cellImage31 = new ImageView(IMAGE_FOR_EMPTY_FIELD);
         gameCellsList.add(cellImage31);
         gameBoardPane.add(cellImage31, 1,3);
+        cellImage31.setOnMouseEntered(e->handleMouseEntersCell(e));
+        cellImage31.setOnMouseExited(e->handleMouseExitsCell(e));
 
         cellImage32 = new ImageView(IMAGE_FOR_O);
         gameCellsList.add(cellImage32);
         gameBoardPane.add(cellImage32, 2,3);
+        cellImage32.setOnMouseEntered(e->handleMouseEntersCell(e));
+        cellImage32.setOnMouseExited(e->handleMouseExitsCell(e));
 
         cellImage33 = new ImageView(IMAGE_FOR_EMPTY_FIELD);
         gameCellsList.add(cellImage33);
         gameBoardPane.add(cellImage33, 3,3);
-
+        cellImage33.setOnMouseEntered(e->handleMouseEntersCell(e));
+        cellImage33.setOnMouseExited(e->handleMouseExitsCell(e));
 
         BorderPane borderPane = new BorderPane();
         borderPane.setBackground(background);
         borderPane.setCenter(gameBoardPane);
         borderPane.setLeft(buttons);
         borderPane.setTop(topScoreBoard);
+        topScoreBoard.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(borderPane, IMAGE_FOR_BACKGROUND.getWidth(), IMAGE_FOR_BACKGROUND.getHeight(), Color.BLACK);
 
-
-
-        /** Primary stage settings */
 
         primaryStage.setTitle("Tick Tack Toe");
         primaryStage.setResizable(false);
@@ -196,11 +209,9 @@ public class TickTackToeRunner extends Application {
 
     }
 
-
     public static void main(String[] args) {
         launch(args);
 
     }
-
 
 }
