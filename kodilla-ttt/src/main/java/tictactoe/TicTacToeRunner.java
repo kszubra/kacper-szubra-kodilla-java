@@ -6,7 +6,6 @@ import javafx.geometry.Pos;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -54,6 +53,8 @@ public class TicTacToeRunner extends Application {
 
 
     public void handleMouseEntersCell(MouseEvent event){
+
+
 
         ImageView eventObject = (ImageView) event.getSource();
 

@@ -29,9 +29,11 @@ public class TextInputBox {
         Button confirmButton = new Button();
         confirmButton.setText("Confirm");
         confirmButton.setOnMouseClicked(e->{
-            userInputText = inputTextField.getText();
-            //System.out.println("taken text is: " + userInputText);
-            window.close();
+            if(!(inputTextField.getText().length()<1)){
+                userInputText = inputTextField.getText();
+                //System.out.println("taken text is: " + userInputText);
+                window.close();
+            }
         });
 
         VBox windowLayout = new VBox(messageLabel, inputTextField, confirmButton);
