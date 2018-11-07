@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -16,6 +17,8 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.stage.StageStyle;
+import tictactoe.popupboxes.ConfirmationBox;
+import tictactoe.popupboxes.TextInputBox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,13 +52,6 @@ public class TicTacToeRunner extends Application {
     private ImageView cellImage33;
     private List<ImageView> gameCellsList;
 
-    public void handleButtonClick(MouseEvent event){
-
-        if(event.getSource().equals(exitButton)){
-            System.exit(0);
-        }
-
-    }
 
     public void handleMouseEntersCell(MouseEvent event){
 
@@ -86,11 +82,15 @@ public class TicTacToeRunner extends Application {
 
         exitButton = new Button("Exit");
         exitButton.setMinSize(300, 50);
-        exitButton.setOnMouseClicked(e->handleButtonClick(e));
+        exitButton.setOnMouseClicked(e->{
+            if(ConfirmationBox.getDecision("Quit game","Are you sure you want to quit?")){System.exit(0);}
+        });
 
         newGameButton = new Button("New game");
         newGameButton.setMinSize(300, 50);
-        newGameButton.setOnMouseClicked(e->handleButtonClick(e));
+        newGameButton.setOnMouseClicked(e->{
+            if(ConfirmationBox.getDecision("New game","Are you sure you want to start a new game?")){/**TO DO NEW GAME HERE*/ }
+        });
 
         buttons = new VBox(exitButton, newGameButton);
         buttons.setSpacing(50);
@@ -197,9 +197,6 @@ public class TicTacToeRunner extends Application {
 
         primaryStage.setTitle("Tick Tack Toe");
         primaryStage.setResizable(false);
-
-        primaryStage.setX(0);
-        primaryStage.setY(0);
 
         primaryStage.initStyle(StageStyle.UNIFIED);
 
