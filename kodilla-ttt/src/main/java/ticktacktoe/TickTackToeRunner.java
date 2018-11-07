@@ -115,7 +115,7 @@ public class TickTackToeRunner extends Application {
         topScoreBoard.setSpacing(15);
 
 
-        BackgroundSize backgroundSize = new BackgroundSize(SCREEN_WIDTH*0.6,SCREEN_HEIGHT*0.6, true, true, true, false);
+        BackgroundSize backgroundSize = new BackgroundSize(SCREEN_WIDTH*0.6,SCREEN_HEIGHT*0.6, true, true, true, true);
         BackgroundImage backgroundImage = new BackgroundImage(IMAGE_FOR_BACKGROUND, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
         Background background = new Background(backgroundImage);
 
@@ -196,7 +196,7 @@ public class TickTackToeRunner extends Application {
         Scene scene = new Scene(borderPane, IMAGE_FOR_BACKGROUND.getWidth(), IMAGE_FOR_BACKGROUND.getHeight(), Color.BLACK);
 
         primaryStage.setTitle("Tick Tack Toe");
-        primaryStage.setResizable(true);
+        primaryStage.setResizable(false);
 
         primaryStage.setX(0);
         primaryStage.setY(0);
