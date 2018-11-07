@@ -1,4 +1,4 @@
-package ticktacktoe;
+package tictactoe;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TickTackToeRunner extends Application {
+public class TicTacToeRunner extends Application {
 
     private static final double SCREEN_HEIGHT = Screen.getPrimary().getVisualBounds().getHeight();
     private static final double SCREEN_WIDTH = Screen.getPrimary().getVisualBounds().getWidth();
