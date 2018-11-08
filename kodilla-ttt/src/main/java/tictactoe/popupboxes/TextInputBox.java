@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 public class TextInputBox {
 
-    public static String userInputText;
+    private static String userInputText;
 
     public static String getUserInputText(String windowTitle, String message){
 

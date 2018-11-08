@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 
 public class ConfirmationBox {
 
-    public static boolean userChoice;
+    private static boolean userChoice;
 
     public static boolean getDecision(String windowTitle, String message){
 

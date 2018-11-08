@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.stage.StageStyle;
 import tictactoe.popupboxes.ConfirmationBox;
+import tictactoe.popupboxes.NewGameBox;
 import tictactoe.popupboxes.TextInputBox;
 
 import java.util.ArrayList;
@@ -90,7 +91,9 @@ public class TicTacToeRunner extends Application {
         newGameButton = new Button("New game");
         newGameButton.setMinSize(300, 50);
         newGameButton.setOnMouseClicked(e->{
-            if(ConfirmationBox.getDecision("New game","Are you sure you want to start a new game?")){/**TO DO NEW GAME HERE*/ }
+            if(ConfirmationBox.getDecision("New game","Are you sure you want to start a new game?")){
+                NewGameBox.getUserPreference();
+            }
         });
 
         buttons = new VBox(exitButton, newGameButton);
