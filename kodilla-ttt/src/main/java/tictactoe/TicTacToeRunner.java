@@ -9,6 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -18,7 +20,7 @@ import javafx.scene.image.Image;
 import javafx.stage.StageStyle;
 import tictactoe.popupboxes.ConfirmationBox;
 import tictactoe.popupboxes.NewGameBox;
-import tictactoe.popupboxes.TextInputBox;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +39,8 @@ public class TicTacToeRunner extends Application {
     private static final Image ANIMATION_FOR_O = new Image("Graphics/Draw_O_Anim.gif");
     private static final Image IMAGE_FOR_CURSOR = new Image("Graphics/cursorIcon.png");
     private static final Image IMAGE_FOR_EMPTY_FIELD = new Image("Graphics/transparent.png");
+
+
 
     private Button exitButton, newGameButton;
     private VBox buttons;
@@ -81,6 +85,10 @@ public class TicTacToeRunner extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         gameCellsList = new ArrayList<>();
+
+        Media soundFile = new Media("file:///D:/Programowanie_Java/kodilla-course/kodilla-ttt/src/main/resources/Sounds/Darsilon.mp3");
+        MediaPlayer player = new MediaPlayer(soundFile);
+        player.play();
 
         exitButton = new Button("Exit");
         exitButton.setMinSize(300, 50);
