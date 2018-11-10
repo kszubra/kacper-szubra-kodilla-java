@@ -45,15 +45,15 @@ public class TicTacToeRunner extends Application {
     private Button exitButton, newGameButton;
     private VBox buttons;
 
+    private ImageView cellImage00;
+    private ImageView cellImage01;
+    private ImageView cellImage02;
+    private ImageView cellImage10;
     private ImageView cellImage11;
     private ImageView cellImage12;
-    private ImageView cellImage13;
+    private ImageView cellImage20;
     private ImageView cellImage21;
     private ImageView cellImage22;
-    private ImageView cellImage23;
-    private ImageView cellImage31;
-    private ImageView cellImage32;
-    private ImageView cellImage33;
     private List<ImageView> gameCellsList;
 
 
@@ -144,23 +144,47 @@ public class TicTacToeRunner extends Application {
         gameBoardPane.setHgap(5);
         gameBoardPane.setVgap(5);
 
+        cellImage00 = new ImageView(IMAGE_FOR_EMPTY_FIELD);
+        gameCellsList.add(cellImage00);
+        gameBoardPane.add(cellImage00, 0,0);
+        cellImage00.setOnMouseEntered(e->handleMouseEntersCell(e));
+        cellImage00.setOnMouseExited(e->handleMouseExitsCell(e));
+
+        cellImage01 = new ImageView(IMAGE_FOR_EMPTY_FIELD);
+        gameCellsList.add(cellImage01);
+        gameBoardPane.add(cellImage01, 1,0);
+        cellImage01.setOnMouseEntered(e->handleMouseEntersCell(e));
+        cellImage01.setOnMouseExited(e->handleMouseExitsCell(e));
+
+        cellImage02 = new ImageView(IMAGE_FOR_EMPTY_FIELD);
+        gameCellsList.add(cellImage02);
+        gameBoardPane.add(cellImage02, 2,0);
+        cellImage02.setOnMouseEntered(e->handleMouseEntersCell(e));
+        cellImage02.setOnMouseExited(e->handleMouseExitsCell(e));
+
+        cellImage10 = new ImageView(IMAGE_FOR_O);
+        gameCellsList.add(cellImage10);
+        gameBoardPane.add(cellImage10, 0,1);
+        cellImage10.setOnMouseEntered(e->handleMouseEntersCell(e));
+        cellImage10.setOnMouseExited(e->handleMouseExitsCell(e));
+
         cellImage11 = new ImageView(IMAGE_FOR_EMPTY_FIELD);
         gameCellsList.add(cellImage11);
         gameBoardPane.add(cellImage11, 1,1);
         cellImage11.setOnMouseEntered(e->handleMouseEntersCell(e));
         cellImage11.setOnMouseExited(e->handleMouseExitsCell(e));
 
-        cellImage12 = new ImageView(IMAGE_FOR_EMPTY_FIELD);
+        cellImage12 = new ImageView(IMAGE_FOR_O);
         gameCellsList.add(cellImage12);
         gameBoardPane.add(cellImage12, 2,1);
         cellImage12.setOnMouseEntered(e->handleMouseEntersCell(e));
         cellImage12.setOnMouseExited(e->handleMouseExitsCell(e));
 
-        cellImage13 = new ImageView(IMAGE_FOR_EMPTY_FIELD);
-        gameCellsList.add(cellImage13);
-        gameBoardPane.add(cellImage13, 3,1);
-        cellImage13.setOnMouseEntered(e->handleMouseEntersCell(e));
-        cellImage13.setOnMouseExited(e->handleMouseExitsCell(e));
+        cellImage20 = new ImageView(IMAGE_FOR_EMPTY_FIELD);
+        gameCellsList.add(cellImage20);
+        gameBoardPane.add(cellImage20, 0,2);
+        cellImage20.setOnMouseEntered(e->handleMouseEntersCell(e));
+        cellImage20.setOnMouseExited(e->handleMouseExitsCell(e));
 
         cellImage21 = new ImageView(IMAGE_FOR_O);
         gameCellsList.add(cellImage21);
@@ -173,30 +197,6 @@ public class TicTacToeRunner extends Application {
         gameBoardPane.add(cellImage22, 2,2);
         cellImage22.setOnMouseEntered(e->handleMouseEntersCell(e));
         cellImage22.setOnMouseExited(e->handleMouseExitsCell(e));
-
-        cellImage23 = new ImageView(IMAGE_FOR_O);
-        gameCellsList.add(cellImage23);
-        gameBoardPane.add(cellImage23, 3,2);
-        cellImage23.setOnMouseEntered(e->handleMouseEntersCell(e));
-        cellImage23.setOnMouseExited(e->handleMouseExitsCell(e));
-
-        cellImage31 = new ImageView(IMAGE_FOR_EMPTY_FIELD);
-        gameCellsList.add(cellImage31);
-        gameBoardPane.add(cellImage31, 1,3);
-        cellImage31.setOnMouseEntered(e->handleMouseEntersCell(e));
-        cellImage31.setOnMouseExited(e->handleMouseExitsCell(e));
-
-        cellImage32 = new ImageView(IMAGE_FOR_O);
-        gameCellsList.add(cellImage32);
-        gameBoardPane.add(cellImage32, 2,3);
-        cellImage32.setOnMouseEntered(e->handleMouseEntersCell(e));
-        cellImage32.setOnMouseExited(e->handleMouseExitsCell(e));
-
-        cellImage33 = new ImageView(IMAGE_FOR_EMPTY_FIELD);
-        gameCellsList.add(cellImage33);
-        gameBoardPane.add(cellImage33, 3,3);
-        cellImage33.setOnMouseEntered(e->handleMouseEntersCell(e));
-        cellImage33.setOnMouseExited(e->handleMouseExitsCell(e));
 
         BorderPane borderPane = new BorderPane();
         borderPane.setBackground(background);
