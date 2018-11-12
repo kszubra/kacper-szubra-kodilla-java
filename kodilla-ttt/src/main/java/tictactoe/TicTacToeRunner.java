@@ -18,11 +18,17 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.stage.StageStyle;
+import tictactoe.enumerics.CellStatus;
+import tictactoe.enumerics.GameMode;
+import tictactoe.mechanics.Game;
+import tictactoe.mechanics.Rules;
 import tictactoe.popupboxes.ConfirmationBox;
+import tictactoe.popupboxes.MessageBox;
 import tictactoe.popupboxes.NewGameBox;
 
-
+import java.awt.image.ImagingOpException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -40,10 +46,10 @@ public class TicTacToeRunner extends Application {
     private static final Image IMAGE_FOR_CURSOR = new Image("Graphics/cursorIcon.png");
     private static final Image IMAGE_FOR_EMPTY_FIELD = new Image("Graphics/transparent.png");
 
-
-
     private Button exitButton, newGameButton;
     private VBox buttons;
+
+    GridPane gameBoardPane;
 
     private ImageView cellImage00;
     private ImageView cellImage01;
@@ -56,10 +62,10 @@ public class TicTacToeRunner extends Application {
     private ImageView cellImage22;
     private List<ImageView> gameCellsList;
 
+    private Game currentGame;
+
 
     public void handleMouseEntersCell(MouseEvent event){
-
-
 
         ImageView eventObject = (ImageView) event.getSource();
 
@@ -77,6 +83,24 @@ public class TicTacToeRunner extends Application {
         }
     }
 
+    public void handleMouseClickCell(MouseEvent event){
+
+        ImageView eventObject = (ImageView) event.getSource();
+
+        if(!(currentGame.getHumanTurn())){
+            MessageBox.displayMessage("Wrong turn","It's not your turn now. Please wait");
+        }
+        if(currentGame.getHumanTurn()){
+            eventObject.setImage(IMAGE_FOR_X);
+            int rowIndex = GridPane.getRowIndex(eventObject);
+            int columnIndex = GridPane.getColumnIndex(eventObject);
+            System.out.println("Row: " + rowIndex + ", Column: " + columnIndex);
+            currentGame.setGameMatrixValue(rowIndex, columnIndex, CellStatus.CROSS);
+            currentGame.setHumanTurn(false);
+        }
+
+     }
+
     private HBox topScoreBoard;
     private Text playerOneName, playerOneScore, playerTwoName, playerTwoScore;
 
@@ -91,23 +115,23 @@ public class TicTacToeRunner extends Application {
         player.play();
 
         exitButton = new Button("Exit");
-        exitButton.setMinSize(300, 50);
+        exitButton.setMinSize(200, 50);
         exitButton.setOnMouseClicked(e->{
             if(ConfirmationBox.getDecision("Quit game","Are you sure you want to quit?")){System.exit(0);}
         });
 
         newGameButton = new Button("New game");
-        newGameButton.setMinSize(300, 50);
+        newGameButton.setMinSize(200, 50);
         newGameButton.setOnMouseClicked(e->{
             if(ConfirmationBox.getDecision("New game","Are you sure you want to start a new game?")){
-                NewGameBox.getUserPreference();
+                currentGame = new Game(NewGameBox.getUserPreference());
             }
         });
 
         buttons = new VBox(exitButton, newGameButton);
         buttons.setSpacing(50);
 
-        playerOneName = new Text("Player One: ");
+        playerOneName = new Text(" :");
         playerOneName.setFont(Font.font("Verdana", 45));
         playerOneName.setFill(Color.AQUA);
 
@@ -135,7 +159,8 @@ public class TicTacToeRunner extends Application {
         BackgroundImage boardBackgroundImage = new BackgroundImage(IMAGE_FOR_GAME_BOARD, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, boardBackgroundSize);
         Background boardBackground = new Background(boardBackgroundImage);
 
-        GridPane gameBoardPane = new GridPane();
+        gameBoardPane = new GridPane();
+        gameBoardPane.setGridLinesVisible(true);
         gameBoardPane.setCursor(new ImageCursor(IMAGE_FOR_CURSOR));
         gameBoardPane.setMaxSize(409, 409);
         gameBoardPane.setAlignment(Pos.CENTER);
@@ -149,6 +174,7 @@ public class TicTacToeRunner extends Application {
         gameBoardPane.add(cellImage00, 0,0);
         cellImage00.setOnMouseEntered(e->handleMouseEntersCell(e));
         cellImage00.setOnMouseExited(e->handleMouseExitsCell(e));
+        cellImage00.setOnMouseClicked(e->handleMouseClickCell(e));
 
         cellImage01 = new ImageView(IMAGE_FOR_EMPTY_FIELD);
         gameCellsList.add(cellImage01);
@@ -217,7 +243,17 @@ public class TicTacToeRunner extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-    }
+        currentGame = new Game(NewGameBox.getUserPreference());
+        playerOneName.setText(currentGame.getHumanPlayerName() + ": ");
+        currentGame.play();
+
+
+        }
+
+
+
+
+
 
     public static void main(String[] args) {
         launch(args);

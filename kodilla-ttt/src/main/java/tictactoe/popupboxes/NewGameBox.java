@@ -42,7 +42,7 @@ public class NewGameBox {
         confirmButton.setText("Confirm");
         confirmButton.setOnMouseClicked(e->{
             if(!(inputTextField.getText().length()<1)){
-                initialGameData = new InitialGameData(nameField.getText(), gameModeChoiceBox.getValue());
+                initialGameData = new InitialGameData(inputTextField.getText(), gameModeChoiceBox.getValue());
                 window.close();
             }
         });

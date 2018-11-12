@@ -2,8 +2,12 @@ package tictactoe.mechanics;
 
 import tictactoe.enumerics.CellStatus;
 
+import java.util.Random;
+
 
 public class Rules {
+
+    public static final Random RANDOM_GENERATOR = new Random();
 
     public static CellStatus checkGameMatrixForWinner(CellStatus[][] gameMatrix){
 
