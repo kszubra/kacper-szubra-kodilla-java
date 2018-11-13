@@ -1,9 +1,14 @@
 package tictactoe.mechanics;
 
+import javafx.scene.layout.GridPane;
+import tictactoe.TicTacToeRunner;
 import tictactoe.enumerics.CellStatus;
 import tictactoe.enumerics.GameMode;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Game {
 
@@ -15,9 +20,14 @@ public class Game {
     private GameMode gameMode;
     private boolean humanTurn;
     private boolean humanStarts;
+    private List<CellStatus> gameMatrixElements;
 
     public Game(InitialGameData initialData) {
         this.humanPlayerName = initialData.getPlayerName();
+        this.gameMatrixElements = new ArrayList<>();
+        this.winner = CellStatus.EMPTY;
+        this.gameMode = initialData.getGameMode();
+
         int random = Rules.RANDOM_GENERATOR.nextInt(2);
         if(random == 0){
             humanStarts = true;
@@ -32,9 +42,6 @@ public class Game {
             }
         }
 
-        this.winner = CellStatus.EMPTY;
-        this.gameMode = initialData.getGameMode();
-
     }
 
     public GameMode getGameMode() {
@@ -45,18 +52,27 @@ public class Game {
         return winner;
     }
 
-    public void setWinner(CellStatus winner) {
-        this.winner = winner;
-    }
-
     public CellStatus[][] getGameMatrix() {
         return gameMatrix;
     }
 
+    public String getHumanPlayerName() {
+        return this.humanPlayerName;
+    }
 
-    public String getHumanPlayerName() {return this.humanPlayerName;}
-    public boolean getHumanTurn() {return this.humanTurn;}
-    public void setGameMatrixValue(int row, int column, CellStatus statusToSet){
+    public boolean getHumanTurn() {
+        return this.humanTurn;
+    }
+
+    public boolean getHumanStarts() {
+        return humanStarts;
+    }
+
+    public void setWinner(CellStatus winner) {
+        this.winner = winner;
+    }
+
+    public void setGameMatrixValue (int row, int column, CellStatus statusToSet){
         this.gameMatrix[row][column] = statusToSet;
     }
 
@@ -64,55 +80,76 @@ public class Game {
         this.humanTurn = valueToSet;
     }
 
-    public boolean getHumanStarts() {
-        return humanStarts;
+    public void makeRandomComputerMove(){
+        int randomRow = Rules.RANDOM_GENERATOR.nextInt(MATRIX_RAWS);
+        int randomColumn = Rules.RANDOM_GENERATOR.nextInt(MATRIX_COLUMNS);
+
+        if(gameMatrix[randomRow][randomColumn].equals(CellStatus.EMPTY)){
+            gameMatrix[randomRow][randomColumn] = CellStatus.CIRCLE;
+
+        } else {
+            makeRandomComputerMove();
+        }
+    }
+
+    public void makeStrategicComputerMove(){
+
+    }
+
+    private void makeComputerMove(){
+        if(!humanTurn){
+
+            if(gameMode.equals(GameMode.RANDOM)){
+                makeRandomComputerMove();
+            } else if (gameMode.equals(GameMode.STRATEGIC)){
+                makeStrategicComputerMove();
+            }
+
+        }
     }
 
     public void play() {
 
         if(!humanStarts){ // computer's opening move
             humanTurn = false;
-
-            if(gameMode.equals(GameMode.RANDOM)){
-                // RANDOM MOVE
-            } else {
-                // STRATEGIC MOVE
-            }
+            makeComputerMove();
         }
 
-        while(winner == CellStatus.EMPTY) {
+        while(winner.equals(CellStatus.EMPTY)) {
 
             humanTurn = true;
             // WAIT FOR MOVE
-            while(humanTurn){
-                /**
-                 * prevents computer making move before human. Loop condition changed by board clicking in TicTacToeRunner
-                 */
-            }
+
             // MAKE COMPUTER MOVE
-            gameMatrix[1][1] = CellStatus.CIRCLE;
+            makeComputerMove();
 
 
             winner = Rules.checkGameMatrixForWinner(gameMatrix);
-            if(winner.equals(CellStatus.CROSS)){ // Human wins
+            List<CellStatus> gameMatrixElements = Arrays.stream(gameMatrix)
+                    .flatMap(Arrays::stream)
+                    .collect(Collectors.toList());
+
+            if(winner.equals(CellStatus.CROSS)){
 
                 // THINGS TO DO WHEN HUMAN WINS
 
-            } else if(winner.equals(CellStatus.CIRCLE)){ // Computer wins
+            } else if(winner.equals(CellStatus.CIRCLE)){
 
                 // THINGS TO DO WHEN COMPUTER WINS
-            } else if(!(Arrays.asList(gameMatrix).contains(CellStatus.EMPTY))){ // Draw
+
+            } else if((!gameMatrixElements.contains(CellStatus.EMPTY)) && (winner.equals(CellStatus.EMPTY))){
+
+                // THINGS TO DO WHEN DRAW
 
             }
-
-
-        }
-
 
         }
 
 
     }
+
+
+}
 
 
 
