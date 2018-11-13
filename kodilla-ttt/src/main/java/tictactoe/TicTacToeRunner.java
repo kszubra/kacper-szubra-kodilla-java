@@ -18,6 +18,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -48,7 +50,6 @@ public class TicTacToeRunner extends Application {
     public static final Image IMAGE_FOR_X = new Image("Graphics/cross.png");
     public static final Image IMAGE_FOR_O = new Image("Graphics/circle.png");
     public static final Image ANIMATION_FOR_X = new Image("Graphics/Draw_X_Anim.gif");
-    public static final Image ANIMATION_FOR_O = new Image("Graphics/Draw_O_Anim.gif");
     public static final Image IMAGE_FOR_CURSOR = new Image("Graphics/cursorIcon.png");
     public static final Image IMAGE_FOR_EMPTY_FIELD = new Image("Graphics/transparent.png");
 
@@ -118,6 +119,7 @@ public class TicTacToeRunner extends Application {
             System.out.println("Row: " + rowIndex + ", Column: " + columnIndex);
             currentGame.setGameMatrixValue(rowIndex, columnIndex, CellStatus.CROSS);
             currentGame.setHumanTurn(false);
+            checkBoard();
 
             // COMPUTER MOVE HERE
             currentGame.makeComputerMove();
@@ -125,26 +127,42 @@ public class TicTacToeRunner extends Application {
             String key = "" + currentGame.getComputerChoiceRow() + currentGame.getComputerChoiceColumn();
             cellsMap.get(key).setImage(IMAGE_FOR_O);
 
-            currentGame.setWinner(Rules.checkGameMatrixForWinner(currentGame.getGameMatrix()));
-            List<CellStatus> gameMatrixElements = Arrays.stream(currentGame.getGameMatrix())
-                    .flatMap(Arrays::stream)
-                    .collect(Collectors.toList());
-
-            if (currentGame.getWinner().equals(CellStatus.CROSS)) {
-
-                MessageBox.displayMessage("Round finished", currentGame.getHumanPlayerName() + " won!");
-
-            } else if (currentGame.getWinner().equals(CellStatus.CIRCLE)) {
-
-                MessageBox.displayMessage("Round finished", "Computer won!");
-
-            } else if ((!gameMatrixElements.contains(CellStatus.EMPTY)) && (currentGame.getWinner().equals(CellStatus.EMPTY))) {
-
-                MessageBox.displayMessage("Round finished", "Draw!");
-
-            }
+            checkBoard();
         }
 
+    }
+
+    private void checkBoard() {
+        currentGame.setWinner(Rules.checkGameMatrixForWinner(currentGame.getGameMatrix()));
+        List<CellStatus> gameMatrixElements = Arrays.stream(currentGame.getGameMatrix())
+                .flatMap(Arrays::stream)
+                .collect(Collectors.toList());
+
+        if (currentGame.getWinner().equals(CellStatus.CROSS)) {
+
+            if(ConfirmationBox.getDecision("Game ended", currentGame.getHumanPlayerName() + " won! \r\n Do you want to start a new game?")){
+                newGame();
+            } else{
+                System.exit(0);
+            }
+
+        } else if (currentGame.getWinner().equals(CellStatus.CIRCLE)) {
+
+            if(ConfirmationBox.getDecision("Game ended", "Computer won! \r\n Do you want to start a new game?")){
+                newGame();
+            } else{
+                System.exit(0);
+            }
+
+        } else if ((!gameMatrixElements.contains(CellStatus.EMPTY)) && (currentGame.getWinner().equals(CellStatus.EMPTY))) {
+
+            if(ConfirmationBox.getDecision("Game ended", "Draw! \r\n Do you want to start a new game?")){
+                newGame();
+            } else{
+                System.exit(0);
+            }
+
+        }
     }
 
     private HBox topScoreBoard;
@@ -154,10 +172,10 @@ public class TicTacToeRunner extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-//        Media soundFile = new Media("file:///Sounds/Darsilon.mp3");
-//        Media soundFile = new Media(getClass().getResource("/Sounds/Darsilon.mp3").toURI().toString());
-//        MediaPlayer player = new MediaPlayer(soundFile);
-//        player.play();
+        //Media soundFile = new Media("file:///Sounds/Darsilon.mp3");
+        Media soundFile = new Media(getClass().getResource("/Sounds/Darsilon.mp3").toURI().toString());
+        MediaPlayer player = new MediaPlayer(soundFile);
+        player.play();
 
         exitButton = new Button("Exit");
         exitButton.setMinSize(200, 50);
