@@ -49,7 +49,7 @@ public class GameTestSuite {
     @Test
     public void testMakeRandomComputerMove(){
         //Given
-        testGame.makeRandomComputerMove();
+        testGame.makeComputerMove();
 
         //When
         boolean expectedCircle = true;

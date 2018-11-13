@@ -21,6 +21,8 @@ public class Game {
     private boolean humanTurn;
     private boolean humanStarts;
     private List<CellStatus> gameMatrixElements;
+    private int computerChoiceRow;
+    private int computerChoiceColumn;
 
     public Game(InitialGameData initialData) {
         this.humanPlayerName = initialData.getPlayerName();
@@ -68,6 +70,14 @@ public class Game {
         return humanStarts;
     }
 
+    public int getComputerChoiceRow() {
+        return computerChoiceRow;
+    }
+
+    public int getComputerChoiceColumn() {
+        return computerChoiceColumn;
+    }
+
     public void setWinner(CellStatus winner) {
         this.winner = winner;
     }
@@ -80,23 +90,25 @@ public class Game {
         this.humanTurn = valueToSet;
     }
 
-    public void makeRandomComputerMove(){
+    private void makeRandomComputerMove(){
         int randomRow = Rules.RANDOM_GENERATOR.nextInt(MATRIX_RAWS);
         int randomColumn = Rules.RANDOM_GENERATOR.nextInt(MATRIX_COLUMNS);
 
         if(gameMatrix[randomRow][randomColumn].equals(CellStatus.EMPTY)){
             gameMatrix[randomRow][randomColumn] = CellStatus.CIRCLE;
+            computerChoiceRow = randomRow;
+            computerChoiceColumn = randomColumn;
 
         } else {
             makeRandomComputerMove();
         }
     }
 
-    public void makeStrategicComputerMove(){
+    private void makeStrategicComputerMove(){
 
     }
 
-    private void makeComputerMove(){
+    public void makeComputerMove(){
         if(!humanTurn){
 
             if(gameMode.equals(GameMode.RANDOM)){
@@ -104,49 +116,11 @@ public class Game {
             } else if (gameMode.equals(GameMode.STRATEGIC)){
                 makeStrategicComputerMove();
             }
-
         }
+
+        humanTurn=true;
     }
 
-    public void play() {
-
-        if(!humanStarts){ // computer's opening move
-            humanTurn = false;
-            makeComputerMove();
-        }
-
-        while(winner.equals(CellStatus.EMPTY)) {
-
-            humanTurn = true;
-            // WAIT FOR MOVE
-
-            // MAKE COMPUTER MOVE
-            makeComputerMove();
-
-
-            winner = Rules.checkGameMatrixForWinner(gameMatrix);
-            List<CellStatus> gameMatrixElements = Arrays.stream(gameMatrix)
-                    .flatMap(Arrays::stream)
-                    .collect(Collectors.toList());
-
-            if(winner.equals(CellStatus.CROSS)){
-
-                // THINGS TO DO WHEN HUMAN WINS
-
-            } else if(winner.equals(CellStatus.CIRCLE)){
-
-                // THINGS TO DO WHEN COMPUTER WINS
-
-            } else if((!gameMatrixElements.contains(CellStatus.EMPTY)) && (winner.equals(CellStatus.EMPTY))){
-
-                // THINGS TO DO WHEN DRAW
-
-            }
-
-        }
-
-
-    }
 
 
 }

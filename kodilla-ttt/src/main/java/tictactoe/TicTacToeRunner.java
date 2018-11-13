@@ -30,6 +30,7 @@ import java.awt.image.ImagingOpException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class TicTacToeRunner extends Application {
@@ -64,6 +65,23 @@ public class TicTacToeRunner extends Application {
 
     private Game currentGame;
 
+    public void newGame() {
+
+        for (ImageView image : gameCellsList){
+            image.setImage(IMAGE_FOR_EMPTY_FIELD);
+        }
+        currentGame = new Game(NewGameBox.getUserPreference());
+        playerOneName.setText(currentGame.getHumanPlayerName() + ": ");
+
+        if(!currentGame.getHumanStarts()){ // computer's opening move
+            currentGame.setHumanTurn(false);
+            currentGame.makeComputerMove();
+        } else {
+            currentGame.setHumanTurn(true);
+        }
+    }
+
+
 
     public void handleMouseEntersCell(MouseEvent event){
 
@@ -89,14 +107,39 @@ public class TicTacToeRunner extends Application {
 
         if(!(currentGame.getHumanTurn())){
             MessageBox.displayMessage("Wrong turn","It's not your turn now. Please wait");
-        }
-        if(currentGame.getHumanTurn()){
+        } else if((currentGame.getHumanTurn()) && !(eventObject.getImage().equals(ANIMATION_FOR_X))){
+            MessageBox.displayMessage("Cell taken","This cell is already taken. Please choose different one");
+
+        } else if((currentGame.getHumanTurn()) && (eventObject.getImage().equals(ANIMATION_FOR_X))){
             eventObject.setImage(IMAGE_FOR_X);
             int rowIndex = GridPane.getRowIndex(eventObject);
             int columnIndex = GridPane.getColumnIndex(eventObject);
             System.out.println("Row: " + rowIndex + ", Column: " + columnIndex);
             currentGame.setGameMatrixValue(rowIndex, columnIndex, CellStatus.CROSS);
             currentGame.setHumanTurn(false);
+
+            // COMPUTER MOVE HERE
+            currentGame.makeComputerMove();
+            // make image on board change
+
+            currentGame.setWinner(Rules.checkGameMatrixForWinner(currentGame.getGameMatrix()));
+            List<CellStatus> gameMatrixElements = Arrays.stream(currentGame.getGameMatrix())
+                    .flatMap(Arrays::stream)
+                    .collect(Collectors.toList());
+
+            if(currentGame.getWinner().equals(CellStatus.CROSS)){
+
+                // THINGS TO DO WHEN HUMAN WINS
+
+            } else if(currentGame.getWinner().equals(CellStatus.CIRCLE)){
+
+                // THINGS TO DO WHEN COMPUTER WINS
+
+            } else if((!gameMatrixElements.contains(CellStatus.EMPTY)) && (currentGame.getWinner().equals(CellStatus.EMPTY))){
+
+                // THINGS TO DO WHEN DRAW
+
+            }
         }
 
      }
@@ -124,7 +167,7 @@ public class TicTacToeRunner extends Application {
         newGameButton.setMinSize(200, 50);
         newGameButton.setOnMouseClicked(e->{
             if(ConfirmationBox.getDecision("New game","Are you sure you want to start a new game?")){
-                currentGame = new Game(NewGameBox.getUserPreference());
+                newGame();
             }
         });
 
@@ -251,8 +294,8 @@ public class TicTacToeRunner extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        currentGame = new Game(NewGameBox.getUserPreference());
-        playerOneName.setText(currentGame.getHumanPlayerName() + ": ");
+        newGame();
+
 
         }
 
