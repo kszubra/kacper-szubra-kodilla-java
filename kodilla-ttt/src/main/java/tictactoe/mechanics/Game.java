@@ -98,6 +98,7 @@ public class Game {
             gameMatrix[randomRow][randomColumn] = CellStatus.CIRCLE;
             computerChoiceRow = randomRow;
             computerChoiceColumn = randomColumn;
+            System.out.println("Chosen cell: row " + randomRow + " column " + randomColumn);
 
         } else {
             makeRandomComputerMove();

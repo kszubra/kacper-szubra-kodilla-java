@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.ImageCursor;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
@@ -19,14 +20,12 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.stage.StageStyle;
 import tictactoe.enumerics.CellStatus;
-import tictactoe.enumerics.GameMode;
 import tictactoe.mechanics.Game;
 import tictactoe.mechanics.Rules;
 import tictactoe.popupboxes.ConfirmationBox;
 import tictactoe.popupboxes.MessageBox;
 import tictactoe.popupboxes.NewGameBox;
 
-import java.awt.image.ImagingOpException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -71,13 +70,42 @@ public class TicTacToeRunner extends Application {
             image.setImage(IMAGE_FOR_EMPTY_FIELD);
         }
         currentGame = new Game(NewGameBox.getUserPreference());
-        playerOneName.setText(currentGame.getHumanPlayerName() + ": ");
 
         if(!currentGame.getHumanStarts()){ // computer's opening move
+            messageBoard.setText("Computer's turn");
             currentGame.setHumanTurn(false);
             currentGame.makeComputerMove();
+            int[] chosenByComputer = {currentGame.getComputerChoiceRow(), currentGame.getComputerChoiceColumn()};
+            if (chosenByComputer[0] == 0 && chosenByComputer[1] == 0){
+                cellImage00.setImage(IMAGE_FOR_O);
+            }
+            if (chosenByComputer[0] == 0 && chosenByComputer[1] == 1){
+                cellImage01.setImage(IMAGE_FOR_O);
+            }
+            if (chosenByComputer[0] == 0 && chosenByComputer[1] == 2){
+                cellImage02.setImage(IMAGE_FOR_O);
+            }
+            if (chosenByComputer[0] == 1 && chosenByComputer[1] == 0){
+                cellImage10.setImage(IMAGE_FOR_O);
+            }
+            if (chosenByComputer[0] == 1 && chosenByComputer[1] == 1){
+                cellImage11.setImage(IMAGE_FOR_O);
+            }
+            if (chosenByComputer[0] == 1 && chosenByComputer[1] == 2){
+                cellImage12.setImage(IMAGE_FOR_O);
+            }
+            if (chosenByComputer[0] == 2 && chosenByComputer[1] == 0){
+                cellImage20.setImage(IMAGE_FOR_O);
+            }
+            if (chosenByComputer[0] == 2 && chosenByComputer[1] == 1){
+                cellImage21.setImage(IMAGE_FOR_O);
+            }
+            if (chosenByComputer[0] == 2 && chosenByComputer[1] == 2){
+                cellImage22.setImage(IMAGE_FOR_O);
+            }
         } else {
             currentGame.setHumanTurn(true);
+            messageBoard.setText(currentGame.getHumanPlayerName() + "'s turn");
         }
     }
 
@@ -105,6 +133,7 @@ public class TicTacToeRunner extends Application {
 
         ImageView eventObject = (ImageView) event.getSource();
 
+
         if(!(currentGame.getHumanTurn())){
             MessageBox.displayMessage("Wrong turn","It's not your turn now. Please wait");
         } else if((currentGame.getHumanTurn()) && !(eventObject.getImage().equals(ANIMATION_FOR_X))){
@@ -121,6 +150,51 @@ public class TicTacToeRunner extends Application {
             // COMPUTER MOVE HERE
             currentGame.makeComputerMove();
             // make image on board change
+            int[] chosenByComputer = {currentGame.getComputerChoiceRow(), currentGame.getComputerChoiceColumn()};
+            if (chosenByComputer[0] == 0 && chosenByComputer[1] == 0){
+                cellImage00.setImage(IMAGE_FOR_O);
+            }
+            if (chosenByComputer[0] == 0 && chosenByComputer[1] == 1){
+                cellImage01.setImage(IMAGE_FOR_O);
+            }
+            if (chosenByComputer[0] == 0 && chosenByComputer[1] == 2){
+                cellImage02.setImage(IMAGE_FOR_O);
+            }
+            if (chosenByComputer[0] == 1 && chosenByComputer[1] == 0){
+                cellImage10.setImage(IMAGE_FOR_O);
+            }
+            if (chosenByComputer[0] == 1 && chosenByComputer[1] == 1){
+                cellImage11.setImage(IMAGE_FOR_O);
+            }
+            if (chosenByComputer[0] == 1 && chosenByComputer[1] == 2){
+                cellImage12.setImage(IMAGE_FOR_O);
+            }
+            if (chosenByComputer[0] == 2 && chosenByComputer[1] == 0){
+                cellImage20.setImage(IMAGE_FOR_O);
+            }
+            if (chosenByComputer[0] == 2 && chosenByComputer[1] == 1){
+                cellImage21.setImage(IMAGE_FOR_O);
+            }
+            if (chosenByComputer[0] == 2 && chosenByComputer[1] == 2){
+                cellImage22.setImage(IMAGE_FOR_O);
+            }
+
+            /**
+            for(Node node : gameBoardPane.getChildren()) {
+                if((GridPane.getRowIndex(node).equals(currentGame.getComputerChoiceRow())) && (GridPane.getColumnIndex(node).equals(currentGame.getComputerChoiceColumn()))){
+                    (ImageView)node.get
+                }
+            }
+
+            chosenByComputer = (ImageView) gameBoardPane.getChildren().stream()
+                    .filter(e -> (GridPane.getColumnIndex(e).equals(currentGame.getComputerChoiceColumn())))
+                    .filter(e -> (GridPane.getRowIndex(e).equals(currentGame.getComputerChoiceRow())))
+                    .findAny().get();
+
+            chosenByComputer.setImage(IMAGE_FOR_O);
+
+             */
+
 
             currentGame.setWinner(Rules.checkGameMatrixForWinner(currentGame.getGameMatrix()));
             List<CellStatus> gameMatrixElements = Arrays.stream(currentGame.getGameMatrix())
@@ -129,15 +203,15 @@ public class TicTacToeRunner extends Application {
 
             if(currentGame.getWinner().equals(CellStatus.CROSS)){
 
-                // THINGS TO DO WHEN HUMAN WINS
+                MessageBox.displayMessage("Round finished",currentGame.getHumanPlayerName()+ " won!");
 
             } else if(currentGame.getWinner().equals(CellStatus.CIRCLE)){
 
-                // THINGS TO DO WHEN COMPUTER WINS
+                MessageBox.displayMessage("Round finished","Computer won!");
 
             } else if((!gameMatrixElements.contains(CellStatus.EMPTY)) && (currentGame.getWinner().equals(CellStatus.EMPTY))){
 
-                // THINGS TO DO WHEN DRAW
+                MessageBox.displayMessage("Round finished","Draw!");
 
             }
         }
@@ -145,7 +219,7 @@ public class TicTacToeRunner extends Application {
      }
 
     private HBox topScoreBoard;
-    private Text playerOneName, playerOneScore, playerTwoName, playerTwoScore;
+    private Text messageBoard;
 
 
     @Override
@@ -174,23 +248,11 @@ public class TicTacToeRunner extends Application {
         buttons = new VBox(exitButton, newGameButton);
         buttons.setSpacing(50);
 
-        playerOneName = new Text(" :");
-        playerOneName.setFont(Font.font("Verdana", 45));
-        playerOneName.setFill(Color.AQUA);
+        messageBoard = new Text();
+        messageBoard.setFont(Font.font("Verdana", 45));
+        messageBoard.setFill(Color.AQUA);
 
-        playerOneScore = new Text("0");
-        playerOneScore.setFont(Font.font("Verdana", 45));
-        playerOneScore.setFill(Color.AQUA);
-
-        playerTwoName = new Text("Computer: ");
-        playerTwoName.setFont(Font.font("Verdana", 45));
-        playerTwoName.setFill(Color.AQUA);
-
-        playerTwoScore = new Text("0");
-        playerTwoScore.setFont(Font.font("Verdana", 45));
-        playerTwoScore.setFill(Color.AQUA);
-
-        topScoreBoard = new HBox(playerOneName, playerOneScore, playerTwoName, playerTwoScore);
+        topScoreBoard = new HBox(messageBoard);
         topScoreBoard.setSpacing(15);
 
 
