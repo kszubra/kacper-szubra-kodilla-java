@@ -4,20 +4,25 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.ImageCursor;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.scene.image.Image;
 import javafx.stage.StageStyle;
 import tictactoe.enumerics.CellStatus;
 import tictactoe.mechanics.Game;
@@ -26,9 +31,10 @@ import tictactoe.popupboxes.ConfirmationBox;
 import tictactoe.popupboxes.MessageBox;
 import tictactoe.popupboxes.NewGameBox;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -51,58 +57,25 @@ public class TicTacToeRunner extends Application {
 
     GridPane gameBoardPane;
 
-    private ImageView cellImage00;
-    private ImageView cellImage01;
-    private ImageView cellImage02;
-    private ImageView cellImage10;
-    private ImageView cellImage11;
-    private ImageView cellImage12;
-    private ImageView cellImage20;
-    private ImageView cellImage21;
-    private ImageView cellImage22;
-    private List<ImageView> gameCellsList;
+    private Map<String, ImageView> cellsMap = new HashMap<>();
 
     private Game currentGame;
 
     public void newGame() {
 
-        for (ImageView image : gameCellsList){
+        for (ImageView image : cellsMap.values()) {
             image.setImage(IMAGE_FOR_EMPTY_FIELD);
         }
         currentGame = new Game(NewGameBox.getUserPreference());
 
-        if(!currentGame.getHumanStarts()){ // computer's opening move
+        if (!currentGame.getHumanStarts()) { // computer's opening move
             messageBoard.setText("Computer's turn");
             currentGame.setHumanTurn(false);
             currentGame.makeComputerMove();
-            int[] chosenByComputer = {currentGame.getComputerChoiceRow(), currentGame.getComputerChoiceColumn()};
-            if (chosenByComputer[0] == 0 && chosenByComputer[1] == 0){
-                cellImage00.setImage(IMAGE_FOR_O);
-            }
-            if (chosenByComputer[0] == 0 && chosenByComputer[1] == 1){
-                cellImage01.setImage(IMAGE_FOR_O);
-            }
-            if (chosenByComputer[0] == 0 && chosenByComputer[1] == 2){
-                cellImage02.setImage(IMAGE_FOR_O);
-            }
-            if (chosenByComputer[0] == 1 && chosenByComputer[1] == 0){
-                cellImage10.setImage(IMAGE_FOR_O);
-            }
-            if (chosenByComputer[0] == 1 && chosenByComputer[1] == 1){
-                cellImage11.setImage(IMAGE_FOR_O);
-            }
-            if (chosenByComputer[0] == 1 && chosenByComputer[1] == 2){
-                cellImage12.setImage(IMAGE_FOR_O);
-            }
-            if (chosenByComputer[0] == 2 && chosenByComputer[1] == 0){
-                cellImage20.setImage(IMAGE_FOR_O);
-            }
-            if (chosenByComputer[0] == 2 && chosenByComputer[1] == 1){
-                cellImage21.setImage(IMAGE_FOR_O);
-            }
-            if (chosenByComputer[0] == 2 && chosenByComputer[1] == 2){
-                cellImage22.setImage(IMAGE_FOR_O);
-            }
+
+            String key = "" + currentGame.getComputerChoiceRow() + currentGame.getComputerChoiceColumn();
+            cellsMap.get(key).setImage(IMAGE_FOR_O);
+
         } else {
             currentGame.setHumanTurn(true);
             messageBoard.setText(currentGame.getHumanPlayerName() + "'s turn");
@@ -110,36 +83,35 @@ public class TicTacToeRunner extends Application {
     }
 
 
-
-    public void handleMouseEntersCell(MouseEvent event){
+    public void handleMouseEntersCell(MouseEvent event) {
 
         ImageView eventObject = (ImageView) event.getSource();
 
-        if(gameCellsList.contains(eventObject) && eventObject.getImage().equals(IMAGE_FOR_EMPTY_FIELD)){
+        if (cellsMap.values().contains(eventObject) && eventObject.getImage().equals(IMAGE_FOR_EMPTY_FIELD)) {
             eventObject.setImage(ANIMATION_FOR_X);
         }
     }
 
-    public void handleMouseExitsCell(MouseEvent event){
+    public void handleMouseExitsCell(MouseEvent event) {
 
         ImageView eventObject = (ImageView) event.getSource();
 
-        if(gameCellsList.contains(eventObject) && eventObject.getImage().equals(ANIMATION_FOR_X)){
+        if (cellsMap.values().contains(eventObject) && eventObject.getImage().equals(ANIMATION_FOR_X)) {
             eventObject.setImage(IMAGE_FOR_EMPTY_FIELD);
         }
     }
 
-    public void handleMouseClickCell(MouseEvent event){
+    public void handleMouseClickCell(MouseEvent event) {
 
         ImageView eventObject = (ImageView) event.getSource();
 
 
-        if(!(currentGame.getHumanTurn())){
-            MessageBox.displayMessage("Wrong turn","It's not your turn now. Please wait");
-        } else if((currentGame.getHumanTurn()) && !(eventObject.getImage().equals(ANIMATION_FOR_X))){
-            MessageBox.displayMessage("Cell taken","This cell is already taken. Please choose different one");
+        if (!(currentGame.getHumanTurn())) {
+            MessageBox.displayMessage("Wrong turn", "It's not your turn now. Please wait");
+        } else if ((currentGame.getHumanTurn()) && !(eventObject.getImage().equals(ANIMATION_FOR_X))) {
+            MessageBox.displayMessage("Cell taken", "This cell is already taken. Please choose different one");
 
-        } else if((currentGame.getHumanTurn()) && (eventObject.getImage().equals(ANIMATION_FOR_X))){
+        } else if ((currentGame.getHumanTurn()) && (eventObject.getImage().equals(ANIMATION_FOR_X))) {
             eventObject.setImage(IMAGE_FOR_X);
             int rowIndex = GridPane.getRowIndex(eventObject);
             int columnIndex = GridPane.getColumnIndex(eventObject);
@@ -150,48 +122,22 @@ public class TicTacToeRunner extends Application {
             // COMPUTER MOVE HERE
             currentGame.makeComputerMove();
             // make image on board change
-            int[] chosenByComputer = {currentGame.getComputerChoiceRow(), currentGame.getComputerChoiceColumn()};
-            if (chosenByComputer[0] == 0 && chosenByComputer[1] == 0){
-                cellImage00.setImage(IMAGE_FOR_O);
-            }
-            if (chosenByComputer[0] == 0 && chosenByComputer[1] == 1){
-                cellImage01.setImage(IMAGE_FOR_O);
-            }
-            if (chosenByComputer[0] == 0 && chosenByComputer[1] == 2){
-                cellImage02.setImage(IMAGE_FOR_O);
-            }
-            if (chosenByComputer[0] == 1 && chosenByComputer[1] == 0){
-                cellImage10.setImage(IMAGE_FOR_O);
-            }
-            if (chosenByComputer[0] == 1 && chosenByComputer[1] == 1){
-                cellImage11.setImage(IMAGE_FOR_O);
-            }
-            if (chosenByComputer[0] == 1 && chosenByComputer[1] == 2){
-                cellImage12.setImage(IMAGE_FOR_O);
-            }
-            if (chosenByComputer[0] == 2 && chosenByComputer[1] == 0){
-                cellImage20.setImage(IMAGE_FOR_O);
-            }
-            if (chosenByComputer[0] == 2 && chosenByComputer[1] == 1){
-                cellImage21.setImage(IMAGE_FOR_O);
-            }
-            if (chosenByComputer[0] == 2 && chosenByComputer[1] == 2){
-                cellImage22.setImage(IMAGE_FOR_O);
-            }
+            String key = "" + currentGame.getComputerChoiceRow() + currentGame.getComputerChoiceColumn();
+            cellsMap.get(key).setImage(IMAGE_FOR_O);
 
             /**
-            for(Node node : gameBoardPane.getChildren()) {
-                if((GridPane.getRowIndex(node).equals(currentGame.getComputerChoiceRow())) && (GridPane.getColumnIndex(node).equals(currentGame.getComputerChoiceColumn()))){
-                    (ImageView)node.get
-                }
-            }
+             for(Node node : gameBoardPane.getChildren()) {
+             if((GridPane.getRowIndex(node).equals(currentGame.getComputerChoiceRow())) && (GridPane.getColumnIndex(node).equals(currentGame.getComputerChoiceColumn()))){
+             (ImageView)node.get
+             }
+             }
 
-            chosenByComputer = (ImageView) gameBoardPane.getChildren().stream()
-                    .filter(e -> (GridPane.getColumnIndex(e).equals(currentGame.getComputerChoiceColumn())))
-                    .filter(e -> (GridPane.getRowIndex(e).equals(currentGame.getComputerChoiceRow())))
-                    .findAny().get();
+             chosenByComputer = (ImageView) gameBoardPane.getChildren().stream()
+             .filter(e -> (GridPane.getColumnIndex(e).equals(currentGame.getComputerChoiceColumn())))
+             .filter(e -> (GridPane.getRowIndex(e).equals(currentGame.getComputerChoiceRow())))
+             .findAny().get();
 
-            chosenByComputer.setImage(IMAGE_FOR_O);
+             chosenByComputer.setImage(IMAGE_FOR_O);
 
              */
 
@@ -201,22 +147,22 @@ public class TicTacToeRunner extends Application {
                     .flatMap(Arrays::stream)
                     .collect(Collectors.toList());
 
-            if(currentGame.getWinner().equals(CellStatus.CROSS)){
+            if (currentGame.getWinner().equals(CellStatus.CROSS)) {
 
-                MessageBox.displayMessage("Round finished",currentGame.getHumanPlayerName()+ " won!");
+                MessageBox.displayMessage("Round finished", currentGame.getHumanPlayerName() + " won!");
 
-            } else if(currentGame.getWinner().equals(CellStatus.CIRCLE)){
+            } else if (currentGame.getWinner().equals(CellStatus.CIRCLE)) {
 
-                MessageBox.displayMessage("Round finished","Computer won!");
+                MessageBox.displayMessage("Round finished", "Computer won!");
 
-            } else if((!gameMatrixElements.contains(CellStatus.EMPTY)) && (currentGame.getWinner().equals(CellStatus.EMPTY))){
+            } else if ((!gameMatrixElements.contains(CellStatus.EMPTY)) && (currentGame.getWinner().equals(CellStatus.EMPTY))) {
 
-                MessageBox.displayMessage("Round finished","Draw!");
+                MessageBox.displayMessage("Round finished", "Draw!");
 
             }
         }
 
-     }
+    }
 
     private HBox topScoreBoard;
     private Text messageBoard;
@@ -225,22 +171,23 @@ public class TicTacToeRunner extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        gameCellsList = new ArrayList<>();
-
-        Media soundFile = new Media("file:///D:/Programowanie_Java/kodilla-course/kodilla-ttt/src/main/resources/Sounds/Darsilon.mp3");
-        MediaPlayer player = new MediaPlayer(soundFile);
-        player.play();
+//        Media soundFile = new Media("file:///Sounds/Darsilon.mp3");
+//        Media soundFile = new Media(getClass().getResource("/Sounds/Darsilon.mp3").toURI().toString());
+//        MediaPlayer player = new MediaPlayer(soundFile);
+//        player.play();
 
         exitButton = new Button("Exit");
         exitButton.setMinSize(200, 50);
-        exitButton.setOnMouseClicked(e->{
-            if(ConfirmationBox.getDecision("Quit game","Are you sure you want to quit?")){System.exit(0);}
+        exitButton.setOnMouseClicked(e -> {
+            if (ConfirmationBox.getDecision("Quit game", "Are you sure you want to quit?")) {
+                System.exit(0);
+            }
         });
 
         newGameButton = new Button("New game");
         newGameButton.setMinSize(200, 50);
-        newGameButton.setOnMouseClicked(e->{
-            if(ConfirmationBox.getDecision("New game","Are you sure you want to start a new game?")){
+        newGameButton.setOnMouseClicked(e -> {
+            if (ConfirmationBox.getDecision("New game", "Are you sure you want to start a new game?")) {
                 newGame();
             }
         });
@@ -256,7 +203,7 @@ public class TicTacToeRunner extends Application {
         topScoreBoard.setSpacing(15);
 
 
-        BackgroundSize backgroundSize = new BackgroundSize(SCREEN_WIDTH*0.6,SCREEN_HEIGHT*0.6, true, true, true, true);
+        BackgroundSize backgroundSize = new BackgroundSize(SCREEN_WIDTH * 0.6, SCREEN_HEIGHT * 0.6, true, true, true, true);
         BackgroundImage backgroundImage = new BackgroundImage(IMAGE_FOR_BACKGROUND, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
         Background background = new Background(backgroundImage);
 
@@ -274,68 +221,11 @@ public class TicTacToeRunner extends Application {
         gameBoardPane.setHgap(5);
         gameBoardPane.setVgap(5);
 
-        cellImage00 = new ImageView(IMAGE_FOR_EMPTY_FIELD);
-        gameCellsList.add(cellImage00);
-        gameBoardPane.add(cellImage00, 0,0);
-        cellImage00.setOnMouseEntered(e->handleMouseEntersCell(e));
-        cellImage00.setOnMouseExited(e->handleMouseExitsCell(e));
-        cellImage00.setOnMouseClicked(e->handleMouseClickCell(e));
-
-        cellImage01 = new ImageView(IMAGE_FOR_EMPTY_FIELD);
-        gameCellsList.add(cellImage01);
-        gameBoardPane.add(cellImage01, 1,0);
-        cellImage01.setOnMouseEntered(e->handleMouseEntersCell(e));
-        cellImage01.setOnMouseExited(e->handleMouseExitsCell(e));
-        cellImage01.setOnMouseClicked(e->handleMouseClickCell(e));
-
-        cellImage02 = new ImageView(IMAGE_FOR_EMPTY_FIELD);
-        gameCellsList.add(cellImage02);
-        gameBoardPane.add(cellImage02, 2,0);
-        cellImage02.setOnMouseEntered(e->handleMouseEntersCell(e));
-        cellImage02.setOnMouseExited(e->handleMouseExitsCell(e));
-        cellImage02.setOnMouseClicked(e->handleMouseClickCell(e));
-
-        cellImage10 = new ImageView(IMAGE_FOR_O);
-        gameCellsList.add(cellImage10);
-        gameBoardPane.add(cellImage10, 0,1);
-        cellImage10.setOnMouseEntered(e->handleMouseEntersCell(e));
-        cellImage10.setOnMouseExited(e->handleMouseExitsCell(e));
-        cellImage10.setOnMouseClicked(e->handleMouseClickCell(e));
-
-        cellImage11 = new ImageView(IMAGE_FOR_EMPTY_FIELD);
-        gameCellsList.add(cellImage11);
-        gameBoardPane.add(cellImage11, 1,1);
-        cellImage11.setOnMouseEntered(e->handleMouseEntersCell(e));
-        cellImage11.setOnMouseExited(e->handleMouseExitsCell(e));
-        cellImage11.setOnMouseClicked(e->handleMouseClickCell(e));
-
-        cellImage12 = new ImageView(IMAGE_FOR_O);
-        gameCellsList.add(cellImage12);
-        gameBoardPane.add(cellImage12, 2,1);
-        cellImage12.setOnMouseEntered(e->handleMouseEntersCell(e));
-        cellImage12.setOnMouseExited(e->handleMouseExitsCell(e));
-        cellImage12.setOnMouseClicked(e->handleMouseClickCell(e));
-
-        cellImage20 = new ImageView(IMAGE_FOR_EMPTY_FIELD);
-        gameCellsList.add(cellImage20);
-        gameBoardPane.add(cellImage20, 0,2);
-        cellImage20.setOnMouseEntered(e->handleMouseEntersCell(e));
-        cellImage20.setOnMouseExited(e->handleMouseExitsCell(e));
-        cellImage20.setOnMouseClicked(e->handleMouseClickCell(e));
-
-        cellImage21 = new ImageView(IMAGE_FOR_O);
-        gameCellsList.add(cellImage21);
-        gameBoardPane.add(cellImage21, 1,2);
-        cellImage21.setOnMouseEntered(e->handleMouseEntersCell(e));
-        cellImage21.setOnMouseExited(e->handleMouseExitsCell(e));
-        cellImage21.setOnMouseClicked(e->handleMouseClickCell(e));
-
-        cellImage22 = new ImageView(IMAGE_FOR_EMPTY_FIELD);
-        gameCellsList.add(cellImage22);
-        gameBoardPane.add(cellImage22, 2,2);
-        cellImage22.setOnMouseEntered(e->handleMouseEntersCell(e));
-        cellImage22.setOnMouseExited(e->handleMouseExitsCell(e));
-        cellImage22.setOnMouseClicked(e->handleMouseClickCell(e));
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                generateCell(row, col);
+            }
+        }
 
         BorderPane borderPane = new BorderPane();
         borderPane.setBackground(background);
@@ -359,7 +249,18 @@ public class TicTacToeRunner extends Application {
         newGame();
 
 
-        }
+    }
+
+    private void generateCell(int row, int column) {
+        ImageView cellImage = new ImageView(IMAGE_FOR_EMPTY_FIELD);
+        gameBoardPane.add(cellImage, column, row);
+
+        String key = "" + row + column;
+        cellsMap.put(key, cellImage);
+        cellImage.setOnMouseEntered(e -> handleMouseEntersCell(e));
+        cellImage.setOnMouseExited(e -> handleMouseExitsCell(e));
+        cellImage.setOnMouseClicked(e -> handleMouseClickCell(e));
+    }
 
     public static void main(String[] args) {
         launch(args);

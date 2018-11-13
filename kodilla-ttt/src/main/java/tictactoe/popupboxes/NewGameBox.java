@@ -15,9 +15,10 @@ import tictactoe.mechanics.InitialGameData;
 
 public class NewGameBox {
 
+    private static final int ONE_CHAR = 1;
     private static InitialGameData initialGameData;
 
-    public static InitialGameData getUserPreference(){
+    public static InitialGameData getUserPreference() {
 
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL); //below windows can't be entered before dealing with this one
@@ -29,7 +30,7 @@ public class NewGameBox {
         nameField.setText("Enter your name:");
 
         TextField inputTextField = new TextField();
-        inputTextField.setMaxWidth(window.getWidth()*0.5);
+        inputTextField.setMaxWidth(window.getWidth() * 0.5);
 
         Label gameModeChoice = new Label();
         gameModeChoice.setText("Select game mode:");
@@ -40,16 +41,18 @@ public class NewGameBox {
 
         Button confirmButton = new Button();
         confirmButton.setText("Confirm");
-        confirmButton.setOnMouseClicked(e->{
-            if(!(inputTextField.getText().length()<1)){
+        confirmButton.setOnMouseClicked(e -> {
+
+            if (isNotBlank(inputTextField)) {
                 initialGameData = new InitialGameData(inputTextField.getText(), gameModeChoiceBox.getValue());
                 window.close();
             }
+
         });
 
         VBox windowLayout = new VBox(nameField, inputTextField, gameModeChoice, gameModeChoiceBox, confirmButton);
         windowLayout.setSpacing(10);
-        windowLayout.setPadding(new Insets(5,5,5,5));
+        windowLayout.setPadding(new Insets(5, 5, 5, 5));
         windowLayout.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(windowLayout);
@@ -57,5 +60,9 @@ public class NewGameBox {
         window.showAndWait();
 
         return initialGameData;
+    }
+
+    private static boolean isNotBlank(TextField inputTextField) {
+        return inputTextField.getText().length() >= ONE_CHAR;
     }
 }
