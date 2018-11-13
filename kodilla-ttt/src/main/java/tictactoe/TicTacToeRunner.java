@@ -125,23 +125,6 @@ public class TicTacToeRunner extends Application {
             String key = "" + currentGame.getComputerChoiceRow() + currentGame.getComputerChoiceColumn();
             cellsMap.get(key).setImage(IMAGE_FOR_O);
 
-            /**
-             for(Node node : gameBoardPane.getChildren()) {
-             if((GridPane.getRowIndex(node).equals(currentGame.getComputerChoiceRow())) && (GridPane.getColumnIndex(node).equals(currentGame.getComputerChoiceColumn()))){
-             (ImageView)node.get
-             }
-             }
-
-             chosenByComputer = (ImageView) gameBoardPane.getChildren().stream()
-             .filter(e -> (GridPane.getColumnIndex(e).equals(currentGame.getComputerChoiceColumn())))
-             .filter(e -> (GridPane.getRowIndex(e).equals(currentGame.getComputerChoiceRow())))
-             .findAny().get();
-
-             chosenByComputer.setImage(IMAGE_FOR_O);
-
-             */
-
-
             currentGame.setWinner(Rules.checkGameMatrixForWinner(currentGame.getGameMatrix()));
             List<CellStatus> gameMatrixElements = Arrays.stream(currentGame.getGameMatrix())
                     .flatMap(Arrays::stream)
