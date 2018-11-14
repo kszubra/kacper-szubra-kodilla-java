@@ -18,7 +18,6 @@ public class Game {
     private int computerChoiceRow;
     private int computerChoiceColumn;
 
-
     public Game(InitialGameData initialData) {
         this.humanPlayerName = initialData.getPlayerName();
         this.winner = CellStatus.EMPTY;

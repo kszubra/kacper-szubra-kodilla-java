@@ -120,14 +120,15 @@ public class TicTacToeRunner extends Application {
             currentGame.setGameMatrixValue(rowIndex, columnIndex, CellStatus.CROSS);
             currentGame.setHumanTurn(false);
             checkBoard();
+            messageBoard.setText("Computer's turn");
 
             // COMPUTER MOVE HERE
             currentGame.makeComputerMove();
             // make image on board change
             String key = "" + currentGame.getComputerChoiceRow() + currentGame.getComputerChoiceColumn();
             cellsMap.get(key).setImage(IMAGE_FOR_O);
-
             checkBoard();
+            messageBoard.setText(currentGame.getHumanPlayerName() + "'s turn");
         }
 
     }
@@ -172,10 +173,9 @@ public class TicTacToeRunner extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        //Media soundFile = new Media("file:///Sounds/Darsilon.mp3");
-        Media soundFile = new Media(getClass().getResource("/Sounds/Darsilon.mp3").toURI().toString());
-        MediaPlayer player = new MediaPlayer(soundFile);
-        player.play();
+        //Media soundFile = new Media(getClass().getResource("/Sounds/Darsilon.mp3").toURI().toString());
+        //MediaPlayer player = new MediaPlayer(soundFile);
+        //player.play();
 
         exitButton = new Button("Exit");
         exitButton.setMinSize(200, 50);
