@@ -77,4 +77,21 @@ public class RulesTestSuite {
         Assert.assertEquals(expectedResult, Rules.checkGameMatrixForWinner(testMatrix));
 
     }
+
+    @Test
+    public void testCheckGameMatrixForWinner5(){
+        //Given
+        CellStatus[][] testMatrix = {
+                {CIRCLE, CROSS, CIRCLE},
+                {CIRCLE, CROSS, CROSS},
+                {CIRCLE, CIRCLE,CROSS}
+        };
+
+        //When
+        CellStatus expectedResult = CIRCLE;
+
+        //Then
+        Assert.assertEquals(expectedResult, Rules.checkGameMatrixForWinner(testMatrix));
+
+    }
 }

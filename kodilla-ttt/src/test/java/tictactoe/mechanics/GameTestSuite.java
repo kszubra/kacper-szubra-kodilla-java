@@ -1,7 +1,6 @@
 package tictactoe.mechanics;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import tictactoe.enumerics.CellStatus;
 import tictactoe.enumerics.GameMode;
@@ -9,6 +8,7 @@ import tictactoe.enumerics.GameMode;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 public class GameTestSuite {
 
@@ -61,6 +61,21 @@ public class GameTestSuite {
         //Then
         Assert.assertEquals(expectedCircle, realCircle);
 
+    }
+
+    @Test
+    public void testMakingOpeningStrategicMove(){
+        //Given
+        testGame = new Game(new InitialGameData("testName", GameMode.STRATEGIC));
+        testGame.setHumanTurn(false);
+
+        //When
+        List<String> acceptableCorners = Arrays.asList("00", "20", "02", "22");
+        testGame.makeComputerMove();
+        String chosenCorener = "" + testGame.getComputerChoiceRow() + testGame.getComputerChoiceColumn();
+
+        //Then
+        Assert.assertTrue(acceptableCorners.contains(chosenCorener));
 
     }
 
