@@ -173,9 +173,9 @@ public class TicTacToeRunner extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        //Media soundFile = new Media(getClass().getResource("/Sounds/Darsilon.mp3").toURI().toString());
-        //MediaPlayer player = new MediaPlayer(soundFile);
-        //player.play();
+        Media soundFile = new Media(getClass().getResource("/Sounds/Darsilon.mp3").toURI().toString());
+        MediaPlayer player = new MediaPlayer(soundFile);
+        player.play();
 
         exitButton = new Button("Exit");
         exitButton.setMinSize(200, 50);
