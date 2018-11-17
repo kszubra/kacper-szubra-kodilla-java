@@ -4,6 +4,8 @@ import tictactoe.enumerics.CellStatus;
 import tictactoe.enumerics.GameMode;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class Game {
 
@@ -20,6 +22,7 @@ public class Game {
     private boolean humanStarts;
     private int computerChoiceRow;
     private int computerChoiceColumn;
+    private Map<String, List<CellStatus>> mapOfAvaiableLinesInGameMatrix;
 
     public Game(InitialGameData initialData) {
         this.humanPlayerName = initialData.getPlayerName();
@@ -27,6 +30,7 @@ public class Game {
         this.gameMode = initialData.getGameMode();
         this.humanStarts = verifyIfHumanStarts();
         this.gameMatrix = createBoard();
+        this.mapOfAvaiableLinesInGameMatrix = Rules.makeMapOfLineCoordinatesInMatrix(gameMatrix);
     }
 
     private CellStatus[][] createBoard() {
@@ -126,6 +130,8 @@ public class Game {
             }
 
         }
+
+
 
     }
 

@@ -2,12 +2,54 @@ package tictactoe.mechanics;
 
 import tictactoe.enumerics.CellStatus;
 
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static tictactoe.enumerics.CellStatus.CROSS;
+import static tictactoe.enumerics.CellStatus.EMPTY;
 
 
 public class Rules {
 
     public static final Random RANDOM_GENERATOR = new Random();
+
+    public static Map<String, List<CellStatus>> makeMapOfLineCoordinatesInMatrix(CellStatus[][] matrix){ //turns matrix into a map of lines
+
+        Map<String, List<CellStatus>> mapToReturn = new HashMap<>();
+
+        //rows
+        for(int row=0; row < matrix.length; row++){
+
+                mapToReturn.put("R"+row, Arrays.asList(matrix[row]) );
+        }
+
+        //columns
+        for(int column=0; column < matrix.length; column++){
+            mapToReturn.put("C"+column, new ArrayList<>());
+
+            for(int row=0; row<matrix.length; row++){
+                mapToReturn.get("C"+column).add(matrix[row][column]);
+            }
+        }
+
+        //diagonals
+        mapToReturn.put("D0", new ArrayList<>());
+        for(int index=0; index<matrix.length; index++){
+
+            mapToReturn.get("D0").add(matrix[index][index]);
+
+        }
+
+        mapToReturn.put("D2", new ArrayList<>());
+        for(int index=0; index<matrix.length; index++){
+
+            mapToReturn.get("D2").add(matrix[index][(matrix.length-1)-index]);
+
+        }
+
+
+        return mapToReturn;
+    }
 
     public static CellStatus checkGameMatrixForWinner(CellStatus[][] gameMatrix){
 
@@ -47,4 +89,48 @@ public class Rules {
         return CellStatus.EMPTY;
 
     }
+
+    public static Map<String, List<CellStatus>> giveLineInDanger(Map<String, List<CellStatus>> mapOfLines){
+
+        return mapOfLines.entrySet().stream()
+                .filter(e-> Collections.frequency(e.getValue(), CROSS) == 2)
+                .filter(e-> Collections.frequency(e.getValue(), EMPTY) == 1)
+                .collect(Collectors.toMap(e->e.getKey(), e->e.getValue()));
+
+    }
+
+    public static String tellCellInToBlock(Map<String, List<CellStatus>> mapOfLines){
+        String rowIndex = "none";
+        String columnIndex = "none";
+
+        Map<String, List<CellStatus>> lineInDanger = Rules.giveLineInDanger(mapOfLines);
+
+        String key = lineInDanger.keySet().stream().findFirst().get();
+        char firstLetter = key.charAt(0);
+
+        switch(firstLetter){
+            case 'R':
+                rowIndex = key.substring(1);
+                columnIndex = "" + lineInDanger.get(key).indexOf(EMPTY);
+                break;
+            case 'C':
+                columnIndex = key.substring(1);
+                rowIndex = "" + lineInDanger.get(key).indexOf(EMPTY);
+                break;
+            case 'D':
+                if(key.equals("D0")){
+                    columnIndex = "" + lineInDanger.get(key).indexOf(EMPTY);
+                    rowIndex = "" + lineInDanger.get(key).indexOf(EMPTY);
+                } else if(key.equals("D2")){
+                    columnIndex = "" + (2-lineInDanger.get(key).indexOf(EMPTY));
+                    rowIndex = "" + lineInDanger.get(key).indexOf(EMPTY);
+                }
+                break;
+        }
+
+        return "R"+rowIndex+"C"+columnIndex;
+    }
+
+
+
 }
