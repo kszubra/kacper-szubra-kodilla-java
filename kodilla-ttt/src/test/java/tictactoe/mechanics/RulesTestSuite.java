@@ -165,7 +165,7 @@ public class RulesTestSuite {
 
 
     @Test
-    public void testTellWhatCellToiBlock(){
+    public void testTellWhatCellToBlock(){
         //Given
         CellStatus[][] testMatrix = {
                 {CROSS, CROSS, EMPTY},
@@ -177,7 +177,7 @@ public class RulesTestSuite {
 
         //When
         String expectedResult = "R0C2";
-        String realResult = Rules.tellCellInToBlock(map);
+        String realResult = Rules.tellCellToBlock(map);
 
         //Then
         Assert.assertEquals(expectedResult, realResult);
@@ -185,7 +185,7 @@ public class RulesTestSuite {
     }
 
     @Test
-    public void testTellWhatCellToiBlock2(){
+    public void testTellWhatCellToBlock2(){
         //Given
         CellStatus[][] testMatrix = {
                 {EMPTY, EMPTY, CROSS},
@@ -197,7 +197,7 @@ public class RulesTestSuite {
 
         //When
         String expectedResult = "R2C0";
-        String realResult = Rules.tellCellInToBlock(map);
+        String realResult = Rules.tellCellToBlock(map);
 
         //Then
         Assert.assertEquals(expectedResult, realResult);
@@ -205,7 +205,7 @@ public class RulesTestSuite {
     }
 
     @Test
-    public void testTellWhatCellToiBlock3(){
+    public void testTellWhatCellToBlock3(){
         //Given
         CellStatus[][] testMatrix = {
                 {CROSS, CROSS, EMPTY},
@@ -217,7 +217,105 @@ public class RulesTestSuite {
 
         //When
         String expectedResult = "R2C2";
-        String realResult = Rules.tellCellInToBlock(map);
+        String realResult = Rules.tellCellToBlock(map);
+
+        //Then
+        Assert.assertEquals(expectedResult, realResult);
+
+    }
+
+    @Test
+    public void testGiveLineWithChance(){
+        //Given
+        CellStatus[][] testMatrix = {
+                {EMPTY, EMPTY, EMPTY},
+                {CIRCLE, CIRCLE, EMPTY},
+                {EMPTY, EMPTY, EMPTY}
+        };
+
+        //When
+        Map<String, List<CellStatus> > expectedMap = new HashMap<>();
+        expectedMap.put("R1", Arrays.asList(CIRCLE, CIRCLE, EMPTY));
+
+        Map<String, List<CellStatus> > realMap = Rules.giveLineWithChance(Rules.makeMapOfLineCoordinatesInMatrix(testMatrix));
+
+        //Then
+        Assert.assertEquals(expectedMap, realMap);
+    }
+
+    @Test
+    public void testGiveLineWithChance2(){
+        //Given
+        CellStatus[][] testMatrix = {
+                {EMPTY, EMPTY, CIRCLE},
+                {EMPTY, EMPTY, EMPTY},
+                {CIRCLE, EMPTY, EMPTY}
+        };
+
+        //When
+        Map<String, List<CellStatus> > expectedMap = new HashMap<>();
+        expectedMap.put("D2", Arrays.asList(CIRCLE, EMPTY, CIRCLE));
+
+        Map<String, List<CellStatus> > realMap = Rules.giveLineWithChance(Rules.makeMapOfLineCoordinatesInMatrix(testMatrix));
+
+        //Then
+        Assert.assertEquals(expectedMap, realMap);
+    }
+
+    @Test
+    public void testTellWhatCellToWin(){
+        //Given
+        CellStatus[][] testMatrix = {
+                {CIRCLE, EMPTY, EMPTY},
+                {EMPTY, EMPTY, EMPTY},
+                {CIRCLE, EMPTY, EMPTY}
+        };
+
+        Map<String, List<CellStatus> > map = Rules.makeMapOfLineCoordinatesInMatrix(testMatrix);
+
+        //When
+        String expectedResult = "R1C0";
+        String realResult = Rules.tellCellToWin(map);
+
+        //Then
+        Assert.assertEquals(expectedResult, realResult);
+
+    }
+
+    @Test
+    public void testTellWhatCellToWin2(){
+        //Given
+        CellStatus[][] testMatrix = {
+                {EMPTY, EMPTY, EMPTY},
+                {EMPTY, CIRCLE, EMPTY},
+                {CIRCLE, EMPTY, EMPTY}
+        };
+
+        Map<String, List<CellStatus> > map = Rules.makeMapOfLineCoordinatesInMatrix(testMatrix);
+
+        //When
+        String expectedResult = "R0C2";
+        String realResult = Rules.tellCellToWin(map);
+
+        //Then
+        Assert.assertEquals(expectedResult, realResult);
+
+    }
+
+    @Test
+    public void testTellWhatCellToWin3(){
+        //Given
+        CellStatus[][] testMatrix = {
+                {EMPTY, EMPTY, CIRCLE},
+                {EMPTY, EMPTY, CIRCLE},
+                {EMPTY, EMPTY, EMPTY}
+        };
+
+        Map<String, List<CellStatus> > map = Rules.makeMapOfLineCoordinatesInMatrix(testMatrix);
+
+        //When
+        String expectedResult = "R2C2";
+        String realResult = Rules.tellCellToWin(map);
 
         //Then
         Assert.assertEquals(expectedResult, realResult);

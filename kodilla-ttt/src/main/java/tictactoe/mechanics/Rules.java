@@ -5,6 +5,7 @@ import tictactoe.enumerics.CellStatus;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static tictactoe.enumerics.CellStatus.CIRCLE;
 import static tictactoe.enumerics.CellStatus.CROSS;
 import static tictactoe.enumerics.CellStatus.EMPTY;
 
@@ -99,38 +100,61 @@ public class Rules {
 
     }
 
-    public static String tellCellInToBlock(Map<String, List<CellStatus>> mapOfLines){
+    public static Map<String, List<CellStatus>> giveLineWithChance(Map<String, List<CellStatus>> mapOfLines){
+
+        return mapOfLines.entrySet().stream()
+                .filter(e-> Collections.frequency(e.getValue(), CIRCLE) == 2)
+                .filter(e-> Collections.frequency(e.getValue(), EMPTY) == 1)
+                .collect(Collectors.toMap(e->e.getKey(), e->e.getValue()));
+
+    }
+
+    public static String tellIndexOfLastEmptyInLine(Map<String, List<CellStatus>> lineToComplete){
+
         String rowIndex = "none";
         String columnIndex = "none";
 
-        Map<String, List<CellStatus>> lineInDanger = Rules.giveLineInDanger(mapOfLines);
-
-        String key = lineInDanger.keySet().stream().findFirst().get();
+        String key = lineToComplete.keySet().stream().findFirst().get();
         char firstLetter = key.charAt(0);
 
         switch(firstLetter){
             case 'R':
                 rowIndex = key.substring(1);
-                columnIndex = "" + lineInDanger.get(key).indexOf(EMPTY);
+                columnIndex = "" + lineToComplete.get(key).indexOf(EMPTY);
                 break;
             case 'C':
                 columnIndex = key.substring(1);
-                rowIndex = "" + lineInDanger.get(key).indexOf(EMPTY);
+                rowIndex = "" + lineToComplete.get(key).indexOf(EMPTY);
                 break;
             case 'D':
                 if(key.equals("D0")){
-                    columnIndex = "" + lineInDanger.get(key).indexOf(EMPTY);
-                    rowIndex = "" + lineInDanger.get(key).indexOf(EMPTY);
+                    columnIndex = "" + lineToComplete.get(key).indexOf(EMPTY);
+                    rowIndex = "" + lineToComplete.get(key).indexOf(EMPTY);
                 } else if(key.equals("D2")){
-                    columnIndex = "" + (2-lineInDanger.get(key).indexOf(EMPTY));
-                    rowIndex = "" + lineInDanger.get(key).indexOf(EMPTY);
+                    columnIndex = "" + (2-lineToComplete.get(key).indexOf(EMPTY));
+                    rowIndex = "" + lineToComplete.get(key).indexOf(EMPTY);
                 }
                 break;
         }
 
         return "R"+rowIndex+"C"+columnIndex;
+
     }
 
+
+    public static String tellCellToBlock(Map<String, List<CellStatus>> mapOfLines){
+
+        Map<String, List<CellStatus>> lineInDanger = Rules.giveLineInDanger(mapOfLines);
+
+        return tellIndexOfLastEmptyInLine(lineInDanger);
+    }
+
+    public static String tellCellToWin(Map<String, List<CellStatus>> mapOfLines){
+
+        Map<String, List<CellStatus>> lineToWin = Rules.giveLineWithChance(mapOfLines);
+
+        return tellIndexOfLastEmptyInLine(lineToWin);
+    }
 
 
 }
