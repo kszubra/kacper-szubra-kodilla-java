@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static tictactoe.enumerics.CellStatus.EMPTY;
+
 public class Game {
 
     private static final int BOUND = 2;
@@ -26,7 +28,7 @@ public class Game {
 
     public Game(InitialGameData initialData) {
         this.humanPlayerName = initialData.getPlayerName();
-        this.winner = CellStatus.EMPTY;
+        this.winner = EMPTY;
         this.gameMode = initialData.getGameMode();
         this.humanStarts = verifyIfHumanStarts();
         this.gameMatrix = createBoard();
@@ -38,7 +40,7 @@ public class Game {
 
         for (int a = 0; a < MATRIX_ROWS; a++) {
             for (int b = 0; b < MATRIX_COLUMNS; b++) {
-                gameMatrix[a][b] = CellStatus.EMPTY;
+                gameMatrix[a][b] = EMPTY;
             }
         }
         return gameMatrix;
@@ -94,7 +96,7 @@ public class Game {
         int randomRow = Rules.RANDOM_GENERATOR.nextInt(MATRIX_ROWS);
         int randomColumn = Rules.RANDOM_GENERATOR.nextInt(MATRIX_COLUMNS);
 
-        if (gameMatrix[randomRow][randomColumn].equals(CellStatus.EMPTY)) {
+        if (gameMatrix[randomRow][randomColumn].equals(EMPTY)) {
             setComputerChoiceFor(randomRow, randomColumn);
             System.out.println("Chosen cell: row " + randomRow + " column " + randomColumn);
 
@@ -103,35 +105,72 @@ public class Game {
         }
     }
 
+    private boolean checkIfHaveAnyFreeCorner() {
+        return ((gameMatrix[0][0].equals(EMPTY)) || (gameMatrix[MATRIX_ROWS-1][0].equals(EMPTY)) || (gameMatrix[0][MATRIX_COLUMNS-1].equals(EMPTY)) || (gameMatrix[MATRIX_ROWS-1][MATRIX_COLUMNS-1].equals(EMPTY)));
+    }
+
+    public void playRandomCorner(){
+
+        if(checkIfHaveAnyFreeCorner()) {
+            int randomCornerToPlay = Rules.RANDOM_GENERATOR.nextInt(4);
+
+            //Top left corner
+            if(randomCornerToPlay == 0 && gameMatrix[0][0].equals(EMPTY)) {
+                setComputerChoiceFor(0,0);
+            }
+            //Bottom left corner
+            else if(randomCornerToPlay == 1 && gameMatrix[MATRIX_ROWS-1][0].equals(EMPTY)) {
+                setComputerChoiceFor(MATRIX_ROWS-1,0);
+            }
+            //Top right corner
+            else if(randomCornerToPlay == 2 && gameMatrix[0][MATRIX_COLUMNS-1].equals(EMPTY)) {
+                setComputerChoiceFor(0,MATRIX_COLUMNS-1);
+            }
+            //Bottom right corner
+            else if(randomCornerToPlay == 3 && gameMatrix[MATRIX_ROWS-1][MATRIX_COLUMNS-1].equals(EMPTY)) {
+                setComputerChoiceFor(MATRIX_ROWS-1, MATRIX_COLUMNS-1);
+            }
+            //If random corner is taken, try again
+            else {
+                playRandomCorner();
+            }
+        }
+    }
+
+
+    public void playOppositeCornerTo(int row, int column) {
+        int oppositeRow = 0;
+        int oppositeColumn = 0;
+
+        if(row == 0) {
+            oppositeRow = MATRIX_ROWS-1;
+        } else if (row == MATRIX_ROWS-1) {
+            oppositeRow = 0;
+        }
+
+        if(column == 0) {
+            oppositeColumn = MATRIX_COLUMNS-1;
+        } else if (column == MATRIX_COLUMNS-1) {
+            oppositeColumn = 0;
+        }
+
+        if(gameMatrix[oppositeRow][oppositeColumn].equals(EMPTY)){
+            setComputerChoiceFor(oppositeRow, oppositeColumn);
+        }
+
+    }
+
     private void makeStrategicComputerMove() {
 
         int howManyEmptyCells = (int)Arrays.stream(gameMatrix)
                 .flatMap(Arrays::stream)
-                .filter(e->e.equals(CellStatus.EMPTY))
+                .filter(e->e.equals(EMPTY))
                 .count();
 
         //checks if it's opening move
         if(howManyEmptyCells == NUMBER_OF_MATRIX_FIELDS) {
-
-            int randomCornerToPlay = Rules.RANDOM_GENERATOR.nextInt(4);
-            switch(randomCornerToPlay){
-                // Top left corner
-                case 0:
-                    setComputerChoiceFor(0, 0);
-                // Bottom left corner
-                case 1:
-                    setComputerChoiceFor(MATRIX_ROWS-1, 0);
-                // Top right corner
-                case 2:
-                    setComputerChoiceFor(0, MATRIX_COLUMNS-1);
-                //Bottom right corner
-                case 3:
-                    setComputerChoiceFor(MATRIX_ROWS-1, MATRIX_COLUMNS-1);
-            }
-
+            playRandomCorner();
         }
-
-
 
     }
 
