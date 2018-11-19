@@ -47,9 +47,9 @@ public class TicTacToeRunner extends Application {
 
     public static final Image IMAGE_FOR_BACKGROUND = new Image("Graphics/background.jpg");
     public static final Image IMAGE_FOR_GAME_BOARD = new Image("Graphics/board.jpg");
-    public static final Image IMAGE_FOR_X = new Image("Graphics/cross.png");
-    public static final Image IMAGE_FOR_O = new Image("Graphics/circle.png");
-    public static final Image ANIMATION_FOR_X = new Image("Graphics/Draw_X_Anim.gif");
+    public static final Image IMAGE_FOR_X = new Image("Graphics/FinalGraphics/cross.png");
+    public static final Image IMAGE_FOR_O = new Image("Graphics/FinalGraphics/circle.png");
+    public static final Image ANIMATION_FOR_X = new Image("Graphics/FinalGraphics/DrawCross.gif");
     public static final Image IMAGE_FOR_CURSOR = new Image("Graphics/cursorIcon.png");
     public static final Image IMAGE_FOR_EMPTY_FIELD = new Image("Graphics/transparent.png");
 
