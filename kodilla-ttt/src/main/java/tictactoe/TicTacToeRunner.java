@@ -51,7 +51,7 @@ public class TicTacToeRunner extends Application {
     public static final Image IMAGE_FOR_O = new Image("Graphics/FinalGraphics/circle.png");
     public static final Image ANIMATION_FOR_X = new Image("Graphics/FinalGraphics/DrawCross.gif");
     public static final Image IMAGE_FOR_CURSOR = new Image("Graphics/cursorIcon.png");
-    public static final Image IMAGE_FOR_EMPTY_FIELD = new Image("Graphics/transparent.png");
+    public static final Image IMAGE_FOR_EMPTY_FIELD = new Image("Graphics/FinalGraphics/transparent.png");
 
     private Button exitButton, newGameButton;
     private VBox buttons;
@@ -253,6 +253,7 @@ public class TicTacToeRunner extends Application {
 
     private void generateCell(int row, int column) {
         ImageView cellImage = new ImageView(IMAGE_FOR_EMPTY_FIELD);
+        cellImage.setPickOnBounds(true);
         gameBoardPane.add(cellImage, column, row);
 
         String key = "" + row + column;
