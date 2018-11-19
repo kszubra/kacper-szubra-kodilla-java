@@ -302,6 +302,8 @@ public class RulesTestSuite {
 
     }
 
+
+
     @Test
     public void testTellWhatCellToWin3(){
         //Given
@@ -322,5 +324,62 @@ public class RulesTestSuite {
 
     }
 
+    @Test
+    public void testTellWhatCellToWin4(){
+        //Given
+        CellStatus[][] testMatrix = {
+                {CROSS, CIRCLE, CROSS},
+                {EMPTY, CIRCLE, CROSS},
+                {EMPTY, EMPTY, EMPTY}
+        };
+
+        Map<String, List<CellStatus> > map = Rules.makeMapOfLineCoordinatesInMatrix(testMatrix);
+
+        //When
+        String expectedResult = "R2C1";
+        String realResult = Rules.tellCellToWin(map);
+
+        //Then
+        Assert.assertEquals(expectedResult, realResult);
+
+    }
+
+    @Test
+    public void testGiveLineToContinue() {
+        //Given
+        CellStatus[][] testMatrix = {
+                {CIRCLE, EMPTY, EMPTY},
+                {CROSS, CROSS, EMPTY},
+                {EMPTY, EMPTY, CROSS}
+        };
+        Map<String, List<CellStatus> > expectedMap = new HashMap<>();
+
+        //When
+        expectedMap.put("R0", Arrays.asList(CIRCLE, EMPTY, EMPTY));
+        Map<String, List<CellStatus> > realMap = Rules.giveLineToContinue(Rules.makeMapOfLineCoordinatesInMatrix(testMatrix));
+
+        //Then
+        Assert.assertEquals(expectedMap, realMap);
+
+    }
+
+    @Test
+    public void testGiveLineToContinue2() {
+        //Given
+        CellStatus[][] testMatrix = {
+                {CROSS, CROSS, EMPTY},
+                {EMPTY, CIRCLE, CROSS},
+                {EMPTY, EMPTY,CROSS}
+        };
+        Map<String, List<CellStatus> > expectedMap = new HashMap<>();
+
+        //When
+        expectedMap.put("D2", Arrays.asList(EMPTY, CIRCLE, EMPTY));
+        Map<String, List<CellStatus> > realMap = Rules.giveLineToContinue(Rules.makeMapOfLineCoordinatesInMatrix(testMatrix));
+
+        //Then
+        Assert.assertEquals(expectedMap, realMap);
+
+    }
 
 }

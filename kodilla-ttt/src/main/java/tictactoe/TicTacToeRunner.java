@@ -162,7 +162,6 @@ public class TicTacToeRunner extends Application {
             } else{
                 System.exit(0);
             }
-
         }
     }
 
@@ -175,7 +174,7 @@ public class TicTacToeRunner extends Application {
 
         Media soundFile = new Media(getClass().getResource("/Sounds/Darsilon.mp3").toURI().toString());
         MediaPlayer player = new MediaPlayer(soundFile);
-        player.play();
+        //player.play();
 
         exitButton = new Button("Exit");
         exitButton.setMinSize(200, 50);

@@ -6,7 +6,9 @@ import tictactoe.enumerics.GameMode;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
+import static tictactoe.enumerics.CellStatus.CROSS;
 import static tictactoe.enumerics.CellStatus.EMPTY;
 
 public class Game {
@@ -32,7 +34,6 @@ public class Game {
         this.gameMode = initialData.getGameMode();
         this.humanStarts = verifyIfHumanStarts();
         this.gameMatrix = createBoard();
-        this.mapOfAvaiableLinesInGameMatrix = Rules.makeMapOfLineCoordinatesInMatrix(gameMatrix);
     }
 
     private CellStatus[][] createBoard() {
@@ -98,7 +99,6 @@ public class Game {
 
         if (gameMatrix[randomRow][randomColumn].equals(EMPTY)) {
             setComputerChoiceFor(randomRow, randomColumn);
-            System.out.println("Chosen cell: row " + randomRow + " column " + randomColumn);
 
         } else {
             makeRandomComputerMove();
@@ -160,16 +160,122 @@ public class Game {
 
     }
 
-    private void makeStrategicComputerMove() {
+    public void tryToWin() throws NoSuchElementException {
 
+        try {
+            String cellToPlay = Rules.tellCellToWin(mapOfAvaiableLinesInGameMatrix);
+            int row = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('R')+1, cellToPlay.indexOf('C')));
+            int column = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('C')+1));
+            setComputerChoiceFor(row, column);
+
+        } catch (NoSuchElementException e) {
+            System.out.println("Impossible to win in this round");
+            throw new NoSuchElementException();
+        }
+
+    }
+
+    public void tryToBlock() throws NoSuchElementException{
+
+        try {
+            String cellToPlay = Rules.tellCellToBlock(mapOfAvaiableLinesInGameMatrix);
+            int row = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('R')+1, cellToPlay.indexOf('C')));
+            int column = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('C')+1));
+            setComputerChoiceFor(row, column);
+
+        } catch (NoSuchElementException e) {
+            System.out.println("Nothing to block this round");
+            throw new NoSuchElementException();
+        }
+
+    }
+
+    public void tryToContinueStartedLine() throws NoSuchElementException {
+
+        try {
+            String cellToPlay = Rules.tellCellToContinue(mapOfAvaiableLinesInGameMatrix);
+            int row = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('R')+1, cellToPlay.indexOf('C')));
+            int column = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('C')+1));
+            setComputerChoiceFor(row, column);
+
+        } catch (NoSuchElementException e) {
+            System.out.println("No line to continue");
+            throw new NoSuchElementException();
+        }
+
+    }
+
+    public void makeRegularMove() {
+        if(checkIfHaveAnyFreeCorner()) {
+            playRandomCorner();
+        } else {
+            try {
+                tryToContinueStartedLine();
+            } catch (NoSuchElementException e){
+                makeRandomComputerMove();
+            }
+        }
+
+
+    }
+
+
+
+    private void makeStrategicComputerMove() {
+        mapOfAvaiableLinesInGameMatrix = Rules.makeMapOfLineCoordinatesInMatrix(gameMatrix);
         int howManyEmptyCells = (int)Arrays.stream(gameMatrix)
                 .flatMap(Arrays::stream)
                 .filter(e->e.equals(EMPTY))
                 .count();
 
-        //checks if it's opening move
+        //check if it's opening move
         if(howManyEmptyCells == NUMBER_OF_MATRIX_FIELDS) {
+            System.out.println("Performing opening case");
             playRandomCorner();
+        }
+        //check if it's second move
+        if(howManyEmptyCells == NUMBER_OF_MATRIX_FIELDS-1) { //If middle is empty -> play it
+            System.out.println("Performing case I'm second");
+            if(gameMatrix[(MATRIX_ROWS-1)/2][(MATRIX_COLUMNS-1)/2].equals(EMPTY)) {
+                System.out.println("Performing case I'm second with with middle empty");
+                setComputerChoiceFor((MATRIX_ROWS-1)/2, (MATRIX_COLUMNS-1)/2);
+
+            } else {
+                System.out.println("Performing case I'm second with with middle taken");
+                playRandomCorner();
+            }
+        }
+        //2nd step
+        if((howManyEmptyCells == NUMBER_OF_MATRIX_FIELDS-2) && (gameMatrix[(MATRIX_ROWS-1)/2][(MATRIX_COLUMNS-1)/2].equals(CROSS))){
+            System.out.println("Performing 2nd step with Player in the middle");
+            playOppositeCornerTo(computerChoiceRow, computerChoiceColumn);
+        }
+
+        if((howManyEmptyCells == NUMBER_OF_MATRIX_FIELDS-2) && !(gameMatrix[(MATRIX_ROWS-1)/2][(MATRIX_COLUMNS-1)/2].equals(CROSS))){
+            System.out.println("Performing 2nd step with Player NOT in the middle");
+            playRandomCorner();
+        }
+
+        //3rd step and further
+        if(howManyEmptyCells <= NUMBER_OF_MATRIX_FIELDS-3){
+            System.out.println("Performing step 3+ : ");
+
+            try {
+                tryToWin();
+                System.out.println("Performing step 3+ : winning move");
+
+            } catch (NoSuchElementException a) {
+
+                try {
+                    tryToBlock();
+                    System.out.println("Performing step 3+ : blocking move");
+
+                } catch (NoSuchElementException b){
+                    makeRegularMove();
+                    System.out.println("Performing step 3+ : regular move");
+                }
+            }
+
         }
 
     }
@@ -178,6 +284,7 @@ public class Game {
         gameMatrix[row][column] = CellStatus.CIRCLE;
         computerChoiceRow = row;
         computerChoiceColumn = column;
+        System.out.println("Computer chose row " + computerChoiceRow + ", column " + computerChoiceColumn);
     }
 
     public void makeComputerMove() {

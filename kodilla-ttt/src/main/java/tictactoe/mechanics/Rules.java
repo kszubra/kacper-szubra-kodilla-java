@@ -109,6 +109,16 @@ public class Rules {
 
     }
 
+    public static Map<String, List<CellStatus>> giveLineToContinue(Map<String, List<CellStatus>> mapOfLines){
+
+        return mapOfLines.entrySet().stream()
+                .filter(e-> Collections.frequency(e.getValue(), CIRCLE) == 1)
+                .filter(e-> Collections.frequency(e.getValue(), EMPTY) == 2)
+                .collect(Collectors.toMap(e->e.getKey(), e->e.getValue()));
+
+    }
+
+
     public static String tellIndexOfLastEmptyInLine(Map<String, List<CellStatus>> lineToComplete){
 
         String rowIndex = "none";
@@ -154,6 +164,13 @@ public class Rules {
         Map<String, List<CellStatus>> lineToWin = Rules.giveLineWithChance(mapOfLines);
 
         return tellIndexOfLastEmptyInLine(lineToWin);
+    }
+
+    public static String tellCellToContinue(Map<String, List<CellStatus>> mapOfLines){
+
+        Map<String, List<CellStatus>> lineToContinue = Rules.giveLineToContinue(mapOfLines);
+
+        return tellIndexOfLastEmptyInLine(lineToContinue);
     }
 
 
