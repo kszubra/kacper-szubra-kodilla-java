@@ -1,11 +1,15 @@
 package tictactoe;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -26,6 +30,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import tictactoe.enumerics.CellStatus;
 import tictactoe.mechanics.Game;
 import tictactoe.mechanics.Rules;
@@ -33,6 +38,9 @@ import tictactoe.popupboxes.ConfirmationBox;
 import tictactoe.popupboxes.MessageBox;
 import tictactoe.popupboxes.NewGameBox;
 
+import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -57,6 +65,13 @@ public class TicTacToeRunner extends Application {
     private VBox buttons;
 
     GridPane gameBoardPane;
+
+    private HBox topScoreBoard;
+    private HBox bottomTextBar;
+    private Text messageBoard;
+    private Text bottomText;
+    private LocalDateTime currentTime;
+    private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private Map<String, ImageView> cellsMap = new HashMap<>();
 
@@ -165,8 +180,7 @@ public class TicTacToeRunner extends Application {
         }
     }
 
-    private HBox topScoreBoard;
-    private Text messageBoard;
+
 
 
     @Override
@@ -174,6 +188,13 @@ public class TicTacToeRunner extends Application {
 
         Media soundFile = new Media(getClass().getResource("/Sounds/Darsilon.mp3").toURI().toString());
         MediaPlayer player = new MediaPlayer(soundFile);
+        player.setOnEndOfMedia(new Runnable() {
+                                   @Override
+                                   public void run() {
+                                       player.seek(Duration.ZERO);
+                                   }
+                               }
+        );
         player.play();
 
         exitButton = new Button("Exit");
@@ -214,6 +235,24 @@ public class TicTacToeRunner extends Application {
         topScoreBoard = new HBox(messageBoard);
         topScoreBoard.setSpacing(15);
 
+        bottomText = new Text();
+        currentTime = LocalDateTime.now();
+        bottomText.setText(currentTime.format(timeFormatter));
+        bottomText.setFont(Font.font("Verdana", 45));
+        bottomText.setFill(Color.AQUA);
+        final Timeline clockTimeline = new Timeline(
+                new KeyFrame(
+                        Duration.seconds(1),
+                        e -> {
+                            currentTime = LocalDateTime.now();
+                            bottomText.setText(currentTime.format(timeFormatter));
+                        }
+                )
+        );
+        clockTimeline.setCycleCount( Animation.INDEFINITE );
+        clockTimeline.play();
+
+        bottomTextBar = new HBox(bottomText);
 
         BackgroundSize backgroundSize = new BackgroundSize(SCREEN_WIDTH * 0.6, SCREEN_HEIGHT * 0.6, true, true, true, true);
         BackgroundImage backgroundImage = new BackgroundImage(IMAGE_FOR_BACKGROUND, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
@@ -244,7 +283,9 @@ public class TicTacToeRunner extends Application {
         borderPane.setCenter(gameBoardPane);
         borderPane.setLeft(buttons);
         borderPane.setTop(topScoreBoard);
+        borderPane.setBottom(bottomTextBar);
         topScoreBoard.setAlignment(Pos.CENTER);
+        bottomTextBar.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(borderPane, IMAGE_FOR_BACKGROUND.getWidth(), IMAGE_FOR_BACKGROUND.getHeight(), Color.BLACK);
 
