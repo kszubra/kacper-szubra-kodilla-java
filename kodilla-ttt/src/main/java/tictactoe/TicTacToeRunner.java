@@ -45,6 +45,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 
@@ -54,10 +55,11 @@ public class TicTacToeRunner extends Application {
     private static final double SCREEN_WIDTH = Screen.getPrimary().getVisualBounds().getWidth();
 
     public static final Image IMAGE_FOR_BACKGROUND = new Image("Graphics/background.jpg");
-    public static final Image IMAGE_FOR_GAME_BOARD = new Image("Graphics/board.jpg");
+    public static final Image IMAGE_FOR_GAME_BOARD = new Image("Graphics/FinalGraphics/board.jpg");
     public static final Image IMAGE_FOR_X = new Image("Graphics/FinalGraphics/cross.png");
     public static final Image IMAGE_FOR_O = new Image("Graphics/FinalGraphics/circle.png");
     public static final Image ANIMATION_FOR_X = new Image("Graphics/FinalGraphics/DrawCross.gif");
+    public static final Image ANIMATION_FOR_O = new Image("Graphics/FinalGraphics/DrawCircle.gif");
     public static final Image IMAGE_FOR_CURSOR = new Image("Graphics/cursorIcon.png");
     public static final Image IMAGE_FOR_EMPTY_FIELD = new Image("Graphics/FinalGraphics/transparent.png");
 
