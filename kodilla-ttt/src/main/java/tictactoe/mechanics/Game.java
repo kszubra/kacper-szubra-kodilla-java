@@ -160,48 +160,30 @@ public class Game {
 
     }
 
-    public void tryToWin() throws NoSuchElementException {
+    public void tryToWin(){
 
-        try {
             String cellToPlay = Rules.tellCellToWin(mapOfAvaiableLinesInGameMatrix);
             int row = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('R')+1, cellToPlay.indexOf('C')));
             int column = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('C')+1));
             setComputerChoiceFor(row, column);
 
-        } catch (NoSuchElementException e) {
-            System.out.println("Impossible to win in this round");
-            throw new NoSuchElementException();
-        }
-
     }
 
-    public void tryToBlock() throws NoSuchElementException{
+    public void tryToBlock() {
 
-        try {
+
             String cellToPlay = Rules.tellCellToBlock(mapOfAvaiableLinesInGameMatrix);
             int row = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('R')+1, cellToPlay.indexOf('C')));
             int column = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('C')+1));
             setComputerChoiceFor(row, column);
-
-        } catch (NoSuchElementException e) {
-            System.out.println("Nothing to block this round");
-            throw new NoSuchElementException();
-        }
-
     }
 
-    public void tryToContinueStartedLine() throws NoSuchElementException {
+    public void tryToContinueStartedLine(){
 
-        try {
             String cellToPlay = Rules.tellCellToContinue(mapOfAvaiableLinesInGameMatrix);
             int row = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('R')+1, cellToPlay.indexOf('C')));
             int column = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('C')+1));
             setComputerChoiceFor(row, column);
-
-        } catch (NoSuchElementException e) {
-            System.out.println("No line to continue");
-            throw new NoSuchElementException();
-        }
 
     }
 
@@ -218,8 +200,6 @@ public class Game {
 
 
     }
-
-
 
     private void makeStrategicComputerMove() {
         mapOfAvaiableLinesInGameMatrix = Rules.makeMapOfLineCoordinatesInMatrix(gameMatrix);
@@ -265,12 +245,13 @@ public class Game {
                 System.out.println("Performing step 3+ : winning move");
 
             } catch (NoSuchElementException a) {
-
+                System.out.println("Can't win this round");
                 try {
                     tryToBlock();
                     System.out.println("Performing step 3+ : blocking move");
 
                 } catch (NoSuchElementException b){
+                    System.out.println("Nothing to block");
                     makeRegularMove();
                     System.out.println("Performing step 3+ : regular move");
                 }
