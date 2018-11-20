@@ -33,19 +33,25 @@ public class Game {
         this.winner = EMPTY;
         this.gameMode = initialData.getGameMode();
         this.humanStarts = verifyIfHumanStarts();
-        this.gameMatrix = createBoard();
+        this.gameMatrix = new CellStatus[MATRIX_ROWS][MATRIX_COLUMNS];
+        setGameBoardToEmpty();
     }
 
-    private CellStatus[][] createBoard() {
-        CellStatus[][] gameMatrix = new CellStatus[MATRIX_ROWS][MATRIX_COLUMNS];
+    private void setGameBoardToEmpty() {
 
         for (int a = 0; a < MATRIX_ROWS; a++) {
             for (int b = 0; b < MATRIX_COLUMNS; b++) {
-                gameMatrix[a][b] = EMPTY;
+                this.gameMatrix[a][b] = EMPTY;
             }
         }
-        return gameMatrix;
     }
+
+    public void resetGame() {
+        setGameBoardToEmpty();
+        this.winner = EMPTY;
+        this.humanStarts = verifyIfHumanStarts();
+    }
+
 
     private boolean verifyIfHumanStarts() {
         int random = Rules.RANDOM_GENERATOR.nextInt(BOUND);

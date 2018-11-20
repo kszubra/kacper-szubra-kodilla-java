@@ -54,14 +54,14 @@ public class TicTacToeRunner extends Application {
     private static final double SCREEN_HEIGHT = Screen.getPrimary().getVisualBounds().getHeight();
     private static final double SCREEN_WIDTH = Screen.getPrimary().getVisualBounds().getWidth();
 
-    public static final Image IMAGE_FOR_BACKGROUND = new Image("Graphics/background.jpg");
-    public static final Image IMAGE_FOR_GAME_BOARD = new Image("Graphics/FinalGraphics/board.jpg");
-    public static final Image IMAGE_FOR_X = new Image("Graphics/FinalGraphics/cross.png");
-    public static final Image IMAGE_FOR_O = new Image("Graphics/FinalGraphics/circle.png");
-    public static final Image ANIMATION_FOR_X = new Image("Graphics/FinalGraphics/DrawCross.gif");
-    public static final Image ANIMATION_FOR_O = new Image("Graphics/FinalGraphics/DrawCircle.gif");
-    public static final Image IMAGE_FOR_CURSOR = new Image("Graphics/cursorIcon.png");
-    public static final Image IMAGE_FOR_EMPTY_FIELD = new Image("Graphics/FinalGraphics/transparent.png");
+    private static final Image IMAGE_FOR_BACKGROUND = new Image("Graphics/background.jpg");
+    private static final Image IMAGE_FOR_GAME_BOARD = new Image("Graphics/FinalGraphics/board.jpg");
+    private static final Image IMAGE_FOR_X = new Image("Graphics/FinalGraphics/cross.png");
+    private static final Image IMAGE_FOR_O = new Image("Graphics/FinalGraphics/circle.png");
+    private static final Image ANIMATION_FOR_X = new Image("Graphics/FinalGraphics/DrawCross.gif");
+    private static final Image ANIMATION_FOR_O = new Image("Graphics/FinalGraphics/DrawCircle.gif");
+    private static final Image IMAGE_FOR_CURSOR = new Image("Graphics/cursorIcon.png");
+    private static final Image IMAGE_FOR_EMPTY_FIELD = new Image("Graphics/FinalGraphics/transparent.png");
 
     private Button exitButton, newGameButton, restartGameButton, musicOnOffButton;
     private VBox buttons;
@@ -79,13 +79,14 @@ public class TicTacToeRunner extends Application {
 
     private Game currentGame;
 
-    public void newGame() {
+    private void newGame() {
 
-        for (ImageView image : cellsMap.values()) {
-            image.setImage(IMAGE_FOR_EMPTY_FIELD);
-        }
+        setAllGameFieldsToEmpty();
         currentGame = new Game(NewGameBox.getUserPreference());
+        performFirstMove();
+    }
 
+    private void performFirstMove() {
         if (!currentGame.getHumanStarts()) { // computer's opening move
             messageBoard.setText("Computer's turn");
             currentGame.setHumanTurn(false);
@@ -93,6 +94,7 @@ public class TicTacToeRunner extends Application {
 
             String key = "" + currentGame.getComputerChoiceRow() + currentGame.getComputerChoiceColumn();
             cellsMap.get(key).setImage(IMAGE_FOR_O);
+            messageBoard.setText(currentGame.getHumanPlayerName() + "'s turn");
 
         } else {
             currentGame.setHumanTurn(true);
@@ -100,10 +102,20 @@ public class TicTacToeRunner extends Application {
         }
     }
 
+    private void setAllGameFieldsToEmpty() {
+        for (ImageView image : cellsMap.values()) {
+            image.setImage(IMAGE_FOR_EMPTY_FIELD);
+        }
+    }
+
+    private void restartGame() {
+        currentGame.resetGame();
+        setAllGameFieldsToEmpty();
+        performFirstMove();
+    }
 
 
-
-    public void handleMouseEntersCell(MouseEvent event) {
+    private void handleMouseEntersCell(MouseEvent event) {
 
         ImageView eventObject = (ImageView) event.getSource();
 
@@ -112,7 +124,7 @@ public class TicTacToeRunner extends Application {
         }
     }
 
-    public void handleMouseExitsCell(MouseEvent event) {
+    private void handleMouseExitsCell(MouseEvent event) {
 
         ImageView eventObject = (ImageView) event.getSource();
 
@@ -121,7 +133,7 @@ public class TicTacToeRunner extends Application {
         }
     }
 
-    public void handleMouseClickCell(MouseEvent event) {
+    private void handleMouseClickCell(MouseEvent event) {
 
         ImageView eventObject = (ImageView) event.getSource();
 
@@ -161,7 +173,7 @@ public class TicTacToeRunner extends Application {
         if (currentGame.getWinner().equals(CellStatus.CROSS)) {
 
             if(ConfirmationBox.getDecision("Game ended", currentGame.getHumanPlayerName() + " won! \r\n Do you want to play again?")){
-                newGame();
+                restartGame();
             } else{
                 System.exit(0);
             }
@@ -169,7 +181,7 @@ public class TicTacToeRunner extends Application {
         } else if (currentGame.getWinner().equals(CellStatus.CIRCLE)) {
 
             if(ConfirmationBox.getDecision("Game ended", "Computer won! \r\n Do you want to play again?")){
-                newGame();
+                restartGame();
             } else{
                 System.exit(0);
             }
@@ -177,7 +189,7 @@ public class TicTacToeRunner extends Application {
         } else if ((!gameMatrixElements.contains(CellStatus.EMPTY)) && (currentGame.getWinner().equals(CellStatus.EMPTY))) {
 
             if(ConfirmationBox.getDecision("Game ended", "Draw! \r\n Do you want to play again?")){
-                newGame();
+                restartGame();
             } else{
                 System.exit(0);
             }
@@ -222,7 +234,7 @@ public class TicTacToeRunner extends Application {
         restartGameButton.setOnMouseClicked(e -> {
             if (ConfirmationBox.getDecision("Restarting game", "Are you sure you want to play again? \n Game mode and player's name won't change. " +
                     "If you want to change them, choose New Game")) {
-                //here to restartgame
+                restartGame();
             }
         });
 
