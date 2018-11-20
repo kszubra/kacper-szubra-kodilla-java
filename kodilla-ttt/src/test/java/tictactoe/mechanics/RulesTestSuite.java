@@ -302,8 +302,6 @@ public class RulesTestSuite {
 
     }
 
-
-
     @Test
     public void testTellWhatCellToWin3(){
         //Given
