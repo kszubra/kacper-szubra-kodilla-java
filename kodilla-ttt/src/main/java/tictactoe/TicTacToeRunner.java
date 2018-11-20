@@ -53,7 +53,7 @@ public class TicTacToeRunner extends Application {
     public static final Image IMAGE_FOR_CURSOR = new Image("Graphics/cursorIcon.png");
     public static final Image IMAGE_FOR_EMPTY_FIELD = new Image("Graphics/FinalGraphics/transparent.png");
 
-    private Button exitButton, newGameButton;
+    private Button exitButton, newGameButton, musicOnOffButton;
     private VBox buttons;
 
     GridPane gameBoardPane;
@@ -174,7 +174,7 @@ public class TicTacToeRunner extends Application {
 
         Media soundFile = new Media(getClass().getResource("/Sounds/Darsilon.mp3").toURI().toString());
         MediaPlayer player = new MediaPlayer(soundFile);
-        //player.play();
+        player.play();
 
         exitButton = new Button("Exit");
         exitButton.setMinSize(200, 50);
@@ -192,8 +192,20 @@ public class TicTacToeRunner extends Application {
             }
         });
 
-        buttons = new VBox(exitButton, newGameButton);
-        buttons.setSpacing(50);
+        musicOnOffButton = new Button("Turn music off");
+        musicOnOffButton.setMinSize(200, 50);
+        musicOnOffButton.setOnMouseClicked(e -> {
+            if (musicOnOffButton.getText().equals("Turn music off")) {
+                player.stop();
+                musicOnOffButton.setText("Turn music on");
+            } else if (musicOnOffButton.getText().equals("Turn music on")){
+                player.play();
+                musicOnOffButton.setText("Turn music off");
+            }
+        });
+
+        buttons = new VBox(exitButton, newGameButton, musicOnOffButton);
+        buttons.setSpacing(25);
 
         messageBoard = new Text();
         messageBoard.setFont(Font.font("Verdana", 45));
@@ -247,8 +259,6 @@ public class TicTacToeRunner extends Application {
         primaryStage.show();
 
         newGame();
-
-
     }
 
     private void generateCell(int row, int column) {
