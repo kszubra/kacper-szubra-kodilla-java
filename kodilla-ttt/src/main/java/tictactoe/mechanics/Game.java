@@ -161,7 +161,6 @@ public class Game {
     }
 
     public void tryToWin(){
-
             String cellToPlay = Rules.tellCellToWin(mapOfAvaiableLinesInGameMatrix);
             int row = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('R')+1, cellToPlay.indexOf('C')));
             int column = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('C')+1));
@@ -170,8 +169,6 @@ public class Game {
     }
 
     public void tryToBlock() {
-
-
             String cellToPlay = Rules.tellCellToBlock(mapOfAvaiableLinesInGameMatrix);
             int row = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('R')+1, cellToPlay.indexOf('C')));
             int column = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('C')+1));
@@ -179,7 +176,6 @@ public class Game {
     }
 
     public void tryToContinueStartedLine(){
-
             String cellToPlay = Rules.tellCellToContinue(mapOfAvaiableLinesInGameMatrix);
             int row = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('R')+1, cellToPlay.indexOf('C')));
             int column = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('C')+1));
