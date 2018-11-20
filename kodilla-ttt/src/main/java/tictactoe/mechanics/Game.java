@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
 
 import static tictactoe.enumerics.CellStatus.CROSS;
 import static tictactoe.enumerics.CellStatus.EMPTY;
@@ -27,6 +28,7 @@ public class Game {
     private int computerChoiceRow;
     private int computerChoiceColumn;
     private Map<String, List<CellStatus>> mapOfAvaiableLinesInGameMatrix;
+    private GameCheckpoint checkpoint;
 
     public Game(InitialGameData initialData) {
         this.humanPlayerName = initialData.getPlayerName();
@@ -35,6 +37,10 @@ public class Game {
         this.humanStarts = verifyIfHumanStarts();
         this.gameMatrix = new CellStatus[MATRIX_ROWS][MATRIX_COLUMNS];
         setGameBoardToEmpty();
+    }
+
+    private GameCheckpoint createAndGetCheckpoint() {
+        return this.checkpoint = new GameCheckpoint(this.humanPlayerName, this.gameMatrix, this.humanTurn);
     }
 
     private void setGameBoardToEmpty() {
@@ -51,7 +57,6 @@ public class Game {
         this.winner = EMPTY;
         this.humanStarts = verifyIfHumanStarts();
     }
-
 
     private boolean verifyIfHumanStarts() {
         int random = Rules.RANDOM_GENERATOR.nextInt(BOUND);
@@ -271,6 +276,7 @@ public class Game {
     }
 
     public void makeComputerMove() {
+
         if (!humanTurn) {
 
             if (gameMode.equals(GameMode.RANDOM)) {
