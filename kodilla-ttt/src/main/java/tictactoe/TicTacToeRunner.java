@@ -265,6 +265,13 @@ public class TicTacToeRunner extends Application {
 
         });
 
+        loadLastSaveButton = new Button("Load last checkpoint");
+        loadLastSaveButton.setMinSize(200, 50);
+        loadLastSaveButton.setOnMouseClicked(e -> {
+            MessageBox.displayMessage("WORK IN PROGRESS", "LOADING CHECKPOINT WILL BE IMPLEMENTED HERE");
+
+        });
+
 
         musicOnOffButton = new Button("Turn music off");
         musicOnOffButton.setMinSize(200, 50);
@@ -278,7 +285,7 @@ public class TicTacToeRunner extends Application {
             }
         });
 
-        buttons = new VBox(exitButton, newGameButton, restartGameButton, saveGameButton, musicOnOffButton);
+        buttons = new VBox(exitButton, newGameButton, restartGameButton, saveGameButton, loadLastSaveButton, musicOnOffButton);
         buttons.setSpacing(25);
 
         messageBoard = new Text();

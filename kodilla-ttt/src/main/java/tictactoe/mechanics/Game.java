@@ -39,12 +39,23 @@ public class Game {
         setGameBoardToEmpty();
     }
 
+    public void setGameFromCheckpoint(GameCheckpoint checkpoint) {
+        this.humanPlayerName = checkpoint.getPlayerName();
+        this.gameMatrix = checkpoint.getGameMatrix();
+        this.humanTurn = checkpoint.isPlayersTurn();
+        this.gameMode = checkpoint.getGameMode();
+    }
+
     public GameCheckpoint getCheckpoint() {
         return this.checkpoint;
     }
 
+    public GameMode getGameMode() {
+        return gameMode;
+    }
+
     public void makeCheckpoint() {
-        this.checkpoint = new GameCheckpoint(humanPlayerName, gameMatrix, humanTurn);
+        this.checkpoint = new GameCheckpoint(humanPlayerName, gameMatrix, humanTurn, gameMode);
     }
 
     private void setGameBoardToEmpty() {
