@@ -31,6 +31,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import tictactoe.enumerics.CellStatus;
+import tictactoe.enumerics.GameMode;
 import tictactoe.mechanics.Game;
 import tictactoe.mechanics.GameCheckpoint;
 import tictactoe.mechanics.Rules;
@@ -38,10 +39,7 @@ import tictactoe.popupboxes.ConfirmationBox;
 import tictactoe.popupboxes.MessageBox;
 import tictactoe.popupboxes.NewGameBox;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -64,6 +62,7 @@ public class TicTacToeRunner extends Application {
     private static final Image ANIMATION_FOR_O = new Image("Graphics/FinalGraphics/DrawCircle.gif");
     private static final Image IMAGE_FOR_CURSOR = new Image("Graphics/cursorIcon.png");
     private static final Image IMAGE_FOR_EMPTY_FIELD = new Image("Graphics/FinalGraphics/transparent.png");
+    private static final String CHECKPOINT_PATH = "/checkpoint.chp";
 
     private Button exitButton, newGameButton, restartGameButton, saveGameButton, loadLastSaveButton, musicOnOffButton;
     private VBox buttons;
@@ -246,17 +245,16 @@ public class TicTacToeRunner extends Application {
             }
         });
 
-        saveGameButton = new Button("Save Game");
+        saveGameButton = new Button("Create checkpoint");
         saveGameButton.setMinSize(200, 50);
         saveGameButton.setOnMouseClicked(e -> {
-            currentGame.makeCheckpoint();
-            GameCheckpoint checkpoint = currentGame.getCheckpoint();
-            String fileName = "/checkpoint.chp";
             try {
-                ObjectOutputStream outStream = new ObjectOutputStream(new FileOutputStream(fileName));
-                outStream.writeObject(checkpoint);
+                ObjectOutputStream outStream = new ObjectOutputStream(new FileOutputStream(CHECKPOINT_PATH));
+                currentGame.makeCheckpoint();
+                outStream.writeObject(currentGame.getCheckpoint());
                 outStream.close();
                 MessageBox.displayMessage("Checkpoint", "Checkpoint successfully created");
+
             } catch (FileNotFoundException a) {
                 MessageBox.displayMessage("Exception", a.getMessage());
             } catch (IOException b) {
@@ -268,7 +266,40 @@ public class TicTacToeRunner extends Application {
         loadLastSaveButton = new Button("Load last checkpoint");
         loadLastSaveButton.setMinSize(200, 50);
         loadLastSaveButton.setOnMouseClicked(e -> {
-            MessageBox.displayMessage("WORK IN PROGRESS", "LOADING CHECKPOINT WILL BE IMPLEMENTED HERE");
+            try{
+                ObjectInputStream inStream = new ObjectInputStream(new FileInputStream(CHECKPOINT_PATH));
+                currentGame.setGameFromCheckpoint((GameCheckpoint) inStream.readObject());
+                inStream.close();
+
+            } catch (FileNotFoundException a) {
+                MessageBox.displayMessage("Exception", a.getMessage());
+            } catch (IOException b) {
+                MessageBox.displayMessage("Exception", b.getMessage());
+            } catch (ClassNotFoundException c) {
+                MessageBox.displayMessage("Exception", c.getMessage());
+            }
+
+            CellStatus[][] matrixFromGame = currentGame.getGameMatrix();
+
+            for (int row = 0; row < 3; row++) {
+                for (int col = 0; col < 3; col++) {
+
+                    if (matrixFromGame[row][col].equals(CellStatus.CROSS)) {
+                        cellsMap.get(""+row+col).setImage(IMAGE_FOR_X);
+                    } else if (matrixFromGame[row][col].equals(CellStatus.CIRCLE)) {
+                        cellsMap.get(""+row+col).setImage(IMAGE_FOR_O);
+                    } else {
+                        cellsMap.get(""+row+col).setImage(IMAGE_FOR_EMPTY_FIELD);
+                    }
+                }
+            }
+
+            if(currentGame.getHumanTurn()) {
+                messageBoard.setText(currentGame.getHumanPlayerName() + "'s turn");
+            } else {
+                messageBoard.setText(currentGame.getHumanPlayerName() + "'s turn");
+            }
+
 
         });
 
