@@ -1,5 +1,6 @@
 package tictactoe.mechanics;
 
+import com.sun.source.tree.AssertTree;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +10,10 @@ import tictactoe.enumerics.GameMode;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static tictactoe.enumerics.CellStatus.CIRCLE;
+import static tictactoe.enumerics.CellStatus.CROSS;
+import static tictactoe.enumerics.CellStatus.EMPTY;
 
 
 public class GameTestSuite {
@@ -27,7 +32,7 @@ public class GameTestSuite {
         CellStatus[][] testMatrix = testGame.getGameMatrix();
 
         //When
-        CellStatus expectedStatus = CellStatus.EMPTY;
+        CellStatus expectedStatus = EMPTY;
 
         CellStatus realStatus00 = testMatrix[0][0];
         CellStatus realStatus01 = testMatrix[0][1];
@@ -72,9 +77,9 @@ public class GameTestSuite {
     @Test
     public void testPlayRandomCornerWithFreeCorner(){
         //Given
-        testGame.setGameMatrixValue(0,0,CellStatus.CROSS); //top left corner
-        testGame.setGameMatrixValue(0, 2, CellStatus.CROSS); //top right corner
-        testGame.setGameMatrixValue(2, 0, CellStatus.CROSS); // bottom left corner
+        testGame.setGameMatrixValue(0,0, CROSS); //top left corner
+        testGame.setGameMatrixValue(0, 2, CROSS); //top right corner
+        testGame.setGameMatrixValue(2, 0, CROSS); // bottom left corner
 
         //When
         CellStatus expectedResult = CellStatus.CIRCLE;
@@ -89,13 +94,13 @@ public class GameTestSuite {
     @Test
     public void testPlayRandomCornerWithoutFreeCorner(){
         //Given
-        testGame.setGameMatrixValue(0,0,CellStatus.CROSS); //top left corner
-        testGame.setGameMatrixValue(0, 2, CellStatus.CROSS); //top right corner
-        testGame.setGameMatrixValue(2, 0, CellStatus.CROSS); // bottom left corner
-        testGame.setGameMatrixValue(2,2, CellStatus.CROSS); //bottom right corner
+        testGame.setGameMatrixValue(0,0, CROSS); //top left corner
+        testGame.setGameMatrixValue(0, 2, CROSS); //top right corner
+        testGame.setGameMatrixValue(2, 0, CROSS); // bottom left corner
+        testGame.setGameMatrixValue(2,2, CROSS); //bottom right corner
 
         //When
-        CellStatus expectedResult = CellStatus.CROSS;
+        CellStatus expectedResult = CROSS;
         testGame.playRandomCorner();
         CellStatus testMatrix[][] = testGame.getGameMatrix();
 
@@ -153,13 +158,13 @@ public class GameTestSuite {
     @Test
     public void testPlayOppositeCornerAllTaken() {
         //Given
-        testGame.setGameMatrixValue(0,0,CellStatus.CROSS); //top left corner
-        testGame.setGameMatrixValue(0, 2, CellStatus.CROSS); //top right corner
-        testGame.setGameMatrixValue(2, 0, CellStatus.CROSS); // bottom left corner
-        testGame.setGameMatrixValue(2,2, CellStatus.CROSS); //bottom right corner
+        testGame.setGameMatrixValue(0,0, CROSS); //top left corner
+        testGame.setGameMatrixValue(0, 2, CROSS); //top right corner
+        testGame.setGameMatrixValue(2, 0, CROSS); // bottom left corner
+        testGame.setGameMatrixValue(2,2, CROSS); //bottom right corner
 
         //When
-        CellStatus expectedResult = CellStatus.CROSS;
+        CellStatus expectedResult = CROSS;
         testGame.playOppositeCornerTo(0,0);
         testGame.playOppositeCornerTo(0,2);
         testGame.playOppositeCornerTo(2,0);
@@ -189,6 +194,65 @@ public class GameTestSuite {
         //Then
         Assert.assertTrue(acceptableCorners.contains(chosenCorener));
 
+    }
+
+    @Test
+    public void testResetGame(){
+        //Given
+        testGame = new Game(new InitialGameData("testName", GameMode.RANDOM));
+        testGame.setHumanTurn(false);
+        testGame.makeComputerMove();
+        testGame.makeComputerMove();
+        testGame.makeComputerMove();
+        testGame.setWinner(CROSS);
+        testGame.resetGame();
+
+        //When
+        CellStatus expectedWinner = EMPTY;
+        CellStatus realWinner = testGame.getWinner();
+
+        CellStatus[][] expectedMatrix = {
+                {EMPTY, EMPTY, EMPTY},
+                {EMPTY, EMPTY, EMPTY},
+                {EMPTY, EMPTY, EMPTY}
+        };
+        CellStatus[][] realMatrix = testGame.getGameMatrix();
+
+        //Then
+        Assert.assertTrue(expectedWinner.equals(realWinner));
+        Assert.assertEquals(expectedMatrix, realMatrix);
+
+    }
+
+    @Test
+    public void testMakeAndGetCheckpoint(){
+        //Given
+        testGame = new Game(new InitialGameData("testName", GameMode.RANDOM));
+        testGame.setHumanTurn(false);
+        testGame.setGameMatrixValue(0,0, CROSS);
+        testGame.setGameMatrixValue(2,2, CIRCLE);
+        testGame.setGameMatrixValue(1,1, CROSS);
+        testGame.makeCheckpoint();
+
+
+        //When
+        String expectedName = "testName";
+        String realName = testGame.getCheckpoint().getPlayerName();
+
+        boolean expectedHumanTurn = false;
+        boolean realHumanTurn = testGame.getCheckpoint().isPlayersTurn();
+
+        CellStatus[][] expectedMatrix = {
+                {CROSS, EMPTY, EMPTY},
+                {EMPTY, CROSS, EMPTY},
+                {EMPTY, EMPTY, CIRCLE}
+        };
+        CellStatus[][] realMatrix = testGame.getCheckpoint().getGameMatrix();
+
+        //Then
+        Assert.assertTrue(expectedName.equals(realName));
+        Assert.assertEquals(realHumanTurn, expectedHumanTurn);
+        Assert.assertEquals(expectedMatrix, realMatrix);
     }
 
 }

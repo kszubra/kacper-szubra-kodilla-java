@@ -2,7 +2,9 @@ package tictactoe.mechanics;
 
 import tictactoe.enumerics.CellStatus;
 
-public class GameCheckpoint {
+import java.io.Serializable;
+
+public class GameCheckpoint implements Serializable {
 
     private String playerName;
     private CellStatus[][] gameMatrix;

@@ -32,11 +32,16 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import tictactoe.enumerics.CellStatus;
 import tictactoe.mechanics.Game;
+import tictactoe.mechanics.GameCheckpoint;
 import tictactoe.mechanics.Rules;
 import tictactoe.popupboxes.ConfirmationBox;
 import tictactoe.popupboxes.MessageBox;
 import tictactoe.popupboxes.NewGameBox;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -60,7 +65,7 @@ public class TicTacToeRunner extends Application {
     private static final Image IMAGE_FOR_CURSOR = new Image("Graphics/cursorIcon.png");
     private static final Image IMAGE_FOR_EMPTY_FIELD = new Image("Graphics/FinalGraphics/transparent.png");
 
-    private Button exitButton, newGameButton, restartGameButton, musicOnOffButton;
+    private Button exitButton, newGameButton, restartGameButton, saveGameButton, loadLastSaveButton, musicOnOffButton;
     private VBox buttons;
 
     GridPane gameBoardPane;
@@ -150,6 +155,14 @@ public class TicTacToeRunner extends Application {
             checkBoard();
             messageBoard.setText("Computer's turn");
 
+            // THINKING
+
+            try{
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+
+            }
+
             // COMPUTER MOVE HERE
             currentGame.makeComputerMove();
             // make image on board change
@@ -194,8 +207,6 @@ public class TicTacToeRunner extends Application {
     }
 
 
-
-
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -235,6 +246,25 @@ public class TicTacToeRunner extends Application {
             }
         });
 
+        saveGameButton = new Button("Save Game");
+        saveGameButton.setMinSize(200, 50);
+        saveGameButton.setOnMouseClicked(e -> {
+            currentGame.makeCheckpoint();
+            GameCheckpoint checkpoint = currentGame.getCheckpoint();
+            String fileName = "/checkpoint.chp";
+            try {
+                ObjectOutputStream outStream = new ObjectOutputStream(new FileOutputStream(fileName));
+                outStream.writeObject(checkpoint);
+                outStream.close();
+                MessageBox.displayMessage("Checkpoint", "Checkpoint successfully created");
+            } catch (FileNotFoundException a) {
+                MessageBox.displayMessage("Exception", a.getMessage());
+            } catch (IOException b) {
+                MessageBox.displayMessage("Exception", b.getMessage());
+            }
+
+        });
+
 
         musicOnOffButton = new Button("Turn music off");
         musicOnOffButton.setMinSize(200, 50);
@@ -248,7 +278,7 @@ public class TicTacToeRunner extends Application {
             }
         });
 
-        buttons = new VBox(exitButton, newGameButton, restartGameButton, musicOnOffButton);
+        buttons = new VBox(exitButton, newGameButton, restartGameButton, saveGameButton, musicOnOffButton);
         buttons.setSpacing(25);
 
         messageBoard = new Text();

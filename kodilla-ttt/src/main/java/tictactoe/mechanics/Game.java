@@ -39,8 +39,12 @@ public class Game {
         setGameBoardToEmpty();
     }
 
-    private GameCheckpoint createAndGetCheckpoint() {
-        return this.checkpoint = new GameCheckpoint(this.humanPlayerName, this.gameMatrix, this.humanTurn);
+    public GameCheckpoint getCheckpoint() {
+        return this.checkpoint;
+    }
+
+    public void makeCheckpoint() {
+        this.checkpoint = new GameCheckpoint(humanPlayerName, gameMatrix, humanTurn);
     }
 
     private void setGameBoardToEmpty() {
