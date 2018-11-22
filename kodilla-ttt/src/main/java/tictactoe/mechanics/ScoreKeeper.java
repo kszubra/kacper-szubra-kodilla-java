@@ -1,9 +1,10 @@
 package tictactoe.mechanics;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class ScoreKeeper {
+public class ScoreKeeper implements Serializable {
     private int wonByPlayer;
     private int lostByPlayer;
     private double winLoseRatio;

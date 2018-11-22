@@ -34,6 +34,7 @@ import tictactoe.enumerics.CellStatus;
 import tictactoe.mechanics.Game;
 import tictactoe.mechanics.GameCheckpoint;
 import tictactoe.mechanics.Rules;
+import tictactoe.mechanics.ScoreKeeper;
 import tictactoe.popupboxes.ConfirmationBox;
 import tictactoe.popupboxes.MessageBox;
 import tictactoe.popupboxes.NewGameBox;
@@ -46,7 +47,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 
 public class TicTacToeRunner extends Application {
 
@@ -62,6 +62,7 @@ public class TicTacToeRunner extends Application {
     private static final Image IMAGE_FOR_CURSOR = new Image("Graphics/cursorIcon.png");
     private static final Image IMAGE_FOR_EMPTY_FIELD = new Image("Graphics/FinalGraphics/transparent.png");
     private static final String CHECKPOINT_PATH = "/checkpoint.chp";
+    private static final String SCORE_BOARD_PATH = "/scoreBoard.scb";
 
     private int roundsWonByPlayer;
     private int roundsWonByComputer;
@@ -82,6 +83,7 @@ public class TicTacToeRunner extends Application {
     private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private Map<String, ImageView> cellsMap = new HashMap<>();
+    private Map<String, ScoreKeeper> scoreBoardMap;
 
     private Game currentGame;
 
@@ -151,7 +153,6 @@ public class TicTacToeRunner extends Application {
 
         ImageView eventObject = (ImageView) event.getSource();
 
-
         if (!(currentGame.getHumanTurn())) {
             MessageBox.displayMessage("Wrong turn", "It's not your turn now. Please wait");
         } else if ((currentGame.getHumanTurn()) && !(eventObject.getImage().equals(ANIMATION_FOR_X))) {
@@ -218,6 +219,26 @@ public class TicTacToeRunner extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        try{
+            ObjectInputStream inStreamLoadScoreBoard = new ObjectInputStream(new FileInputStream(SCORE_BOARD_PATH));
+            scoreBoardMap = (HashMap)inStreamLoadScoreBoard.readObject();
+            inStreamLoadScoreBoard.close();
+            System.out.println("Successfully loaded score board file");
+
+        } catch (FileNotFoundException a) { // If can't find file to load -> try to create it
+
+            System.out.println("Unable to load score board file. trying to create it");
+            try {
+                this.scoreBoardMap = new HashMap<>();
+                ObjectOutputStream outStreamSaveScoreBoard = new ObjectOutputStream(new FileOutputStream(SCORE_BOARD_PATH));
+                outStreamSaveScoreBoard.writeObject(scoreBoardMap);
+                outStreamSaveScoreBoard.close();
+
+            } catch (FileNotFoundException createFile) {
+                MessageBox.displayMessage("Exception", createFile.getMessage());
+            }
+        }
+
         roundsWonByComputer =0;
         roundsWonByPlayer =0;
 
@@ -261,10 +282,10 @@ public class TicTacToeRunner extends Application {
         saveGameButton.setMinSize(200, 50);
         saveGameButton.setOnMouseClicked(e -> {
             try {
-                ObjectOutputStream outStream = new ObjectOutputStream(new FileOutputStream(CHECKPOINT_PATH));
+                ObjectOutputStream outStreamSaveGame = new ObjectOutputStream(new FileOutputStream(CHECKPOINT_PATH));
                 currentGame.makeCheckpoint();
-                outStream.writeObject(currentGame.getCheckpoint());
-                outStream.close();
+                outStreamSaveGame.writeObject(currentGame.getCheckpoint());
+                outStreamSaveGame.close();
                 MessageBox.displayMessage("Checkpoint", "Checkpoint successfully created");
 
             } catch (FileNotFoundException a) {
@@ -279,9 +300,9 @@ public class TicTacToeRunner extends Application {
         loadLastSaveButton.setMinSize(200, 50);
         loadLastSaveButton.setOnMouseClicked(e -> {
             try{
-                ObjectInputStream inStream = new ObjectInputStream(new FileInputStream(CHECKPOINT_PATH));
-                currentGame.setGameFromCheckpoint((GameCheckpoint) inStream.readObject());
-                inStream.close();
+                ObjectInputStream inStreamLoadGame = new ObjectInputStream(new FileInputStream(CHECKPOINT_PATH));
+                currentGame.setGameFromCheckpoint((GameCheckpoint) inStreamLoadGame.readObject());
+                inStreamLoadGame.close();
 
             } catch (FileNotFoundException a) {
                 MessageBox.displayMessage("Exception", a.getMessage());
@@ -311,8 +332,6 @@ public class TicTacToeRunner extends Application {
             } else {
                 messageBoard.setText(currentGame.getHumanPlayerName() + "'s turn");
             }
-
-
         });
 
 
