@@ -68,17 +68,12 @@ public class TicTacToeRunner extends Application {
     private int roundsWonByComputer;
 
     private Button exitButton, newGameButton, restartGameButton, saveGameButton, loadLastSaveButton, musicOnOffButton;
-    private VBox buttons;
+    private VBox buttons, rightScoreBoard;
 
     GridPane gameBoardPane;
 
-    private VBox rightScoreBoard;
-    private HBox topRoundBar;
-    private HBox bottomTextBar;
-    private Text messageBoard;
-    private Text bottomText;
-    private Text playerScoreText;
-    private Text computerScoreText;
+    private HBox topRoundBar, bottomTextBar;
+    private Text messageBoard, bottomText, playerScoreText, computerScoreText, rightRankingText;
     private LocalDateTime currentTime;
     private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -173,6 +168,7 @@ public class TicTacToeRunner extends Application {
             // make image on board change
             String key = "" + currentGame.getComputerChoiceRow() + currentGame.getComputerChoiceColumn();
             cellsMap.get(key).setImage(IMAGE_FOR_O);
+
             checkBoard();
             messageBoard.setText(currentGame.getHumanPlayerName() + "'s turn");
         }
@@ -189,6 +185,8 @@ public class TicTacToeRunner extends Application {
 
             roundsWonByPlayer++;
             updateScoreBoard();
+            addVictoryToScoreBoard();
+            updateRankingBoard();
             if(ConfirmationBox.getDecision("Game ended", currentGame.getHumanPlayerName() + " won! \r\n Do you want to play again?")){
                 restartGame();
             } else{
@@ -199,6 +197,8 @@ public class TicTacToeRunner extends Application {
 
             roundsWonByComputer++;
             updateScoreBoard();
+            addDefeatToScoreBoard();
+            updateRankingBoard();
             if(ConfirmationBox.getDecision("Game ended", "Computer won! \r\n Do you want to play again?")){
                 restartGame();
             } else{
@@ -215,6 +215,52 @@ public class TicTacToeRunner extends Application {
         }
     }
 
+    private void saveScoreBoardMap() {
+
+        try {
+            ObjectOutputStream outStreamSaveScoreBoard = new ObjectOutputStream(new FileOutputStream(SCORE_BOARD_PATH));
+            outStreamSaveScoreBoard.writeObject(scoreBoardMap);
+            outStreamSaveScoreBoard.close();
+
+        } catch (FileNotFoundException noFile) {
+            MessageBox.displayMessage("Exception", noFile.getMessage());
+        } catch (IOException ioe) {
+            MessageBox.displayMessage("Exception", ioe.getMessage());
+        }
+    }
+
+    private void addVictoryToScoreBoard() {
+        if(scoreBoardMap.containsKey(currentGame.getHumanPlayerName())){
+            scoreBoardMap.get(currentGame.getHumanPlayerName()).addWonByPlayer();
+        } else {
+            scoreBoardMap.put(currentGame.getHumanPlayerName(), new ScoreKeeper());
+            scoreBoardMap.get(currentGame.getHumanPlayerName()).addWonByPlayer();
+        }
+
+        saveScoreBoardMap();
+    }
+
+    private void addDefeatToScoreBoard() {
+        if(scoreBoardMap.containsKey(currentGame.getHumanPlayerName())){
+            scoreBoardMap.get(currentGame.getHumanPlayerName()).addLostByPlayer();
+        } else {
+            scoreBoardMap.put(currentGame.getHumanPlayerName(), new ScoreKeeper());
+            scoreBoardMap.get(currentGame.getHumanPlayerName()).addLostByPlayer();
+        }
+
+        saveScoreBoardMap();
+    }
+
+    private void updateRankingBoard() {
+        StringBuilder rankingBuilder = new StringBuilder();
+
+        for(Map.Entry<String, ScoreKeeper> entry : scoreBoardMap.entrySet()){
+            rankingBuilder.append(entry.getKey() + ": " + entry.getValue().toString());
+        }
+
+        rightRankingText.setText(rankingBuilder.toString());
+    }
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -228,15 +274,8 @@ public class TicTacToeRunner extends Application {
         } catch (FileNotFoundException a) { // If can't find file to load -> try to create it
 
             System.out.println("Unable to load score board file. trying to create it");
-            try {
-                this.scoreBoardMap = new HashMap<>();
-                ObjectOutputStream outStreamSaveScoreBoard = new ObjectOutputStream(new FileOutputStream(SCORE_BOARD_PATH));
-                outStreamSaveScoreBoard.writeObject(scoreBoardMap);
-                outStreamSaveScoreBoard.close();
-
-            } catch (FileNotFoundException createFile) {
-                MessageBox.displayMessage("Exception", createFile.getMessage());
-            }
+            this.scoreBoardMap = new HashMap<>();
+            saveScoreBoardMap();
         }
 
         roundsWonByComputer =0;
@@ -354,7 +393,15 @@ public class TicTacToeRunner extends Application {
         computerScoreText = new Text("Computer's score: \r\n" + roundsWonByComputer);
         computerScoreText.setFont(Font.font("Verdana", 20));
         computerScoreText.setFill(Color.AQUA);
-        rightScoreBoard = new VBox(playerScoreText, computerScoreText);
+
+        rightRankingText = new Text();
+        rightRankingText.setFont(Font.font("Verdana", 15));
+        rightRankingText.setFill(Color.AQUA);
+        updateRankingBoard();
+
+        rightScoreBoard = new VBox(playerScoreText, computerScoreText, rightRankingText);
+        rightScoreBoard.setSpacing(20);
+
 
         buttons = new VBox(exitButton, newGameButton, restartGameButton, saveGameButton, loadLastSaveButton, musicOnOffButton);
         buttons.setSpacing(25);

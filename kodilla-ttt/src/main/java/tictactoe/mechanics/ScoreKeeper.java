@@ -43,6 +43,6 @@ public class ScoreKeeper implements Serializable {
 
     @Override
     public String toString() {
-        return "Won games: " + wonByPlayer + " | Lost games: " + lostByPlayer + " | W/L ratio: " + roundDouble();
+        return "Won games: " + wonByPlayer + " | Lost games: " + lostByPlayer + " | W/L ratio: " + roundDouble() + "\r\n";
     }
 }
