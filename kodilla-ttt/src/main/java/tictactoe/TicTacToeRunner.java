@@ -31,7 +31,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import tictactoe.enumerics.CellStatus;
-import tictactoe.enumerics.GameMode;
 import tictactoe.mechanics.Game;
 import tictactoe.mechanics.GameCheckpoint;
 import tictactoe.mechanics.Rules;
@@ -64,15 +63,21 @@ public class TicTacToeRunner extends Application {
     private static final Image IMAGE_FOR_EMPTY_FIELD = new Image("Graphics/FinalGraphics/transparent.png");
     private static final String CHECKPOINT_PATH = "/checkpoint.chp";
 
+    private int roundsWonByPlayer;
+    private int roundsWonByComputer;
+
     private Button exitButton, newGameButton, restartGameButton, saveGameButton, loadLastSaveButton, musicOnOffButton;
     private VBox buttons;
 
     GridPane gameBoardPane;
 
-    private HBox topScoreBoard;
+    private VBox rightScoreBoard;
+    private HBox topRoundBar;
     private HBox bottomTextBar;
     private Text messageBoard;
     private Text bottomText;
+    private Text playerScoreText;
+    private Text computerScoreText;
     private LocalDateTime currentTime;
     private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -83,8 +88,16 @@ public class TicTacToeRunner extends Application {
     private void newGame() {
 
         setAllGameFieldsToEmpty();
+        roundsWonByComputer = 0;
+        roundsWonByPlayer = 0;
+        updateScoreBoard();
         currentGame = new Game(NewGameBox.getUserPreference());
         performFirstMove();
+    }
+
+    private void updateScoreBoard() {
+        playerScoreText.setText("Player's score: \r\n" + roundsWonByPlayer);
+        computerScoreText.setText("Computer's score: \r\n" + roundsWonByComputer);
     }
 
     private void performFirstMove() {
@@ -154,14 +167,6 @@ public class TicTacToeRunner extends Application {
             checkBoard();
             messageBoard.setText("Computer's turn");
 
-            // THINKING
-
-            try{
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-
-            }
-
             // COMPUTER MOVE HERE
             currentGame.makeComputerMove();
             // make image on board change
@@ -181,6 +186,8 @@ public class TicTacToeRunner extends Application {
 
         if (currentGame.getWinner().equals(CellStatus.CROSS)) {
 
+            roundsWonByPlayer++;
+            updateScoreBoard();
             if(ConfirmationBox.getDecision("Game ended", currentGame.getHumanPlayerName() + " won! \r\n Do you want to play again?")){
                 restartGame();
             } else{
@@ -189,6 +196,8 @@ public class TicTacToeRunner extends Application {
 
         } else if (currentGame.getWinner().equals(CellStatus.CIRCLE)) {
 
+            roundsWonByComputer++;
+            updateScoreBoard();
             if(ConfirmationBox.getDecision("Game ended", "Computer won! \r\n Do you want to play again?")){
                 restartGame();
             } else{
@@ -208,6 +217,9 @@ public class TicTacToeRunner extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        roundsWonByComputer =0;
+        roundsWonByPlayer =0;
 
         Media soundFile = new Media(getClass().getResource("/Sounds/Darsilon.mp3").toURI().toString());
         MediaPlayer player = new MediaPlayer(soundFile);
@@ -316,6 +328,15 @@ public class TicTacToeRunner extends Application {
             }
         });
 
+        playerScoreText = new Text("Player's score: \r\n" + roundsWonByPlayer);
+        playerScoreText.setFont(Font.font("Verdana", 20));
+        playerScoreText.setFill(Color.AQUA);
+
+        computerScoreText = new Text("Computer's score: \r\n" + roundsWonByComputer);
+        computerScoreText.setFont(Font.font("Verdana", 20));
+        computerScoreText.setFill(Color.AQUA);
+        rightScoreBoard = new VBox(playerScoreText, computerScoreText);
+
         buttons = new VBox(exitButton, newGameButton, restartGameButton, saveGameButton, loadLastSaveButton, musicOnOffButton);
         buttons.setSpacing(25);
 
@@ -323,8 +344,8 @@ public class TicTacToeRunner extends Application {
         messageBoard.setFont(Font.font("Verdana", 45));
         messageBoard.setFill(Color.AQUA);
 
-        topScoreBoard = new HBox(messageBoard);
-        topScoreBoard.setSpacing(15);
+        topRoundBar = new HBox(messageBoard);
+        topRoundBar.setSpacing(15);
 
         bottomText = new Text();
         currentTime = LocalDateTime.now();
@@ -373,9 +394,10 @@ public class TicTacToeRunner extends Application {
         borderPane.setBackground(background);
         borderPane.setCenter(gameBoardPane);
         borderPane.setLeft(buttons);
-        borderPane.setTop(topScoreBoard);
+        borderPane.setTop(topRoundBar);
         borderPane.setBottom(bottomTextBar);
-        topScoreBoard.setAlignment(Pos.CENTER);
+        borderPane.setRight(rightScoreBoard);
+        topRoundBar.setAlignment(Pos.CENTER);
         bottomTextBar.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(borderPane, IMAGE_FOR_BACKGROUND.getWidth(), IMAGE_FOR_BACKGROUND.getHeight(), Color.BLACK);
