@@ -97,6 +97,7 @@ public class TicTacToeRunner extends Application {
     private void performFirstMove() {
         System.out.println("New round starts here");
         if (!currentGame.getHumanStarts()) { // computer's opening move
+            System.out.println("Computer starts");
             messageBoard.setText("Computer's turn");
             currentGame.setHumanTurn(false);
             currentGame.makeComputerMove();
@@ -106,6 +107,7 @@ public class TicTacToeRunner extends Application {
             messageBoard.setText(currentGame.getHumanPlayerName() + "'s turn");
 
         } else {
+            System.out.println("Player starts");
             currentGame.setHumanTurn(true);
             messageBoard.setText(currentGame.getHumanPlayerName() + "'s turn");
         }
@@ -157,8 +159,8 @@ public class TicTacToeRunner extends Application {
             int columnIndex = GridPane.getColumnIndex(eventObject);
             System.out.println("Player chose row: " + rowIndex + ", column: " + columnIndex);
             currentGame.setGameMatrixValue(rowIndex, columnIndex, CellStatus.CROSS);
-            currentGame.setHumanTurn(false);
             checkBoard();
+            currentGame.setHumanTurn(false);
             messageBoard.setText("Computer's turn");
 
             // COMPUTER MOVE HERE
@@ -394,15 +396,15 @@ public class TicTacToeRunner extends Application {
 
         playerScoreText = new Text("Player's score: \r\n" + roundsWonByPlayer);
         playerScoreText.setFont(Font.font("Verdana", 20));
-        playerScoreText.setFill(Color.AQUA);
+        playerScoreText.setFill(Color.WHITE);
 
         computerScoreText = new Text("Computer's score: \r\n" + roundsWonByComputer);
         computerScoreText.setFont(Font.font("Verdana", 20));
-        computerScoreText.setFill(Color.AQUA);
+        computerScoreText.setFill(Color.WHITE);
 
         rightRankingText = new Text();
         rightRankingText.setFont(Font.font("Verdana", 15));
-        rightRankingText.setFill(Color.AQUA);
+        rightRankingText.setFill(Color.WHITE);
         updateRankingBoard();
 
         rightScoreBoard = new VBox(playerScoreText, computerScoreText, rightRankingText);
@@ -414,7 +416,7 @@ public class TicTacToeRunner extends Application {
 
         messageBoard = new Text();
         messageBoard.setFont(Font.font("Verdana", 45));
-        messageBoard.setFill(Color.AQUA);
+        messageBoard.setFill(Color.WHITE);
 
         topRoundBar = new HBox(messageBoard);
         topRoundBar.setSpacing(15);
@@ -423,7 +425,7 @@ public class TicTacToeRunner extends Application {
         currentTime = LocalDateTime.now();
         bottomText.setText(currentTime.format(timeFormatter));
         bottomText.setFont(Font.font("Verdana", 45));
-        bottomText.setFill(Color.AQUA);
+        bottomText.setFill(Color.WHITE);
         final Timeline clockTimeline = new Timeline(
                 new KeyFrame(
                         Duration.seconds(1),

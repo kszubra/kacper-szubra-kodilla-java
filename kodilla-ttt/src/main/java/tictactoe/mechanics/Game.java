@@ -71,6 +71,7 @@ public class Game {
         setGameBoardToEmpty();
         this.winner = EMPTY;
         this.humanStarts = verifyIfHumanStarts();
+        this.humanTurn = humanStarts;
     }
 
     private boolean verifyIfHumanStarts() {
@@ -191,7 +192,6 @@ public class Game {
             int row = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('R')+1, cellToPlay.indexOf('C')));
             int column = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('C')+1));
             setComputerChoiceFor(row, column);
-
     }
 
     public void tryToBlock() {
@@ -206,7 +206,6 @@ public class Game {
             int row = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('R')+1, cellToPlay.indexOf('C')));
             int column = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('C')+1));
             setComputerChoiceFor(row, column);
-
     }
 
     public void makeRegularMove() {
@@ -261,7 +260,6 @@ public class Game {
         //3rd step and further
         if(howManyEmptyCells <= NUMBER_OF_MATRIX_FIELDS-3){
             System.out.println("Performing step 3+ : ");
-
             try {
                 tryToWin();
                 System.out.println("Performing step 3+ : winning move");
@@ -291,15 +289,17 @@ public class Game {
     public void makeComputerMove() {
 
         if (!humanTurn) {
-
             if (gameMode.equals(GameMode.RANDOM)) {
+                System.out.println("Computer makes random move:");
                 makeRandomComputerMove();
+                humanTurn = true;
             } else if (gameMode.equals(GameMode.STRATEGIC)) {
+                System.out.println("Computer makes strategic move:");
                 makeStrategicComputerMove();
+                humanTurn = true;
             }
         }
 
-        humanTurn = true;
     }
 
 
