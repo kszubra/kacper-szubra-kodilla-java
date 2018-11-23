@@ -278,9 +278,7 @@ public class Game {
                     System.out.println("Performing step 3+ : regular move");
                 }
             }
-
         }
-
     }
 
     private void setComputerChoiceFor(int row, int column) {

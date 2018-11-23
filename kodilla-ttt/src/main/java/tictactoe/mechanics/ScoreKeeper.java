@@ -39,12 +39,9 @@ public class ScoreKeeper implements Serializable, Comparable {
     }
 
     public double getWinLoseRatio() {
-        return roundDouble();
-    }
-
-    private double roundDouble() {
         return Math.round(winLoseRatio *100.0) / 100.0;
     }
+
 
     @Override
     public int compareTo(Object o) {
@@ -56,6 +53,6 @@ public class ScoreKeeper implements Serializable, Comparable {
 
     @Override
     public String toString() {
-        return "Won games: " + wonByPlayer + " | Lost games: " + lostByPlayer + " | W/L ratio: " + roundDouble() + "\r\n";
+        return "Won games: " + wonByPlayer + " | Lost games: " + lostByPlayer + " | W/L ratio: " + getWinLoseRatio() + "\r\n";
     }
 }
