@@ -118,6 +118,7 @@ public class Game {
 
     public void setHumanTurn(boolean valueToSet) {
         this.humanTurn = valueToSet;
+        System.out.println("Player's turn set to: " + valueToSet);
     }
 
     private void makeRandomComputerMove() {
@@ -292,11 +293,11 @@ public class Game {
             if (gameMode.equals(GameMode.RANDOM)) {
                 System.out.println("Computer makes random move:");
                 makeRandomComputerMove();
-                humanTurn = true;
+                setHumanTurn(true);
             } else if (gameMode.equals(GameMode.STRATEGIC)) {
                 System.out.println("Computer makes strategic move:");
                 makeStrategicComputerMove();
-                humanTurn = true;
+                setHumanTurn(true);
             }
         }
 
