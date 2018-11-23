@@ -80,7 +80,7 @@ public class TicTacToeRunner extends Application {
     private Game currentGame;
 
     private void newGame() {
-
+        System.out.println("Starting new game");
         setAllGameFieldsToEmpty();
         roundsWonByComputer = 0;
         roundsWonByPlayer = 0;
@@ -95,6 +95,7 @@ public class TicTacToeRunner extends Application {
     }
 
     private void performFirstMove() {
+        System.out.println("New round starts here");
         if (!currentGame.getHumanStarts()) { // computer's opening move
             messageBoard.setText("Computer's turn");
             currentGame.setHumanTurn(false);
@@ -154,7 +155,7 @@ public class TicTacToeRunner extends Application {
             eventObject.setImage(IMAGE_FOR_X);
             int rowIndex = GridPane.getRowIndex(eventObject);
             int columnIndex = GridPane.getColumnIndex(eventObject);
-            System.out.println("Row: " + rowIndex + ", Column: " + columnIndex);
+            System.out.println("Player chose row: " + rowIndex + ", column: " + columnIndex);
             currentGame.setGameMatrixValue(rowIndex, columnIndex, CellStatus.CROSS);
             currentGame.setHumanTurn(false);
             checkBoard();
@@ -173,13 +174,14 @@ public class TicTacToeRunner extends Application {
     }
 
     private void checkBoard() {
+        System.out.print("checking board... ");
         currentGame.setWinner(Rules.checkGameMatrixForWinner(currentGame.getGameMatrix()));
         List<CellStatus> gameMatrixElements = Arrays.stream(currentGame.getGameMatrix())
                 .flatMap(Arrays::stream)
                 .collect(Collectors.toList());
 
         if (currentGame.getWinner().equals(CellStatus.CROSS)) {
-
+            System.out.print("Cross wins \r\n");
             roundsWonByPlayer++;
             updateScoreBoard();
             addVictoryToScoreBoard();
@@ -191,7 +193,7 @@ public class TicTacToeRunner extends Application {
             }
 
         } else if (currentGame.getWinner().equals(CellStatus.CIRCLE)) {
-
+            System.out.print("Circle wins \r\n");
             roundsWonByComputer++;
             updateScoreBoard();
             addDefeatToScoreBoard();
@@ -203,12 +205,14 @@ public class TicTacToeRunner extends Application {
             }
 
         } else if ((!gameMatrixElements.contains(CellStatus.EMPTY)) && (currentGame.getWinner().equals(CellStatus.EMPTY))) {
-
+            System.out.print("Draw \r\n");
             if(ConfirmationBox.getDecision("Game ended", "Draw! \r\n Do you want to play again?")){
                 restartGame();
             } else{
                 System.exit(0);
             }
+        } else {
+            System.out.print("No winner \r\n");
         }
     }
 
@@ -254,7 +258,7 @@ public class TicTacToeRunner extends Application {
         List<Map.Entry<String, ScoreKeeper>> sortedList = new ArrayList<>();
         sortedList.addAll(scoreBoardMap.entrySet());
 
-        sortedList.sort((a,b) -> a.getValue().compareTo(b.getValue()));
+        sortedList.sort(Comparator.comparing(Map.Entry::getValue));
 
         for(Map.Entry<String, ScoreKeeper> entry : sortedList){
             rankingBuilder.append(entry.getKey() + ": " + entry.getValue().toString());
@@ -280,8 +284,8 @@ public class TicTacToeRunner extends Application {
             saveScoreBoardMap();
         }
 
-        roundsWonByComputer =0;
-        roundsWonByPlayer =0;
+        roundsWonByComputer = 0;
+        roundsWonByPlayer = 0;
 
         Media soundFile = new Media(getClass().getResource("/Sounds/Darsilon.mp3").toURI().toString());
         MediaPlayer player = new MediaPlayer(soundFile);

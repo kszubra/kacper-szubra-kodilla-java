@@ -3,8 +3,6 @@ package tictactoe.mechanics;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.math.RoundingMode;
-
 public class ScoreKeeperTestSuite {
 
     private ScoreKeeper testScoreKeeper;
