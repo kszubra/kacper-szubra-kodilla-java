@@ -1,8 +1,6 @@
 package tictactoe.mechanics;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 public class ScoreKeeper implements Serializable {
     private int wonByPlayer;
@@ -21,7 +19,12 @@ public class ScoreKeeper implements Serializable {
 
     public void addWonByPlayer() {
         wonByPlayer++;
-        winLoseRatio = (double)wonByPlayer / (double)lostByPlayer;
+
+        if(lostByPlayer == 0) {
+            winLoseRatio = (double) wonByPlayer;
+        } else {
+            winLoseRatio = (double)wonByPlayer / (double)lostByPlayer;
+        }
     }
 
     public int getLostByPlayer() {
@@ -38,7 +41,7 @@ public class ScoreKeeper implements Serializable {
     }
 
     private double roundDouble() {
-        return BigDecimal.valueOf(winLoseRatio).setScale(2, RoundingMode.HALF_DOWN).doubleValue();
+        return Math.round(winLoseRatio *100.0) / 100.0;
     }
 
     @Override
