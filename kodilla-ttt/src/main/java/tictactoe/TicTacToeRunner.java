@@ -99,6 +99,7 @@ public class TicTacToeRunner extends Application {
         if (!currentGame.getHumanStarts()) { // computer's opening move
             System.out.println("Computer starts");
             messageBoard.setText("Computer's turn");
+            System.out.println("Going to call setHumanTurn() in performFirstMove() line 103");
             currentGame.setHumanTurn(false);
             currentGame.makeComputerMove();
 
@@ -108,6 +109,7 @@ public class TicTacToeRunner extends Application {
 
         } else {
             System.out.println("Player starts");
+            System.out.println("Going to call setHumanTurn() in performFirstMove() in line 113");
             currentGame.setHumanTurn(true);
             messageBoard.setText(currentGame.getHumanPlayerName() + "'s turn");
         }
@@ -145,6 +147,7 @@ public class TicTacToeRunner extends Application {
     }
 
     private void handleMouseClickCell(MouseEvent event) {
+        System.out.println("Calling handleMouseClickCell() method");
 
         ImageView eventObject = (ImageView) event.getSource();
 
@@ -154,12 +157,14 @@ public class TicTacToeRunner extends Application {
             MessageBox.displayMessage("Cell taken", "This cell is already taken. Please choose different one");
 
         } else if ((currentGame.getHumanTurn()) && (eventObject.getImage().equals(ANIMATION_FOR_X))) {
+            System.out.println("Player makes move:");
             eventObject.setImage(IMAGE_FOR_X);
             int rowIndex = GridPane.getRowIndex(eventObject);
             int columnIndex = GridPane.getColumnIndex(eventObject);
             System.out.println("Player chose row: " + rowIndex + ", column: " + columnIndex);
             currentGame.setGameMatrixValue(rowIndex, columnIndex, CellStatus.CROSS);
             checkBoard();
+            System.out.println("Going to call setHumanTurn() in line 168");
             currentGame.setHumanTurn(false);
             messageBoard.setText("Computer's turn");
 

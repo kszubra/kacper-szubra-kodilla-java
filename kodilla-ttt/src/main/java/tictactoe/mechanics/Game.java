@@ -293,12 +293,12 @@ public class Game {
             if (gameMode.equals(GameMode.RANDOM)) {
                 System.out.println("Computer makes random move:");
                 makeRandomComputerMove();
-                setHumanTurn(true);
             } else if (gameMode.equals(GameMode.STRATEGIC)) {
                 System.out.println("Computer makes strategic move:");
                 makeStrategicComputerMove();
-                setHumanTurn(true);
             }
+            System.out.println("Going to call setHumanTurn() in makeComputerMove()");
+            setHumanTurn(true);
         }
 
     }
