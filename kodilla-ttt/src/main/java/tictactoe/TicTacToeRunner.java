@@ -42,10 +42,7 @@ import tictactoe.popupboxes.NewGameBox;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class TicTacToeRunner extends Application {
@@ -254,7 +251,12 @@ public class TicTacToeRunner extends Application {
     private void updateRankingBoard() {
         StringBuilder rankingBuilder = new StringBuilder();
 
-        for(Map.Entry<String, ScoreKeeper> entry : scoreBoardMap.entrySet()){
+        List<Map.Entry<String, ScoreKeeper>> sortedList = new ArrayList<>();
+        sortedList.addAll(scoreBoardMap.entrySet());
+
+        sortedList.sort((a,b) -> a.getValue().compareTo(b.getValue()));
+
+        for(Map.Entry<String, ScoreKeeper> entry : sortedList){
             rankingBuilder.append(entry.getKey() + ": " + entry.getValue().toString());
         }
 
@@ -494,7 +496,13 @@ public class TicTacToeRunner extends Application {
     }
 
     public static void main(String[] args) {
-        launch(args);
+
+       try {
+           launch(args);
+       } catch (Exception exp) {
+           System.out.println(exp.getCause());
+       }
+
 
     }
 

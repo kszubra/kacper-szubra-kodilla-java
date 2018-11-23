@@ -2,7 +2,9 @@ package tictactoe.mechanics;
 
 import java.io.Serializable;
 
-public class ScoreKeeper implements Serializable {
+public class ScoreKeeper implements Serializable, Comparable {
+
+    private static final long serialVersionUID = 6490758134151908748L;
     private int wonByPlayer;
     private int lostByPlayer;
     private double winLoseRatio;
@@ -42,6 +44,14 @@ public class ScoreKeeper implements Serializable {
 
     private double roundDouble() {
         return Math.round(winLoseRatio *100.0) / 100.0;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        ScoreKeeper a = (ScoreKeeper)o;
+        if (this.winLoseRatio > a.getWinLoseRatio()) {return -1;}
+        if (this.winLoseRatio < a.getWinLoseRatio()) {return 1;}
+        else return 0;
     }
 
     @Override
