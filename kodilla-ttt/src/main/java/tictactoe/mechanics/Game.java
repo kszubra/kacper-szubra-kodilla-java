@@ -288,8 +288,9 @@ public class Game {
     }
 
     public void makeComputerMove() {
+        setWinner(Rules.checkGameMatrixForWinner(gameMatrix));
 
-        if (!humanTurn) {
+        if (!humanTurn & winner.equals(EMPTY)) {
             if (gameMode.equals(GameMode.RANDOM)) {
                 System.out.println("Computer makes random move:");
                 makeRandomComputerMove();
@@ -297,10 +298,18 @@ public class Game {
                 System.out.println("Computer makes strategic move:");
                 makeStrategicComputerMove();
             }
+            setWinner(Rules.checkGameMatrixForWinner(gameMatrix));
             System.out.println("Going to call setHumanTurn() in makeComputerMove()");
             setHumanTurn(true);
         }
 
+    }
+
+    public void setPlayerChoice (int rowIndex, int columnIndex) {
+        setGameMatrixValue(rowIndex, columnIndex, CellStatus.CROSS);
+        setWinner(Rules.checkGameMatrixForWinner(gameMatrix));
+        System.out.println("Calling setHumanTurn() in setPlayerChoice");
+        setHumanTurn(false);
     }
 
 

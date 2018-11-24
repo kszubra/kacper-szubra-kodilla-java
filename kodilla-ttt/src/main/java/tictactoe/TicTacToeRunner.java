@@ -9,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -67,10 +68,12 @@ public class TicTacToeRunner extends Application {
     private Button exitButton, newGameButton, restartGameButton, saveGameButton, loadLastSaveButton, musicOnOffButton;
     private VBox buttons, rightScoreBoard;
 
+    private ScrollPane scrollPaneForRanking;
+
     GridPane gameBoardPane;
 
     private HBox topRoundBar, bottomTextBar;
-    private Text messageBoard, bottomText, playerScoreText, computerScoreText, rightRankingText;
+    private Text messageBoard, bottomText, playerScoreText, rightRankingText;
     private LocalDateTime currentTime;
     private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -90,8 +93,7 @@ public class TicTacToeRunner extends Application {
     }
 
     private void updateScoreBoard() {
-        playerScoreText.setText("Player's score: \r\n" + roundsWonByPlayer);
-        computerScoreText.setText("Computer's score: \r\n" + roundsWonByComputer);
+        playerScoreText.setText("Player's score: " + roundsWonByPlayer + " Computer's score: " + roundsWonByComputer);
     }
 
     private void performFirstMove() {
@@ -162,10 +164,10 @@ public class TicTacToeRunner extends Application {
             int rowIndex = GridPane.getRowIndex(eventObject);
             int columnIndex = GridPane.getColumnIndex(eventObject);
             System.out.println("Player chose row: " + rowIndex + ", column: " + columnIndex);
-            currentGame.setGameMatrixValue(rowIndex, columnIndex, CellStatus.CROSS);
+            currentGame.setPlayerChoice(rowIndex, columnIndex);
             checkBoard();
-            System.out.println("Going to call setHumanTurn() in line 168");
-            currentGame.setHumanTurn(false);
+            //System.out.println("Going to call setHumanTurn() in line 168");
+            //currentGame.setHumanTurn(false);
             messageBoard.setText("Computer's turn");
 
             // COMPUTER MOVE HERE
@@ -277,6 +279,14 @@ public class TicTacToeRunner extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        BackgroundSize backgroundSize = new BackgroundSize(SCREEN_WIDTH * 0.6, SCREEN_HEIGHT * 0.6, true, true, true, true);
+        BackgroundImage backgroundImage = new BackgroundImage(IMAGE_FOR_BACKGROUND, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
+        Background background = new Background(backgroundImage);
+
+        BackgroundSize boardBackgroundSize = new BackgroundSize(IMAGE_FOR_GAME_BOARD.getWidth(), IMAGE_FOR_BACKGROUND.getHeight(), true, true, true, false);
+        BackgroundImage boardBackgroundImage = new BackgroundImage(IMAGE_FOR_GAME_BOARD, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, boardBackgroundSize);
+        Background boardBackground = new Background(boardBackgroundImage);
 
         try{
             ObjectInputStream inStreamLoadScoreBoard = new ObjectInputStream(new FileInputStream(SCORE_BOARD_PATH));
@@ -399,29 +409,30 @@ public class TicTacToeRunner extends Application {
             }
         });
 
-        playerScoreText = new Text("Player's score: \r\n" + roundsWonByPlayer);
+        playerScoreText = new Text("Player's score: " + roundsWonByPlayer + " Computer's score: " + roundsWonByComputer);
         playerScoreText.setFont(Font.font("Verdana", 20));
-        playerScoreText.setFill(Color.WHITE);
-
-        computerScoreText = new Text("Computer's score: \r\n" + roundsWonByComputer);
-        computerScoreText.setFont(Font.font("Verdana", 20));
-        computerScoreText.setFill(Color.WHITE);
+        playerScoreText.setFill(Color.BLACK);
 
         rightRankingText = new Text();
         rightRankingText.setFont(Font.font("Verdana", 15));
-        rightRankingText.setFill(Color.WHITE);
+        rightRankingText.setFill(Color.BLACK);
+
+        scrollPaneForRanking = new ScrollPane();
+        scrollPaneForRanking.setContent(rightRankingText);
+        scrollPaneForRanking.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPaneForRanking.setPrefViewportHeight(IMAGE_FOR_EMPTY_FIELD.getHeight() * 2);
+
         updateRankingBoard();
 
-        rightScoreBoard = new VBox(playerScoreText, computerScoreText, rightRankingText);
+        rightScoreBoard = new VBox(playerScoreText, scrollPaneForRanking);
         rightScoreBoard.setSpacing(20);
-
 
         buttons = new VBox(exitButton, newGameButton, restartGameButton, saveGameButton, loadLastSaveButton, musicOnOffButton);
         buttons.setSpacing(25);
 
         messageBoard = new Text();
         messageBoard.setFont(Font.font("Verdana", 45));
-        messageBoard.setFill(Color.WHITE);
+        messageBoard.setFill(Color.BLACK);
 
         topRoundBar = new HBox(messageBoard);
         topRoundBar.setSpacing(15);
@@ -430,7 +441,7 @@ public class TicTacToeRunner extends Application {
         currentTime = LocalDateTime.now();
         bottomText.setText(currentTime.format(timeFormatter));
         bottomText.setFont(Font.font("Verdana", 45));
-        bottomText.setFill(Color.WHITE);
+        bottomText.setFill(Color.BLACK);
         final Timeline clockTimeline = new Timeline(
                 new KeyFrame(
                         Duration.seconds(1),
@@ -444,14 +455,6 @@ public class TicTacToeRunner extends Application {
         clockTimeline.play();
 
         bottomTextBar = new HBox(bottomText);
-
-        BackgroundSize backgroundSize = new BackgroundSize(SCREEN_WIDTH * 0.6, SCREEN_HEIGHT * 0.6, true, true, true, true);
-        BackgroundImage backgroundImage = new BackgroundImage(IMAGE_FOR_BACKGROUND, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
-        Background background = new Background(backgroundImage);
-
-        BackgroundSize boardBackgroundSize = new BackgroundSize(IMAGE_FOR_GAME_BOARD.getWidth(), IMAGE_FOR_BACKGROUND.getHeight(), true, true, true, false);
-        BackgroundImage boardBackgroundImage = new BackgroundImage(IMAGE_FOR_GAME_BOARD, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, boardBackgroundSize);
-        Background boardBackground = new Background(boardBackgroundImage);
 
         gameBoardPane = new GridPane();
         gameBoardPane.setGridLinesVisible(true);
@@ -476,8 +479,11 @@ public class TicTacToeRunner extends Application {
         borderPane.setTop(topRoundBar);
         borderPane.setBottom(bottomTextBar);
         borderPane.setRight(rightScoreBoard);
+        gameBoardPane.setAlignment(Pos.CENTER); //here was last change
         topRoundBar.setAlignment(Pos.CENTER);
         bottomTextBar.setAlignment(Pos.CENTER);
+        buttons.setAlignment(Pos.CENTER);
+        rightScoreBoard.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(borderPane, IMAGE_FOR_BACKGROUND.getWidth(), IMAGE_FOR_BACKGROUND.getHeight(), Color.BLACK);
 

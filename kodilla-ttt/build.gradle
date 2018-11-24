@@ -5,7 +5,7 @@ plugins {
 group 'com.kodilla'
 version '0.0.1-SNAPSHOT'
 
-sourceCompatibility = 1.10
+sourceCompatibility = 1.9
 
 repositories {
     mavenCentral()
