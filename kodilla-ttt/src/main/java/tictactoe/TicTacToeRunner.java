@@ -93,7 +93,7 @@ public class TicTacToeRunner extends Application {
     }
 
     private void updateScoreBoard() {
-        playerScoreText.setText("Player's score: " + roundsWonByPlayer + " Computer's score: " + roundsWonByComputer);
+        playerScoreText.setText("Player " + roundsWonByPlayer + ":"+ roundsWonByComputer +" Computer");
     }
 
     private void performFirstMove() {
@@ -276,7 +276,6 @@ public class TicTacToeRunner extends Application {
         rightRankingText.setText(rankingBuilder.toString());
     }
 
-
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -409,7 +408,7 @@ public class TicTacToeRunner extends Application {
             }
         });
 
-        playerScoreText = new Text("Player's score: " + roundsWonByPlayer + " Computer's score: " + roundsWonByComputer);
+        playerScoreText = new Text("Player " + roundsWonByPlayer + ":"+ roundsWonByComputer +" Computer");
         playerScoreText.setFont(Font.font("Verdana", 20));
         playerScoreText.setFill(Color.BLACK);
 
