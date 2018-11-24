@@ -159,10 +159,12 @@ public class TicTacToeRunner extends Application {
             MessageBox.displayMessage("Cell taken", "This cell is already taken. Please choose different one");
 
         } else if ((currentGame.getHumanTurn()) && (eventObject.getImage().equals(ANIMATION_FOR_X))) {
-            System.out.println("Player makes move:");
+            System.out.println("Calling setHumanTurn() in clickHandler:");
+            currentGame.setHumanTurn(false);
             eventObject.setImage(IMAGE_FOR_X);
             int rowIndex = GridPane.getRowIndex(eventObject);
             int columnIndex = GridPane.getColumnIndex(eventObject);
+            System.out.println("Player made move:");
             System.out.println("Player chose row: " + rowIndex + ", column: " + columnIndex);
             currentGame.setPlayerChoice(rowIndex, columnIndex);
             checkBoard();
