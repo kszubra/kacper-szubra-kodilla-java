@@ -166,8 +166,6 @@ public class TicTacToeRunner extends Application {
             System.out.println("Player chose row: " + rowIndex + ", column: " + columnIndex);
             currentGame.setPlayerChoice(rowIndex, columnIndex);
             checkBoard();
-            //System.out.println("Going to call setHumanTurn() in line 168");
-            //currentGame.setHumanTurn(false);
             messageBoard.setText("Computer's turn");
 
             // COMPUTER MOVE HERE
@@ -179,7 +177,6 @@ public class TicTacToeRunner extends Application {
             checkBoard();
             messageBoard.setText(currentGame.getHumanPlayerName() + "'s turn");
         }
-
     }
 
     private void checkBoard() {
