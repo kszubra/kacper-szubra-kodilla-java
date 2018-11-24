@@ -295,7 +295,6 @@ public class TicTacToeRunner extends Application {
             System.out.println("Successfully loaded score board file");
 
         } catch (FileNotFoundException a) { // If can't find file to load -> try to create it
-
             System.out.println("Unable to load score board file. trying to create it");
             this.scoreBoardMap = new HashMap<>();
             saveScoreBoardMap();
@@ -361,6 +360,7 @@ public class TicTacToeRunner extends Application {
         loadLastSaveButton = new Button("Load last checkpoint");
         loadLastSaveButton.setMinSize(200, 50);
         loadLastSaveButton.setOnMouseClicked(e -> {
+
             try{
                 ObjectInputStream inStreamLoadGame = new ObjectInputStream(new FileInputStream(CHECKPOINT_PATH));
                 currentGame.setGameFromCheckpoint((GameCheckpoint) inStreamLoadGame.readObject());

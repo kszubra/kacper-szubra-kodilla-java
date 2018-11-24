@@ -53,6 +53,6 @@ public class ScoreKeeper implements Serializable, Comparable {
 
     @Override
     public String toString() {
-        return "Won games: " + wonByPlayer + " | Lost games: " + lostByPlayer + " | W/L ratio: " + getWinLoseRatio() + "\r\n";
+        return "W/L: " + getWinLoseRatio() + " (" + wonByPlayer + " won to " + lostByPlayer + " lost) \r\n";
     }
 }
