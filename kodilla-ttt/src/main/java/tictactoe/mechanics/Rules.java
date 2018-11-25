@@ -54,50 +54,28 @@ public class Rules {
 
     public static CellStatus checkGameMatrixForWinner(CellStatus[][] gameMatrix){
 
-        // rows
+        Map<String, List<CellStatus>> mapOfMatrixLines = makeMapOfLineCoordinatesInMatrix(gameMatrix);
+        List<List<CellStatus>> listOfMapValues = new ArrayList<>();
+        listOfMapValues.addAll(mapOfMatrixLines.values());
 
-        if(gameMatrix[0][0].equals(gameMatrix[0][1]) && gameMatrix[0][0].equals(gameMatrix[0][2])) {
-            System.out.println("checkGameMatrixForWinner returns row: " + gameMatrix[0][0]);
-            return gameMatrix[0][0];
+        //look for line with only crosses
+        for(List<CellStatus> matrixLine : listOfMapValues){
+            if(Collections.frequency(matrixLine, CROSS) == matrixLine.size()) {
+                System.out.println("checkGameMatrixForWinner() returns winner: CROSS");
+                return CROSS;
+            }
         }
-        if(gameMatrix[1][0].equals(gameMatrix[1][1]) && gameMatrix[1][0].equals(gameMatrix[1][2])) {
-            System.out.println("checkGameMatrixForWinner returns row: " + gameMatrix[1][0]);
-            return gameMatrix[1][0];
-        }
-        if(gameMatrix[2][0].equals(gameMatrix[2][1]) && gameMatrix[2][0].equals(gameMatrix[2][2])) {
-            System.out.println("checkGameMatrixForWinner returns row: " + gameMatrix[2][0]);
-            return gameMatrix[2][0];
-        }
-
-        // columns
-
-        if(gameMatrix[0][0].equals(gameMatrix[1][0]) && gameMatrix[0][0].equals(gameMatrix[2][0])) {
-            System.out.println("checkGameMatrixForWinner returns column: " + gameMatrix[0][0]);
-            return gameMatrix[0][0];
-        }
-        if(gameMatrix[0][1].equals(gameMatrix[1][1]) && gameMatrix[0][1].equals(gameMatrix[2][1])) {
-            System.out.println("checkGameMatrixForWinner returns column: " + gameMatrix[0][1]);
-            return gameMatrix[0][1];
-        }
-        if(gameMatrix[0][2].equals(gameMatrix[1][2]) && gameMatrix[0][2].equals(gameMatrix[2][2])) {
-            System.out.println("checkGameMatrixForWinner returns column: " + gameMatrix[0][2]);
-            return gameMatrix[0][2];
+        //look for line with only circles
+        for(List<CellStatus> matrixLine : listOfMapValues){
+            if(Collections.frequency(matrixLine, CIRCLE) == matrixLine.size()) {
+                System.out.println("checkGameMatrixForWinner() returns winner: CIRCLE");
+                return CIRCLE;
+            }
         }
 
-        // diagonals
-
-        if(gameMatrix[0][0].equals(gameMatrix[1][1]) && gameMatrix[0][0].equals(gameMatrix[2][2])) {
-            System.out.println("checkGameMatrixForWinner returns diagonal: " + gameMatrix[0][0]);
-            return gameMatrix[0][0];
-        }
-        if(gameMatrix[0][2].equals(gameMatrix[1][1]) && gameMatrix[0][2].equals(gameMatrix[2][0])) {
-            System.out.println("checkGameMatrixForWinner returns diagonal: " + gameMatrix[0][2]);
-            return gameMatrix[0][2];
-        }
-
-        System.out.println("checkGameMatrixForWinner returns EMPTY");
-        return CellStatus.EMPTY;
-
+        //else return empty
+        System.out.println("checkGameMatrixForWinner() didn't find winner, returning EMPTY");
+        return EMPTY;
     }
 
     public static Map<String, List<CellStatus>> giveLineInDanger(Map<String, List<CellStatus>> mapOfLines){

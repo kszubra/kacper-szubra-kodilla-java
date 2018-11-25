@@ -101,6 +101,40 @@ public class RulesTestSuite {
     }
 
     @Test
+    public void testCheckGameMatrixForWinner6(){
+        //Given
+        CellStatus[][] testMatrix = {
+                {CIRCLE, EMPTY, CROSS},
+                {CIRCLE, EMPTY, CROSS},
+                {EMPTY, EMPTY,CROSS}
+        };
+
+        //When
+        CellStatus expectedResult = CROSS;
+
+        //Then
+        Assert.assertEquals(expectedResult, Rules.checkGameMatrixForWinner(testMatrix));
+
+    }
+
+    @Test
+    public void testCheckGameMatrixForWinner7(){
+        //Given
+        CellStatus[][] testMatrix = {
+                {CIRCLE, EMPTY, CROSS},
+                {EMPTY, EMPTY, EMPTY},
+                {CROSS, CROSS,CROSS}
+        };
+
+        //When
+        CellStatus expectedResult = CROSS;
+
+        //Then
+        Assert.assertEquals(expectedResult, Rules.checkGameMatrixForWinner(testMatrix));
+
+    }
+
+    @Test
     public void testCreatingPlayableLines(){
         //Given
         CellStatus[][] testMatrix = {
