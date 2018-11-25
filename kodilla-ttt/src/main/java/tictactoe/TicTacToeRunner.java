@@ -104,9 +104,7 @@ public class TicTacToeRunner extends Application {
             System.out.println("Going to call setHumanTurn() in performFirstMove() line 103");
             currentGame.setHumanTurn(false);
             currentGame.makeComputerMove();
-
-            String key = "" + currentGame.getComputerChoiceRow() + currentGame.getComputerChoiceColumn();
-            cellsMap.get(key).setImage(IMAGE_FOR_O);
+            setComputerChoiceOnBoard(currentGame.getComputerChoiceRow(), currentGame.getComputerChoiceColumn());
             messageBoard.setText(currentGame.getHumanPlayerName() + "'s turn");
 
         } else {
@@ -148,6 +146,12 @@ public class TicTacToeRunner extends Application {
         }
     }
 
+    private void setComputerChoiceOnBoard(int row, int column){
+        System.out.println("Going to set circle image in row: " + row + ", column: " + column);
+        String key = "" +row + column;
+        cellsMap.get(key).setImage(IMAGE_FOR_O);
+    }
+
     private void handleMouseClickCell(MouseEvent event) {
         System.out.println("Calling handleMouseClickCell() method");
 
@@ -173,9 +177,7 @@ public class TicTacToeRunner extends Application {
             // COMPUTER MOVE HERE
             currentGame.makeComputerMove();
             // make image on board change
-            String key = "" + currentGame.getComputerChoiceRow() + currentGame.getComputerChoiceColumn();
-            cellsMap.get(key).setImage(IMAGE_FOR_O);
-
+            setComputerChoiceOnBoard(currentGame.getComputerChoiceRow(), currentGame.getComputerChoiceColumn());
             checkBoard();
             messageBoard.setText(currentGame.getHumanPlayerName() + "'s turn");
         }
@@ -219,8 +221,6 @@ public class TicTacToeRunner extends Application {
             } else{
                 System.exit(0);
             }
-        } else {
-            System.out.print("No winner \r\n");
         }
     }
 

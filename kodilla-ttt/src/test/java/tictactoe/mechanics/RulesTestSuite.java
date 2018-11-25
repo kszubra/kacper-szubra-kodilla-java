@@ -135,6 +135,40 @@ public class RulesTestSuite {
     }
 
     @Test
+    public void testCheckGameMatrixForWinner8(){
+        //Given
+        CellStatus[][] testMatrix = {
+                {CROSS, CIRCLE, CROSS},
+                {CIRCLE, CIRCLE, CIRCLE},
+                {CIRCLE, CROSS,CROSS}
+        };
+
+        //When
+        CellStatus expectedResult = CIRCLE;
+
+        //Then
+        Assert.assertEquals(expectedResult, Rules.checkGameMatrixForWinner(testMatrix));
+
+    }
+
+    @Test
+    public void testCheckGameMatrixForWinner9(){
+        //Given
+        CellStatus[][] testMatrix = {
+                {CIRCLE, CROSS, CROSS},
+                {CROSS, CIRCLE, CROSS},
+                {CIRCLE, CIRCLE,CIRCLE}
+        };
+
+        //When
+        CellStatus expectedResult = CIRCLE;
+
+        //Then
+        Assert.assertEquals(expectedResult, Rules.checkGameMatrixForWinner(testMatrix));
+
+    }
+
+    @Test
     public void testCreatingPlayableLines(){
         //Given
         CellStatus[][] testMatrix = {
