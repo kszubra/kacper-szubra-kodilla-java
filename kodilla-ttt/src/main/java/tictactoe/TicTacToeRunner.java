@@ -83,7 +83,7 @@ public class TicTacToeRunner extends Application {
     private Game currentGame;
 
     private void newGame() {
-        System.out.println("Starting new game");
+        System.out.println("--------------------------------------Starting new game--------------------------------------");
         setAllGameFieldsToEmpty();
         roundsWonByComputer = 0;
         roundsWonByPlayer = 0;
@@ -97,7 +97,7 @@ public class TicTacToeRunner extends Application {
     }
 
     private void performFirstMove() {
-        System.out.println("New round starts here");
+        System.out.println("--------------------------------------New round starts here--------------------------------------");
         if (!currentGame.getHumanStarts()) { // computer's opening move
             System.out.println("Computer starts");
             messageBoard.setText("Computer's turn");
