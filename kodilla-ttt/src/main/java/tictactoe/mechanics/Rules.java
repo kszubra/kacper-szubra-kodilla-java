@@ -55,18 +55,17 @@ public class Rules {
     public static CellStatus checkGameMatrixForWinner(CellStatus[][] gameMatrix){
 
         Map<String, List<CellStatus>> mapOfMatrixLines = makeMapOfLineCoordinatesInMatrix(gameMatrix);
-        List<List<CellStatus>> listOfMapValues = new ArrayList<>();
-        listOfMapValues.addAll(mapOfMatrixLines.values());
+        List<List<CellStatus>> listOfMapValues = new ArrayList<>(mapOfMatrixLines.values());
 
-        //look for line with only crosses
-        for(List<CellStatus> matrixLine : listOfMapValues){
+        for(List<CellStatus> matrixLine : listOfMapValues) {
+
+            //look for line with only crosses
             if(Collections.frequency(matrixLine, CROSS) == matrixLine.size()) {
                 System.out.println("checkGameMatrixForWinner() returns winner: CROSS");
                 return CROSS;
             }
-        }
-        //look for line with only circles
-        for(List<CellStatus> matrixLine : listOfMapValues){
+
+            //look for line with only circles
             if(Collections.frequency(matrixLine, CIRCLE) == matrixLine.size()) {
                 System.out.println("checkGameMatrixForWinner() returns winner: CIRCLE");
                 return CIRCLE;
