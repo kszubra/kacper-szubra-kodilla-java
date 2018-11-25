@@ -12,11 +12,11 @@ public class InitialGameData {
         this.gameMode = gameMode;
     }
 
-    public String getPlayerName() {
+    String getPlayerName() {
         return playerName;
     }
 
-    public GameMode getGameMode() {
+    GameMode getGameMode() {
         return gameMode;
     }
 }

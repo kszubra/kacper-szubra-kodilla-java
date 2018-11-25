@@ -12,9 +12,9 @@ import static tictactoe.enumerics.CellStatus.EMPTY;
 
 public class Rules {
 
-    public static final Random RANDOM_GENERATOR = new Random();
+    static final Random RANDOM_GENERATOR = new Random();
 
-    public static Map<String, List<CellStatus>> makeMapOfLineCoordinatesInMatrix(CellStatus[][] matrix){ //turns matrix into a map of lines
+    static Map<String, List<CellStatus>> makeMapOfLineCoordinatesInMatrix(CellStatus[][] matrix){ //turns matrix into a map of lines
 
         Map<String, List<CellStatus>> mapToReturn = new HashMap<>();
 
@@ -77,7 +77,7 @@ public class Rules {
         return EMPTY;
     }
 
-    public static Map<String, List<CellStatus>> giveLineInDanger(Map<String, List<CellStatus>> mapOfLines){
+    static Map<String, List<CellStatus>> giveLineInDanger(Map<String, List<CellStatus>> mapOfLines){
 
         return mapOfLines.entrySet().stream()
                 .filter(e-> Collections.frequency(e.getValue(), CROSS) == 2)
@@ -86,7 +86,7 @@ public class Rules {
 
     }
 
-    public static Map<String, List<CellStatus>> giveLineWithChance(Map<String, List<CellStatus>> mapOfLines){
+    static Map<String, List<CellStatus>> giveLineWithChance(Map<String, List<CellStatus>> mapOfLines){
 
         return mapOfLines.entrySet().stream()
                 .filter(e-> Collections.frequency(e.getValue(), CIRCLE) == 2)
@@ -95,7 +95,7 @@ public class Rules {
 
     }
 
-    public static Map<String, List<CellStatus>> giveLineToContinue(Map<String, List<CellStatus>> mapOfLines){
+    static Map<String, List<CellStatus>> giveLineToContinue(Map<String, List<CellStatus>> mapOfLines){
 
         return mapOfLines.entrySet().stream()
                 .filter(e-> Collections.frequency(e.getValue(), CIRCLE) == 1)
@@ -105,7 +105,7 @@ public class Rules {
     }
 
 
-    public static String tellIndexOfLastEmptyInLine(Map<String, List<CellStatus>> lineToComplete){
+    static String tellIndexOfLastEmptyInLine(Map<String, List<CellStatus>> lineToComplete){
 
         String rowIndex = "none";
         String columnIndex = "none";
@@ -138,21 +138,21 @@ public class Rules {
     }
 
 
-    public static String tellCellToBlock(Map<String, List<CellStatus>> mapOfLines){
+    static String tellCellToBlock(Map<String, List<CellStatus>> mapOfLines){
 
         Map<String, List<CellStatus>> lineInDanger = Rules.giveLineInDanger(mapOfLines);
 
         return tellIndexOfLastEmptyInLine(lineInDanger);
     }
 
-    public static String tellCellToWin(Map<String, List<CellStatus>> mapOfLines){
+    static String tellCellToWin(Map<String, List<CellStatus>> mapOfLines){
 
         Map<String, List<CellStatus>> lineToWin = Rules.giveLineWithChance(mapOfLines);
 
         return tellIndexOfLastEmptyInLine(lineToWin);
     }
 
-    public static String tellCellToContinue(Map<String, List<CellStatus>> mapOfLines){
+    static String tellCellToContinue(Map<String, List<CellStatus>> mapOfLines){
 
         Map<String, List<CellStatus>> lineToContinue = Rules.giveLineToContinue(mapOfLines);
 

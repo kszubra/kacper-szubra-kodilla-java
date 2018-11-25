@@ -15,7 +15,7 @@ public class ScoreKeeper implements Serializable, Comparable {
         this.winLoseRatio = 0.0;
     }
 
-    public int getWonByPlayer() {
+    int getWonByPlayer() {
         return wonByPlayer;
     }
 
@@ -29,7 +29,7 @@ public class ScoreKeeper implements Serializable, Comparable {
         }
     }
 
-    public int getLostByPlayer() {
+    int getLostByPlayer() {
         return lostByPlayer;
     }
 
@@ -38,7 +38,7 @@ public class ScoreKeeper implements Serializable, Comparable {
         winLoseRatio = (double)wonByPlayer / (double)lostByPlayer;
     }
 
-    public double getWinLoseRatio() {
+    double getWinLoseRatio() {
         return Math.round(winLoseRatio *100.0) / 100.0;
     }
 

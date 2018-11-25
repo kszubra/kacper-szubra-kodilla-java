@@ -50,7 +50,7 @@ public class Game {
         return this.checkpoint;
     }
 
-    public GameMode getGameMode() {
+    GameMode getGameMode() {
         return gameMode;
     }
 
@@ -112,7 +112,7 @@ public class Game {
         this.winner = winner;
     }
 
-    public void setGameMatrixValue(int row, int column, CellStatus statusToSet) {
+    void setGameMatrixValue(int row, int column, CellStatus statusToSet) {
         this.gameMatrix[row][column] = statusToSet;
     }
 
@@ -137,7 +137,7 @@ public class Game {
         return ((gameMatrix[0][0].equals(EMPTY)) || (gameMatrix[MATRIX_ROWS-1][0].equals(EMPTY)) || (gameMatrix[0][MATRIX_COLUMNS-1].equals(EMPTY)) || (gameMatrix[MATRIX_ROWS-1][MATRIX_COLUMNS-1].equals(EMPTY)));
     }
 
-    public void playRandomCorner(){
+    void playRandomCorner(){
 
         if(checkIfHaveAnyFreeCorner()) {
             int randomCornerToPlay = Rules.RANDOM_GENERATOR.nextInt(4);
@@ -166,7 +166,7 @@ public class Game {
     }
 
 
-    public void playOppositeCornerTo(int row, int column) {
+    void playOppositeCornerTo(int row, int column) {
         int oppositeRow = 0;
         int oppositeColumn = 0;
 
@@ -188,28 +188,28 @@ public class Game {
 
     }
 
-    public void tryToWin(){
+    void tryToWin(){
             String cellToPlay = Rules.tellCellToWin(mapOfAvaiableLinesInGameMatrix);
             int row = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('R')+1, cellToPlay.indexOf('C')));
             int column = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('C')+1));
             setComputerChoiceFor(row, column);
     }
 
-    public void tryToBlock() {
+    void tryToBlock() {
             String cellToPlay = Rules.tellCellToBlock(mapOfAvaiableLinesInGameMatrix);
             int row = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('R')+1, cellToPlay.indexOf('C')));
             int column = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('C')+1));
             setComputerChoiceFor(row, column);
     }
 
-    public void tryToContinueStartedLine(){
+    void tryToContinueStartedLine(){
             String cellToPlay = Rules.tellCellToContinue(mapOfAvaiableLinesInGameMatrix);
             int row = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('R')+1, cellToPlay.indexOf('C')));
             int column = Integer.parseInt(cellToPlay.substring(cellToPlay.indexOf('C')+1));
             setComputerChoiceFor(row, column);
     }
 
-    public void makeRegularMove() {
+    void makeRegularMove() {
         if(checkIfHaveAnyFreeCorner()) {
             playRandomCorner();
         } else {
