@@ -50,6 +50,7 @@ public class TicTacToeRunner extends Application {
 
     private static final double SCREEN_HEIGHT = Screen.getPrimary().getVisualBounds().getHeight();
     private static final double SCREEN_WIDTH = Screen.getPrimary().getVisualBounds().getWidth();
+    private static final int NUMBER_OF_ROWS_AND_COLUMNS = 3;
 
     private static final Image IMAGE_FOR_BACKGROUND = new Image("Graphics/background.jpg");
     private static final Image IMAGE_FOR_GAME_BOARD = new Image("Graphics/FinalGraphics/board.jpg");
@@ -231,10 +232,8 @@ public class TicTacToeRunner extends Application {
             outStreamSaveScoreBoard.writeObject(scoreBoardMap);
             outStreamSaveScoreBoard.close();
 
-        } catch (FileNotFoundException noFile) {
-            MessageBox.displayMessage("Exception", noFile.getMessage());
-        } catch (IOException ioe) {
-            MessageBox.displayMessage("Exception", ioe.getMessage());
+        } catch (IOException savingIOException) {
+            MessageBox.displayMessage("Exception", savingIOException.getMessage());
         }
     }
 
@@ -263,16 +262,28 @@ public class TicTacToeRunner extends Application {
     private void updateRankingBoard() {
         StringBuilder rankingBuilder = new StringBuilder();
 
-        List<Map.Entry<String, ScoreKeeper>> sortedList = new ArrayList<>();
-        sortedList.addAll(scoreBoardMap.entrySet());
+        List<Map.Entry<String, ScoreKeeper>> sortedRanking = new ArrayList<>();
+        sortedRanking.addAll(scoreBoardMap.entrySet());
 
-        sortedList.sort(Comparator.comparing(Map.Entry::getValue));
+        sortedRanking.sort(Comparator.comparing(Map.Entry::getValue));
 
-        for(Map.Entry<String, ScoreKeeper> entry : sortedList){
+        for(Map.Entry<String, ScoreKeeper> entry : sortedRanking){
             rankingBuilder.append(entry.getKey() + ": " + entry.getValue().toString());
         }
 
         rightRankingText.setText(rankingBuilder.toString());
+    }
+
+    private void generateCell(int row, int column) {
+        ImageView cellImage = new ImageView(IMAGE_FOR_EMPTY_FIELD);
+        cellImage.setPickOnBounds(true);
+        gameBoardPane.add(cellImage, column, row);
+
+        String key = "" + row + column;
+        cellsMap.put(key, cellImage);
+        cellImage.setOnMouseEntered(e -> handleMouseEntersCell(e));
+        cellImage.setOnMouseExited(e -> handleMouseExitsCell(e));
+        cellImage.setOnMouseClicked(e -> handleMouseClickCell(e));
     }
 
     @Override
@@ -292,7 +303,7 @@ public class TicTacToeRunner extends Application {
             inStreamLoadScoreBoard.close();
             System.out.println("Successfully loaded score board file");
 
-        } catch (FileNotFoundException a) { // If can't find file to load -> try to create it
+        } catch (FileNotFoundException fileNotfoundException) { // If can't find file to load -> try to create it
             System.out.println("Unable to load score board file. trying to create it");
             this.scoreBoardMap = new HashMap<>();
             saveScoreBoardMap();
@@ -347,10 +358,8 @@ public class TicTacToeRunner extends Application {
                 outStreamSaveGame.close();
                 MessageBox.displayMessage("Checkpoint", "Checkpoint successfully created");
 
-            } catch (FileNotFoundException a) {
-                MessageBox.displayMessage("Exception", a.getMessage());
-            } catch (IOException b) {
-                MessageBox.displayMessage("Exception", b.getMessage());
+            } catch (IOException saveGameException) {
+                MessageBox.displayMessage("Exception", saveGameException.getMessage());
             }
 
         });
@@ -364,18 +373,14 @@ public class TicTacToeRunner extends Application {
                 currentGame.setGameFromCheckpoint((GameCheckpoint) inStreamLoadGame.readObject());
                 inStreamLoadGame.close();
 
-            } catch (FileNotFoundException a) {
-                MessageBox.displayMessage("Exception", a.getMessage());
-            } catch (IOException b) {
-                MessageBox.displayMessage("Exception", b.getMessage());
-            } catch (ClassNotFoundException c) {
-                MessageBox.displayMessage("Exception", c.getMessage());
+            } catch (IOException | ClassNotFoundException loadGameException) {
+                MessageBox.displayMessage("Exception", loadGameException.getMessage());
             }
 
             CellStatus[][] matrixFromGame = currentGame.getGameMatrix();
 
-            for (int row = 0; row < 3; row++) {
-                for (int col = 0; col < 3; col++) {
+            for (int row = 0; row < NUMBER_OF_ROWS_AND_COLUMNS; row++) {
+                for (int col = 0; col < NUMBER_OF_ROWS_AND_COLUMNS; col++) {
 
                     if (matrixFromGame[row][col].equals(CellStatus.CROSS)) {
                         cellsMap.get(""+row+col).setImage(IMAGE_FOR_X);
@@ -487,37 +492,19 @@ public class TicTacToeRunner extends Application {
 
         primaryStage.setTitle("Tick Tack Toe");
         primaryStage.setResizable(false);
-
         primaryStage.initStyle(StageStyle.UNIFIED);
-
         primaryStage.setOpacity(1);
-
         primaryStage.setScene(scene);
         primaryStage.show();
 
         newGame();
     }
 
-    private void generateCell(int row, int column) {
-        ImageView cellImage = new ImageView(IMAGE_FOR_EMPTY_FIELD);
-        cellImage.setPickOnBounds(true);
-        gameBoardPane.add(cellImage, column, row);
 
-        String key = "" + row + column;
-        cellsMap.put(key, cellImage);
-        cellImage.setOnMouseEntered(e -> handleMouseEntersCell(e));
-        cellImage.setOnMouseExited(e -> handleMouseExitsCell(e));
-        cellImage.setOnMouseClicked(e -> handleMouseClickCell(e));
-    }
 
     public static void main(String[] args) {
 
-       try {
            launch(args);
-       } catch (Exception exp) {
-           System.out.println(exp.getCause());
-       }
-
 
     }
 

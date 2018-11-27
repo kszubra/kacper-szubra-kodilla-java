@@ -219,8 +219,6 @@ public class Game {
                 makeRandomComputerMove();
             }
         }
-
-
     }
 
     private void makeStrategicComputerMove() {

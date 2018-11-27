@@ -169,6 +169,23 @@ public class RulesTestSuite {
     }
 
     @Test
+    public void testCheckGameMatrixForWinner10(){
+        //Given
+        CellStatus[][] testMatrix = {
+                {CIRCLE, CROSS, CROSS},
+                {CROSS, CIRCLE, CIRCLE},
+                {CIRCLE, CIRCLE,CROSS}
+        };
+
+        //When
+        CellStatus expectedResult = EMPTY;
+
+        //Then
+        Assert.assertEquals(expectedResult, Rules.checkGameMatrixForWinner(testMatrix));
+
+    }
+
+    @Test
     public void testCreatingPlayableLines(){
         //Given
         CellStatus[][] testMatrix = {
