@@ -42,7 +42,7 @@ public class GameCheckpointTestSuite {
         //Then
         Assert.assertTrue(expectedName.equals(realName));
         Assert.assertEquals(realHumanTurn, expectedHumanTurn);
-        Assert.assertEquals(expectedMatrix, realMatrix);
+        Assert.assertArrayEquals(expectedMatrix, realMatrix);
     }
 
     @Test
@@ -81,7 +81,7 @@ public class GameCheckpointTestSuite {
         //Then
         Assert.assertTrue(expectedName.equals(realName));
         Assert.assertEquals(expectedHumanTurn, realHumanTurn);
-        Assert.assertEquals(expectedMatrix, realMatrix);
+        Assert.assertArrayEquals(expectedMatrix, realMatrix);
         Assert.assertEquals(expectedGameMode, realGameMode);
     }
 }
