@@ -138,21 +138,21 @@ public class Rules {
     }
 
 
-    static String tellCellToBlock(Map<String, List<CellStatus>> mapOfLines){
+    static String tellCellToBlock(Map<String, List<CellStatus>> mapOfLines) {
 
         Map<String, List<CellStatus>> lineInDanger = Rules.giveLineInDanger(mapOfLines);
 
         return tellIndexOfLastEmptyInLine(lineInDanger);
     }
 
-    static String tellCellToWin(Map<String, List<CellStatus>> mapOfLines){
+    static String tellCellToWin(Map<String, List<CellStatus>> mapOfLines) {
 
         Map<String, List<CellStatus>> lineToWin = Rules.giveLineWithChance(mapOfLines);
 
         return tellIndexOfLastEmptyInLine(lineToWin);
     }
 
-    static String tellCellToContinue(Map<String, List<CellStatus>> mapOfLines){
+    static String tellCellToContinue(Map<String, List<CellStatus>> mapOfLines) {
 
         Map<String, List<CellStatus>> lineToContinue = Rules.giveLineToContinue(mapOfLines);
 

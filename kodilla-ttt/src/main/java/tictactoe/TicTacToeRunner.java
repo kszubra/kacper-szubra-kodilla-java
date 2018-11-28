@@ -175,9 +175,7 @@ public class TicTacToeRunner extends Application {
             checkBoard();
             messageBoard.setText("Computer's turn");
 
-            // COMPUTER MOVE HERE
             currentGame.makeComputerMove();
-            // make image on board change
             setComputerChoiceOnBoard(currentGame.getComputerChoiceRow(), currentGame.getComputerChoiceColumn());
             checkBoard();
             messageBoard.setText(currentGame.getHumanPlayerName() + "'s turn");
