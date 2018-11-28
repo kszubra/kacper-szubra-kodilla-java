@@ -32,9 +32,7 @@ public class MovieStore {
 
     public void displayTitlesSeparatingWithExclamationMark() {
 
-        Map<String, List<String>> moviesToDisplay = getMovies();
-
-        moviesToDisplay.entrySet().stream()
+        getMovies().entrySet().stream()
                 .map(e->e.getValue())
                 .flatMap(e->e.stream())
                 .forEach(e->System.out.print(e+"!"));
