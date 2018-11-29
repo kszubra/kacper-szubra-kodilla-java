@@ -29,4 +29,12 @@ public class MovieStore {
         return booksTitlesWithTranslations;
     }
 
+    public void displayTitlesSeparatingWithExclamationMark() {
+
+        getMovies().entrySet().stream()
+                .map(e->e.getValue())
+                .flatMap(e->e.stream())
+                .forEach(e->System.out.print(e+"!"));
+    }
+
 }
