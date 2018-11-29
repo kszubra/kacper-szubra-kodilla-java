@@ -1,8 +1,6 @@
-package com.kodilla.good.patterns;
+package com.kodilla.good.patterns.challenges.one;
 
-import com.kodilla.good.patterns.challenges.MovieStore;
-
-public class main {
+public class ChallengeOneRunner {
     public static void main(String[] args) {
         MovieStore movieStore = new MovieStore();
         movieStore.displayTitlesSeparatingWithExclamationMark();
