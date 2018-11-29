@@ -1,8 +1,6 @@
-package com.kodilla.good.patterns;
+package com.kodilla.good.patterns.challenges.two;
 
-import com.kodilla.good.patterns.challenges.*;
-
-public class main {
+public class ChallengeTwoRunner {
     public static void main(String[] args) {
         PurchaseRequestRetriever purchaseRequestRetriever = new PurchaseRequestRetriever();
         PurchaseRequest purchaseRequest = purchaseRequestRetriever.getRequest();
