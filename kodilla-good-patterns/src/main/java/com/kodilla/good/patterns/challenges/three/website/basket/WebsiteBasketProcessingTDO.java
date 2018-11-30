@@ -1,4 +1,4 @@
-package com.kodilla.good.patterns.challenges.three.websitebasket;
+package com.kodilla.good.patterns.challenges.three.website.basket;
 
 import com.kodilla.good.patterns.challenges.three.producers.Producer;
 

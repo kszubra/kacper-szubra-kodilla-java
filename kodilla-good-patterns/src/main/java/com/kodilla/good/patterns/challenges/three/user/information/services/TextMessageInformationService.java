@@ -1,4 +1,4 @@
-package com.kodilla.good.patterns.challenges.three.userinformationservices;
+package com.kodilla.good.patterns.challenges.three.user.information.services;
 
 import com.kodilla.good.patterns.challenges.three.User;
 

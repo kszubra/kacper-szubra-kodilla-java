@@ -2,8 +2,8 @@ package com.kodilla.good.patterns.challenges.three.producers;
 
 import com.kodilla.good.patterns.challenges.three.OrderForProducer;
 import com.kodilla.good.patterns.challenges.three.Product;
-import com.kodilla.good.patterns.challenges.three.confirmationservices.DocConfirmation;
-import com.kodilla.good.patterns.challenges.three.confirmationservices.OrderConfirmationService;
+import com.kodilla.good.patterns.challenges.three.confirmation.services.DocConfirmation;
+import com.kodilla.good.patterns.challenges.three.confirmation.services.OrderConfirmationService;
 
 import java.util.Map;
 

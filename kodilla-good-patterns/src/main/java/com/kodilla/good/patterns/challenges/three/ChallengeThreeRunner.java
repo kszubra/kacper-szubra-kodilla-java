@@ -1,10 +1,10 @@
 package com.kodilla.good.patterns.challenges.three;
 
-import com.kodilla.good.patterns.challenges.three.userinformationservices.EmailInformationService;
-import com.kodilla.good.patterns.challenges.three.websitebasket.WebsiteBasket;
-import com.kodilla.good.patterns.challenges.three.websitebasket.WebsiteBasketCreator;
-import com.kodilla.good.patterns.challenges.three.websitebasket.WebsiteBasketProcessingTDO;
-import com.kodilla.good.patterns.challenges.three.websitebasket.WebsiteBasketProcessor;
+import com.kodilla.good.patterns.challenges.three.user.information.services.EmailInformationService;
+import com.kodilla.good.patterns.challenges.three.website.basket.WebsiteBasket;
+import com.kodilla.good.patterns.challenges.three.website.basket.WebsiteBasketCreator;
+import com.kodilla.good.patterns.challenges.three.website.basket.WebsiteBasketProcessingTDO;
+import com.kodilla.good.patterns.challenges.three.website.basket.WebsiteBasketProcessor;
 
 
 public class ChallengeThreeRunner {

@@ -1,4 +1,4 @@
-package com.kodilla.good.patterns.challenges.three.confirmationservices;
+package com.kodilla.good.patterns.challenges.three.confirmation.services;
 
 public class DocConfirmation implements OrderConfirmationService {
     @Override

@@ -1,9 +1,9 @@
-package com.kodilla.good.patterns.challenges.three.websitebasket;
+package com.kodilla.good.patterns.challenges.three.website.basket;
 
 import com.kodilla.good.patterns.challenges.three.OrderForProducer;
 import com.kodilla.good.patterns.challenges.three.User;
 import com.kodilla.good.patterns.challenges.three.producers.Producer;
-import com.kodilla.good.patterns.challenges.three.userinformationservices.InformWebsiteUserService;
+import com.kodilla.good.patterns.challenges.three.user.information.services.InformWebsiteUserService;
 
 import java.util.Map;
 

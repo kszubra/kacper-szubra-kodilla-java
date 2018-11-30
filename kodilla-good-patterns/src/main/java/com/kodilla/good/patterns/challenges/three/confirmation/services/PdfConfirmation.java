@@ -1,6 +1,4 @@
-package com.kodilla.good.patterns.challenges.three.confirmationservices;
-
-import java.io.ObjectOutputStream;
+package com.kodilla.good.patterns.challenges.three.confirmation.services;
 
 public class PdfConfirmation implements OrderConfirmationService {
 
