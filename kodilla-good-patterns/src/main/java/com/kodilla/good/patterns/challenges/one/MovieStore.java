@@ -29,7 +29,6 @@ public class MovieStore {
         return booksTitlesWithTranslations;
     }
 
-
     public void displayTitlesSeparatingWithExclamationMark() {
 
         getMovies().entrySet().stream()
