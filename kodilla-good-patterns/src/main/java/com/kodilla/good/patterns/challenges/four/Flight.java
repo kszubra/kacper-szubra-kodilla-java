@@ -44,9 +44,9 @@ public class Flight {
         return "Flight{" +
                 "flightNumber='" + flightNumber + '\'' +
                 ", departureCity='" + departureCity + '\'' +
-                ", departureTime=" + departureTime.format(airportTimeFormat.AIRPORT_TIME_FORMAT) +
+                ", departureTime=" + departureTime.format(AirportTimeFormat.AIRPORT_TIME_FORMAT) +
                 ", arrivalCity='" + arrivalCity + '\'' +
-                ", arrivalTime=" + arrivalTime.format(airportTimeFormat.AIRPORT_TIME_FORMAT) +
+                ", arrivalTime=" + arrivalTime.format(AirportTimeFormat.AIRPORT_TIME_FORMAT) +
                 '}';
     }
 
