@@ -5,4 +5,6 @@ include 'kodilla-exception'
 include 'kodilla-rps'
 include 'kodilla-blackjack'
 include 'kodilla-good-patterns'
+include 'kodilla-ttt'
+include 'kodilla-TicTacToe'
 
