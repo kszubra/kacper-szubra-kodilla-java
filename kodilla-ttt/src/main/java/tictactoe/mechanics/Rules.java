@@ -53,7 +53,7 @@ public class Rules {
     }
 
     public static CellStatus checkGameMatrixForWinner(CellStatus[][] gameMatrix){
-
+        System.out.println(Arrays.deepToString(gameMatrix));
         Map<String, List<CellStatus>> mapOfMatrixLines = makeMapOfLineCoordinatesInMatrix(gameMatrix);
         List<List<CellStatus>> listOfMapValues = new ArrayList<>(mapOfMatrixLines.values());
 

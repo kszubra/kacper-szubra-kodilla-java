@@ -46,6 +46,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static tictactoe.enumerics.CellStatus.EMPTY;
+
 public class TicTacToeRunner extends Application {
 
     private static final double SCREEN_HEIGHT = Screen.getPrimary().getVisualBounds().getHeight();
@@ -79,7 +81,10 @@ public class TicTacToeRunner extends Application {
     private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private Map<String, ImageView> cellsMap = new HashMap<>();
+    private ImageView[][] uiImageViewCellsMatrix = new ImageView[3][3];
     private Map<String, ScoreKeeper> scoreBoardMap;
+
+    private boolean uiHasEmptyFields;
 
     private Game currentGame;
 
@@ -182,14 +187,52 @@ public class TicTacToeRunner extends Application {
         }
     }
 
+    private CellStatus checkUIForWinner() {
+        System.out.println("Checking UI for the winner");
+        CellStatus[][] uiBoardStatus = new CellStatus[3][3];
+
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+
+                if(uiImageViewCellsMatrix[row][col].getImage().equals(IMAGE_FOR_EMPTY_FIELD)) {
+                    uiBoardStatus[row][col] = EMPTY;
+                } else if(uiImageViewCellsMatrix[row][col].getImage().equals(IMAGE_FOR_X)) {
+                    uiBoardStatus[row][col] = CellStatus.CROSS;
+                } else if(uiImageViewCellsMatrix[row][col].getImage().equals(IMAGE_FOR_O)) {
+                    uiBoardStatus[row][col] = CellStatus.CIRCLE;
+                }
+            }
+        }
+
+        if(Arrays.stream(uiBoardStatus).flatMap(Arrays::stream).anyMatch(e->e.equals(EMPTY))) {
+            uiHasEmptyFields = true;
+        } else {
+            uiHasEmptyFields = false;
+        }
+
+        if(Arrays.deepEquals(uiBoardStatus, currentGame.getGameMatrix())) {
+            System.out.println("UI and game boards are equal");
+        } else {
+            System.out.println("UI and game boards ARE NOT EQUAL!!");
+        }
+
+        System.out.println("UI board: ");
+
+        return Rules.checkGameMatrixForWinner(uiBoardStatus);
+
+    }
+
     private void checkBoard() {
         System.out.print("checking board... ");
+        CellStatus gameWinnerByUI = checkUIForWinner();
+        System.out.println("Game winner due to UI: " + gameWinnerByUI);
+        System.out.println("Game board: ");
         currentGame.setWinner(Rules.checkGameMatrixForWinner(currentGame.getGameMatrix()));
         List<CellStatus> gameMatrixElements = Arrays.stream(currentGame.getGameMatrix())
                 .flatMap(Arrays::stream)
                 .collect(Collectors.toList());
 
-        if (currentGame.getWinner().equals(CellStatus.CROSS)) {
+        if ((currentGame.getWinner().equals(CellStatus.CROSS)) || gameWinnerByUI.equals(CellStatus.CROSS)) {
             System.out.print("Cross wins \r\n");
             roundsWonByPlayer++;
             updateScoreBoard();
@@ -201,7 +244,7 @@ public class TicTacToeRunner extends Application {
                 System.exit(0);
             }
 
-        } else if (currentGame.getWinner().equals(CellStatus.CIRCLE)) {
+        } else if ((currentGame.getWinner().equals(CellStatus.CIRCLE)) || gameWinnerByUI.equals(CellStatus.CIRCLE)) {
             System.out.print("Circle wins \r\n");
             roundsWonByComputer++;
             updateScoreBoard();
@@ -213,11 +256,12 @@ public class TicTacToeRunner extends Application {
                 System.exit(0);
             }
 
-        } else if ((!gameMatrixElements.contains(CellStatus.EMPTY)) && (currentGame.getWinner().equals(CellStatus.EMPTY))) {
+        } else if ( ((!gameMatrixElements.contains(EMPTY)) && (currentGame.getWinner().equals(EMPTY))) ||
+                    ( (!uiHasEmptyFields)) && (gameWinnerByUI.equals(EMPTY)) ) {
             System.out.print("Draw \r\n");
             if(ConfirmationBox.getDecision("Game ended", "Draw! \r\n Do you want to play again?")){
                 restartGame();
-            } else{
+            } else {
                 System.exit(0);
             }
         }
@@ -279,6 +323,7 @@ public class TicTacToeRunner extends Application {
 
         String key = "" + row + column;
         cellsMap.put(key, cellImage);
+        uiImageViewCellsMatrix[row][column] = cellImage;
         cellImage.setOnMouseEntered(e -> handleMouseEntersCell(e));
         cellImage.setOnMouseExited(e -> handleMouseExitsCell(e));
         cellImage.setOnMouseClicked(e -> handleMouseClickCell(e));
