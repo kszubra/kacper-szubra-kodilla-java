@@ -7,4 +7,5 @@ include 'kodilla-blackjack'
 include 'kodilla-good-patterns'
 include 'kodilla-ttt'
 include 'kodilla-TicTacToe'
+include 'kodilla-spring-intro'
 
