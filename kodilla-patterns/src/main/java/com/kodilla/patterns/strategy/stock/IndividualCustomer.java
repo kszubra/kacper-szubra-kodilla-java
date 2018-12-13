@@ -1,6 +1,6 @@
-package com.kodilla.patterns.strategy;
+package com.kodilla.patterns.strategy.stock;
 
-import com.kodilla.patterns.strategy.predictors.ConservativePredictor;
+import com.kodilla.patterns.strategy.stock.predictors.ConservativePredictor;
 
 /***
  * zachowawczą — dla dojrzałych klientów indywidualnych

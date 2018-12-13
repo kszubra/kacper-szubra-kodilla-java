@@ -1,6 +1,6 @@
-package com.kodilla.patterns.strategy;
+package com.kodilla.patterns.strategy.stock;
 
-import com.kodilla.patterns.strategy.predictors.BalancedPredictor;
+import com.kodilla.patterns.strategy.stock.predictors.BalancedPredictor;
 
 /***
  * zrównoważoną — dla klientów korporacyjnych

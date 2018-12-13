@@ -1,6 +1,6 @@
-package com.kodilla.patterns.strategy;
+package com.kodilla.patterns.strategy.stock;
 
-import com.kodilla.patterns.strategy.predictors.AggressivePredictor;
+import com.kodilla.patterns.strategy.stock.predictors.AggressivePredictor;
 import org.junit.Assert;
 import org.junit.Test;
 
