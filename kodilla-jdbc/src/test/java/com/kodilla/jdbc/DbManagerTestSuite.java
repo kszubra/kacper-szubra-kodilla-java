@@ -8,11 +8,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DbManagerTestSuite {
+    DbManager dbManager;
+
     @Test
     public void testConnect() throws SQLException {
         //Given
         //When
-        DbManager dbManager = DbManager.getInstance();
+        dbManager = DbManager.getInstance();
         //Then
         Assert.assertNotNull(dbManager.getConnection());
     }
@@ -20,7 +22,7 @@ public class DbManagerTestSuite {
     @Test
     public void testSelectUsers() throws SQLException {
         //Given
-        DbManager dbManager = DbManager.getInstance();
+        dbManager = DbManager.getInstance();
 
         //When
         String sqlQuery = "SELECT * FROM USERS";
@@ -29,7 +31,7 @@ public class DbManagerTestSuite {
 
         //Then
         int counter = 0;
-        while(rs.next()) { // <---- iterowanie za pomocą next()
+        while(rs.next()) {
             System.out.println(rs.getInt("ID") + ", " +
                     rs.getString("FIRSTNAME") + ", " +
                     rs.getString("LASTNAME"));
@@ -39,4 +41,6 @@ public class DbManagerTestSuite {
         statement.close();
         Assert.assertEquals(5, counter);
     }
+
+
 }
