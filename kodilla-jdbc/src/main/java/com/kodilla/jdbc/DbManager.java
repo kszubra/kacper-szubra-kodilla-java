@@ -33,7 +33,7 @@ public class DbManager {
 
         conn = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/kodilla_course?serverTimezone=Europe/Warsaw" +
-                        "&useSSL=False",
+                        "&useSSL=False&allowPublicKeyRetrieval=true",
                 connectionProps);
     }
 
