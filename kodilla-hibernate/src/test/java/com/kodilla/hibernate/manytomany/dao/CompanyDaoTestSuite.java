@@ -9,11 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class CompanyDaoTestSuite {
     @Autowired
     CompanyDao companyDao;
+    @Autowired
+    EmployeeDao employeeDao;
 
     @Test
     public void testSaveManyToMany(){
@@ -54,6 +58,46 @@ public class CompanyDaoTestSuite {
         //CleanUp
         try {
             companyDao.deleteAll();
+            employeeDao.deleteAll();
+        } catch (Exception e) {
+            //do nothing
+        }
+    }
+
+    @Test
+    public void testGettingEmployeesByLastName() {
+        //Given
+        Employee johnSmith = new Employee("John", "Smith");
+        Employee stephanieSmith = new Employee("Stephanie", "Smith");
+        Employee lindaKovalsky = new Employee("Linda", "Kovalsky");
+
+        Company softwareMachine = new Company("Software Machine");
+        Company dataMaesters = new Company("Data Maesters");
+        Company greyMatter = new Company("Grey Matter");
+
+        softwareMachine.getEmployees().add(johnSmith);
+        dataMaesters.getEmployees().add(stephanieSmith);
+        dataMaesters.getEmployees().add(lindaKovalsky);
+        greyMatter.getEmployees().add(johnSmith);
+        greyMatter.getEmployees().add(lindaKovalsky);
+
+        johnSmith.getCompanies().add(softwareMachine);
+        johnSmith.getCompanies().add(greyMatter);
+        stephanieSmith.getCompanies().add(dataMaesters);
+        lindaKovalsky.getCompanies().add(dataMaesters);
+        lindaKovalsky.getCompanies().add(greyMatter);
+
+        //When
+        List<Employee> smithList = employeeDao.retrieveEmployeeByLastName("Smith");
+        int expectedSmithNumber =2;
+
+        //Then
+        Assert.assertEquals(expectedSmithNumber, smithList.size());
+
+        //CleanUp
+        try {
+            companyDao.deleteAll();
+            employeeDao.deleteAll();
         } catch (Exception e) {
             //do nothing
         }
