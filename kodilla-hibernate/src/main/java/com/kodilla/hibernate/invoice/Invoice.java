@@ -56,9 +56,4 @@ public class Invoice {
         this.items = items;
     }
 
-    public double getInvoiceValue() {
-        return items.stream()
-                .mapToDouble(e->e.getValue().doubleValue())
-                .sum();
-    }
 }

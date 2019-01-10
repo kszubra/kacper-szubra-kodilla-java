@@ -69,9 +69,5 @@ public class InvoiceDaoTestSuite {
         loadedInvoice.getItems().stream()
                 .forEach(System.out::println);
 
-
-
-
-
     }
 }
