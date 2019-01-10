@@ -14,8 +14,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class CompanyDaoTestSuite {
     @Autowired
     CompanyDao companyDao;
-    @Autowired
-    CompanyDao employeeDao;
 
     @Test
     public void testSaveManyToMany(){
