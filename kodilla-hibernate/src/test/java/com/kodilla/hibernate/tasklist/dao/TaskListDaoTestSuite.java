@@ -5,10 +5,7 @@ import com.kodilla.hibernate.task.TaskFinancialDetails;
 import com.kodilla.hibernate.task.dao.TaskDao;
 import com.kodilla.hibernate.tasklist.TaskList;
 import com.kodilla.hibernate.tasklist.TaskListDao;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -74,6 +71,7 @@ public class TaskListDaoTestSuite {
         //taskListDao.delete(id);
     }
 
+    @Ignore
     @Test
     public void testNamedQueries() {
         //Given
