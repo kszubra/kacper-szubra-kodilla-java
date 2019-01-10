@@ -61,9 +61,17 @@ public class InvoiceDaoTestSuite {
         //when
         invoiceDao.save(testInvoice);
         int invoiceId = testInvoice.getId();
+        Invoice loadedInvoice = invoiceDao.findById(invoiceId).get();
 
         //then
         Assert.assertNotEquals(0, invoiceId);
+        Assert.assertEquals(4, loadedInvoice.getItems().size());
+        loadedInvoice.getItems().stream()
+                .forEach(System.out::println);
+
+
+
+
 
     }
 }
