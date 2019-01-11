@@ -58,7 +58,7 @@ public class CompanyDaoTestSuite {
         Assert.assertNotEquals(0, greyMatterId);
 
         //cleanup
-        /*
+
         try{
             companyDao.delete(softwareMachine);
         } catch (Exception e) {
@@ -74,7 +74,7 @@ public class CompanyDaoTestSuite {
         } catch (Exception e) {
             //move on
         }
-        */
+
 
     }
 
@@ -108,7 +108,7 @@ public class CompanyDaoTestSuite {
         //Then
         Assert.assertEquals(expectedSmithNumber, smithList.size());
 
-        /*
+
         //cleanup
         try{
             companyDao.delete(softwareMachine);
@@ -125,7 +125,16 @@ public class CompanyDaoTestSuite {
         } catch (Exception e) {
             //move on
         }
-        */
 
+
+    }
+
+    @Test
+    public void testGettingCompanyByFirstCharacters() {
+        //when
+        List<Company> companyList = companyDao.retrieveCompaniesStartingWith("Be");
+
+        //then
+        Assert.assertEquals(2, companyList.size());
     }
 }
