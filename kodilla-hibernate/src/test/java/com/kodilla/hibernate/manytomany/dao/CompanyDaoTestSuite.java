@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -20,7 +21,6 @@ public class CompanyDaoTestSuite {
     @Autowired
     EmployeeDao employeeDao;
 
-    @Ignore
     @Test
     public void testSaveManyToMany(){
         //Given
@@ -85,22 +85,7 @@ public class CompanyDaoTestSuite {
         Employee stephanieSmith = new Employee("Stephanie", "Smith");
         Employee lindaKovalsky = new Employee("Linda", "Kovalsky");
 
-        Company softwareMachine = new Company("Software Machine");
-        Company dataMaesters = new Company("Data Maesters");
-        Company greyMatter = new Company("Grey Matter");
-
-        softwareMachine.getEmployees().add(johnSmith);
-        dataMaesters.getEmployees().add(stephanieSmith);
-        dataMaesters.getEmployees().add(lindaKovalsky);
-        greyMatter.getEmployees().add(johnSmith);
-        greyMatter.getEmployees().add(lindaKovalsky);
-
-        johnSmith.getCompanies().add(softwareMachine);
-        johnSmith.getCompanies().add(greyMatter);
-        stephanieSmith.getCompanies().add(dataMaesters);
-        lindaKovalsky.getCompanies().add(dataMaesters);
-        lindaKovalsky.getCompanies().add(greyMatter);
-
+        employeeDao.saveAll(Arrays.asList(johnSmith, stephanieSmith, lindaKovalsky));
         //When
         List<Employee> smithList = employeeDao.retrieveEmployeeByLastName("Smith");
         int expectedSmithNumber =2;
@@ -111,30 +96,25 @@ public class CompanyDaoTestSuite {
 
         //cleanup
         try{
-            companyDao.delete(softwareMachine);
+            employeeDao.deleteAll();
         } catch (Exception e) {
             //move on
         }
-        try{
-            companyDao.delete(dataMaesters);
-        } catch (Exception e) {
-            //move on
-        }
-        try{
-            companyDao.delete(greyMatter);
-        } catch (Exception e) {
-            //move on
-        }
-
 
     }
 
     @Test
     public void testGettingCompanyByFirstCharacters() {
-        //when
-        List<Company> companyList = companyDao.retrieveCompaniesStartingWith("Be");
+        //Given
+        Company softwareMachine = new Company("Software Machine");
+        Company dataMaesters = new Company("Data Maesters");
+        Company greyMatter = new Company("Grey Matter");
+        companyDao.saveAll(Arrays.asList(softwareMachine, dataMaesters, greyMatter));
 
-        //then
-        Assert.assertEquals(2, companyList.size());
+        //When
+        List<Company> companyList = companyDao.retrieveCompaniesStartingWith("So");
+
+        //Then
+        Assert.assertEquals(1, companyList.size());
     }
 }
