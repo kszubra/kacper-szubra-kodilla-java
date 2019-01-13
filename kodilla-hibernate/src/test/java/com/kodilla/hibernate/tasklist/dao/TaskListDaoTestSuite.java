@@ -71,6 +71,7 @@ public class TaskListDaoTestSuite {
         taskListDao.delete(taskList);
     }
 
+    @Ignore
     @Test
     public void testNamedQueries() {
         //Given
