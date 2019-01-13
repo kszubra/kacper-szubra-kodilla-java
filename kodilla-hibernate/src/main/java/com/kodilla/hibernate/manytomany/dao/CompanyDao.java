@@ -12,7 +12,6 @@ import java.util.List;
 @Repository
 public interface CompanyDao extends CrudRepository<Company, Integer> {
 
-    @Query(nativeQuery = true)
     List<Company> retrieveCompaniesStartingWith(@Param("RENAME_ME") String string);
 
 }
