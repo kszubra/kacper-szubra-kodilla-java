@@ -68,10 +68,9 @@ public class TaskListDaoTestSuite {
         Assert.assertNotEquals(0, id);
 
         //CleanUp
-        //taskListDao.delete(id);
+        taskListDao.delete(taskList);
     }
 
-    @Ignore
     @Test
     public void testNamedQueries() {
         //Given

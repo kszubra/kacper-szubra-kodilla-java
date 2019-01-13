@@ -5,6 +5,11 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+@NamedNativeQuery(
+        name = "Company.retrieveCompaniesStartingWith",
+        query = "SELECT * FROM companies WHERE company_name LIKE CONCAT(:RENAME_ME,'%')"
+)
+
 @Entity
 @Table(name = "COMPANIES")
 public class Company {

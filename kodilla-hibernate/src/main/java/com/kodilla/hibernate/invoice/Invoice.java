@@ -2,7 +2,6 @@ package com.kodilla.hibernate.invoice;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -46,7 +45,7 @@ public class Invoice {
             targetEntity = Item.class,
             mappedBy = "invoice",
             cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
+            fetch = FetchType.LAZY
     )
     public List<Item> getItems() {
         return items;
