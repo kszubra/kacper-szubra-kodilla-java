@@ -12,7 +12,7 @@ import java.util.List;
 
 @NamedNativeQuery(
         name = "Employee.retrieveEmployeeIncludingPhrase",
-        query = "SELECT * FROM employees WHERE lastname LIKE CONCAT('$',:PHRASE,'%')"
+        query = "SELECT * FROM employees WHERE lastname LIKE :PHRASE"
 )
 
 @Entity

@@ -3,7 +3,6 @@ package com.kodilla.hibernate.facade;
 import com.kodilla.hibernate.manytomany.Company;
 import com.kodilla.hibernate.manytomany.Employee;
 import com.kodilla.hibernate.manytomany.facade.SearchFacade;
-import com.kodilla.hibernate.manytomany.facade.SearchProcessingException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,20 +19,14 @@ public class SearchFacadeTestSuite {
 
     @Test
     public void testCompanySearch() {
-        try {
-            List<Company> companies = searchFacade.searchCompanyByPhrase("IBM");
-        } catch(SearchProcessingException e) {
 
-        }
+        List<Company> companies = searchFacade.searchCompanyByPhrase("IBM");
     }
 
     @Test
     public void testEmployeeSearch() {
-        try {
-            List<Employee> employees = searchFacade.searchEmployeeByPhrase("kowal");
-        } catch(SearchProcessingException e) {
 
-        }
+        List<Employee> employees = searchFacade.searchEmployeeByPhrase("kowal");
 
     }
 }

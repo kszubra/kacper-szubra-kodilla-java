@@ -12,7 +12,7 @@ import java.util.List;
         ),
         @NamedNativeQuery(
                 name = "Company.retrieveCompaniesIncludingPhrase",
-                query = "SELECT * FROM companies WHERE company_name LIKE CONCAT('$',:PHRASE,'%')"
+                query = "SELECT * FROM companies WHERE company_name LIKE :PHRASE"
 
         )
 
