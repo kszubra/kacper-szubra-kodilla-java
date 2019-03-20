@@ -5,9 +5,19 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-@NamedNativeQuery(
-        name = "Company.retrieveCompaniesStartingWith",
-        query = "SELECT * FROM companies WHERE company_name LIKE CONCAT(:RENAME_ME,'%')"
+@NamedNativeQueries({
+        @NamedNativeQuery(
+                name = "Company.retrieveCompaniesStartingWith",
+                query = "SELECT * FROM companies WHERE company_name LIKE CONCAT(:RENAME_ME,'%')"
+        ),
+        @NamedNativeQuery(
+                name = "Company.retrieveCompaniesIncludingPhrase",
+                query = "SELECT * FROM companies WHERE company_name LIKE CONCAT('$',:PHRASE,'%')"
+
+        )
+
+}
+
 )
 
 @Entity
