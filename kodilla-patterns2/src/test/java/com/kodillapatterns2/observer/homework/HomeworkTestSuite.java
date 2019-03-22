@@ -19,11 +19,11 @@ public class HomeworkTestSuite {
         jackSparrowHomeworkQueue.registerObserver(paiMei);
 
         //When
-        johnRamboHomeworkQueue.addHomework(new Homework("Avoiding first blood"));
-        jackSparrowHomeworkQueue.addHomework(new Homework("Drunk sailing"));
-        jackSparrowHomeworkQueue.addHomework(new Homework("Not getting face slapped in brothel"));
-        darthVaderHomeworkQueue.addHomework(new Homework("Finding lack of faith not disturbing"));
-        darthVaderHomeworkQueue.addHomework(new Homework("Getting the High Grounds"));
+        johnRamboHomeworkQueue.addHomework(new Homework("Avoiding first blood", "test description"));
+        jackSparrowHomeworkQueue.addHomework(new Homework("Drunk sailing", "test description"));
+        jackSparrowHomeworkQueue.addHomework(new Homework("Not getting face slapped in brothel", "test description"));
+        darthVaderHomeworkQueue.addHomework(new Homework("Finding lack of faith not disturbing", "test description"));
+        darthVaderHomeworkQueue.addHomework(new Homework("Getting the High Grounds", "test description"));
 
         //Then
         Assert.assertEquals(2, imperator.getUpdateCount());

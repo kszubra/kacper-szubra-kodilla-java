@@ -8,7 +8,6 @@ public class HomeworkQueue implements HomeworkObservable {
     private final List<HomeworkObserver> observers;
     private final List<Homework> homeworks;
     private final Student student;
-    private Homework lastAddedHomework;
 
     public HomeworkQueue(Student student) {
         this.observers = new ArrayList<>();
@@ -18,7 +17,6 @@ public class HomeworkQueue implements HomeworkObservable {
 
     public void addHomework(Homework homework) {
         homeworks.add(homework);
-        lastAddedHomework = homework;
         notifyObservers();
     }
 
@@ -28,10 +26,6 @@ public class HomeworkQueue implements HomeworkObservable {
 
     public Student getStudent() {
         return student;
-    }
-
-    public Homework getLastAddedHomework() {
-        return lastAddedHomework;
     }
 
     @Override

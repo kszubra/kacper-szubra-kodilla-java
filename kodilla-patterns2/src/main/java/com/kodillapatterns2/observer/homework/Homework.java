@@ -4,11 +4,8 @@ public class Homework {
     private String taskName;
     private String description;
 
-    public Homework(String taskName) {
+    public Homework(String taskName, String description) {
         this.taskName = taskName;
-    }
-
-    public void setDescription(String description) {
         this.description = description;
     }
 
