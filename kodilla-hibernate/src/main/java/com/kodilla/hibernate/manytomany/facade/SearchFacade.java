@@ -20,48 +20,35 @@ public final class SearchFacade {
     EmployeeDao employeeDao;
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchFacade.class);
 
-    public List<Company> searchCompanyByPhrase(String phrase)  {
-        LOGGER.info("Searching for the company including phrase: " + phrase);
-        List<Company> searchResult;
+    public List<Company> searchCompanyByPhrase(String phrase) {
+        LOGGER.info("Searching for the company including phrase: {}", phrase);
 
-        try {
-            searchResult = companyDao.retrieveCompaniesIncludingPhrase("%" + phrase + "%");
-            LOGGER.info("Result size is: " + searchResult.size());
+        List<Company> searchResult = companyDao.retrieveCompaniesIncludingPhrase(phrase);
+        LOGGER.info("Result size is: " + searchResult.size());
 
-            if (searchResult.size() == 0) {
-                LOGGER.error("Error: " + SearchProcessingException.COMPANY_NOT_FOUND);
-                throw new SearchProcessingException(SearchProcessingException.COMPANY_NOT_FOUND);
-            }
-        } catch (SearchProcessingException e) {
+        if (searchResult.isEmpty()) {
+            LOGGER.error("Error: " + SearchProcessingException.COMPANY_NOT_FOUND);
             LOGGER.info("An error interrupted process, returning empty list");
-            return new ArrayList<>();
+            return searchResult;
         }
 
         LOGGER.info("Returning non-empty list");
         return searchResult;
     }
 
-    public List<Employee> searchEmployeeByPhrase(String phrase)  {
-        LOGGER.info("Searching for the emplyee with surname including phrase: " + phrase);
-        boolean wasError = false;
-        List<Employee> searchResult = new ArrayList<>();
+    public List<Employee> searchEmployeeByPhrase(String phrase) {
+        LOGGER.info("Searching for the employee with surname including phrase: {}", phrase);
 
-        try {
-            searchResult = employeeDao.retrieveEmployeeIncludingPhrase("%" + phrase + "%");
-            LOGGER.info("Result size is: " + searchResult.size());
+        List<Employee> searchResult = employeeDao.retrieveEmployeeIncludingPhrase(phrase);
+        LOGGER.info("Result size is: " + searchResult.size());
 
-            if (searchResult.size() == 0) {
-                LOGGER.error("Error: " + SearchProcessingException.EMPLOYEE_NOT_FOUND);
-                wasError = true;
-                throw new SearchProcessingException(SearchProcessingException.EMPLOYEE_NOT_FOUND);
-            }
-        } catch (SearchProcessingException e) {
+        if (searchResult.isEmpty()) {
+            LOGGER.error("Error: " + SearchProcessingException.EMPLOYEE_NOT_FOUND);
             LOGGER.info("An error interrupted process, returning empty list");
-            return new ArrayList<>();
+            return searchResult;
         }
 
         LOGGER.info("Returning non-empty list");
         return searchResult;
-
     }
 }

@@ -6,12 +6,14 @@ import com.kodilla.hibernate.manytomany.dao.CompanyDao;
 import com.kodilla.hibernate.manytomany.dao.EmployeeDao;
 import com.kodilla.hibernate.manytomany.facade.SearchFacade;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -24,51 +26,47 @@ public class SearchFacadeTestSuite {
     @Autowired
     SearchFacade searchFacade;
 
+    @Before
+    public void clearDatabaseBeforeTest() {
+        companyDao.deleteAll();
+        employeeDao.deleteAll();
+    }
+
     @Test
     public void testCompanySearch() {
         //Given
         Company testCompany1 = new Company("testIBM");
         Company testCompany2 = new Company("IBM Corp");
         Company testCompany3 = new Company("NewIBMCorp");
+        Company testCompany4 = new Company("Not to include");
 
-        companyDao.save(testCompany1);
-        companyDao.save(testCompany2);
-        companyDao.save(testCompany3);
+        companyDao.saveAll(Arrays.asList(testCompany1, testCompany2, testCompany3, testCompany4));
 
         //When
         List<Company> companies = searchFacade.searchCompanyByPhrase("IBM");
 
         //Then
-        Assert.assertTrue(companies.size() > 2);
+        Assert.assertEquals(3, companies.size() );
+        Assert.assertTrue(companies.contains(testCompany1));
+        Assert.assertTrue(companies.contains(testCompany2));
+        Assert.assertTrue(companies.contains(testCompany3));
 
-        //Cleanup
-        companyDao.delete(testCompany1);
-        companyDao.delete(testCompany2);
-        companyDao.delete(testCompany3);
     }
 
     @Test
-    public void testEmployeeSearch() {
+    public void retrieveEmployeeIncludingPhrase() {
         //Given
-        Employee testEmployee1 = new Employee("Jan", "Kowalski");
-        Employee testEmployee2 = new Employee("Mariusz", "Kowalewski");
-        Employee testEmployee3 = new Employee("Dariusz", "Zakowalski");
-
-        employeeDao.save(testEmployee1);
-        employeeDao.save(testEmployee2);
-        employeeDao.save(testEmployee3);
+        Employee employee1 = new Employee("abc","zxc");
+        Employee employee2 = new Employee("ghj", "iop");
+        employeeDao.saveAll(Arrays.asList(employee1, employee2));
 
         //When
-        List<Employee> employees = searchFacade.searchEmployeeByPhrase("owal");
+        List<Employee> result = searchFacade.searchEmployeeByPhrase("x");
 
         //Then
-        Assert.assertTrue(employees.size() > 2);
-
-        //Cleanup
-        employeeDao.delete(testEmployee1);
-        employeeDao.delete(testEmployee2);
-        employeeDao.delete(testEmployee3);
-
-
+        Assert.assertEquals(result.size(), 1);
+        Assert.assertEquals(result.get(0), employee1);
     }
+
+
 }

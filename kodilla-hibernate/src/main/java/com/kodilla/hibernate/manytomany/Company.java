@@ -4,21 +4,19 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+@NamedQuery(
+        name = "Company.retrieveCompaniesIncludingPhrase",
+        query = "FROM Company WHERE company_name LIKE CONCAT('%',:PHRASE,'%')"
+)
 
 @NamedNativeQueries({
         @NamedNativeQuery(
                 name = "Company.retrieveCompaniesStartingWith",
                 query = "SELECT * FROM companies WHERE company_name LIKE CONCAT(:RENAME_ME,'%')"
-        ),
-        @NamedNativeQuery(
-                name = "Company.retrieveCompaniesIncludingPhrase",
-                query = "SELECT * FROM companies WHERE company_name LIKE :PHRASE"
-
         )
-
-}
-
-)
+})
 
 @Entity
 @Table(name = "COMPANIES")
@@ -69,5 +67,19 @@ public class Company {
 
     private void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Company company = (Company) o;
+        return id == company.id &&
+                Objects.equals(name, company.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }
