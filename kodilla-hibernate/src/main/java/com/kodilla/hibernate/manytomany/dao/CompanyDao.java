@@ -12,5 +12,6 @@ import java.util.List;
 public interface CompanyDao extends CrudRepository<Company, Integer> {
 
     List<Company> retrieveCompaniesStartingWith(@Param("RENAME_ME") String string);
+    List<Company> retrieveCompaniesIncludingPhrase(@Param("PHRASE") String string);
 
 }
