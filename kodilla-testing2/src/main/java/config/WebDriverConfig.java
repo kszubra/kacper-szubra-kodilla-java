@@ -8,7 +8,7 @@ public class WebDriverConfig {
     public final static String CHROME = "CHROME_DRIVER";
 
     public static WebDriver getDriver(final String driver) {
-        System.setProperty("webdriver.chrome.driver","d:\\Programy\\Selenium-drivers\\Chrome\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver","c:\\Selenium-drivers\\Chrome\\chromedriver.exe");
 
         if (driver.equals(CHROME)) {
             return new ChromeDriver();
