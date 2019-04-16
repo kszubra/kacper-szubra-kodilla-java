@@ -14,6 +14,6 @@ public class GoogleTestingApp {
 
         WebElement searchField = driver.findElement(By.id(SEARCHFIELD)); //wraca ona element typu WebElement na podstawie różnych kryteriów wyszukiwania: identyfikatora, klasy, selektora CSS, wyrażenia xPath (o tym będzie w dalszej części modułu) i innych.
         searchField.sendKeys("Kodilla"); //do znalezionego elementu WebElement wysyłamy zasymulowane przyciśnięcia przycisków klawiatury — wpisujemy w to pole szukaną frazę, czyli wyraz "Kodilla".
-        //searchField.submit();
+        searchField.submit();
     }
 }
