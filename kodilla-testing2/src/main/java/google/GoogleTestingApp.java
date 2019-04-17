@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class GoogleTestingApp {
-    public static final String SEARCHFIELD = "lst-ib"; //stałą o nazwie SEARCHFIELD, przechowującą identyfikator pola input na stronie, które jest kontrolką służącą do wpisywania tekstu do wyszukania w internecie.
+    public static final String SEARCHFIELD = "gLFyf"; //stałą o nazwie SEARCHFIELD, przechowującą identyfikator pola input na stronie, które jest kontrolką służącą do wpisywania tekstu do wyszukania w internecie.
 
     public static void main(String[] args) {
         WebDriver driver = WebDriverConfig.getDriver(WebDriverConfig.CHROME); //tworzymy Selenium WebDriver i otwieramy stronę www.google.com.
