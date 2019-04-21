@@ -28,8 +28,14 @@ public class CrudAppTestSuite {
     }
 
     @After
-    public void cleanUpAfterTest() {
-        driver.close();
+    public void cleanUpAfterTest() throws Exception {
+
+        try{
+            driver.close();
+        } catch(Exception e)  {
+
+        }
+
     }
 
     private String createCrudApptestTask() throws InterruptedException {
@@ -94,7 +100,9 @@ public class CrudAppTestSuite {
                 .filter(aHref -> aHref.findElements(By.xpath(".//span[@title=\"Kodilla Application\"]")).size() > 0) //odfiltrowujemy tylko takie tagi, które zawierają w sobie taga div o wartości "Kodilla Board"
                 .forEach(aHref -> aHref.click()); //kliknięcie w tablicę, aby wejść do jej wnętrza. Powinna być tylko jedna tablica o nazwie "Kodilla Board".
 
-        Thread.sleep(2000);
+        while (!driver.findElement(By.xpath("//*[@id=\"board\"]/div[1]/div[1]/div[2]/a[1]/div[3]/span/span")).isDisplayed());
+        //Thread.sleep(3000);
+        //driver.navigate().refresh();
 
         result = driverTrello.findElements(By.xpath("//span")).stream() //wyszukujemy wszystkie tagi span na stronie prezentującej listy zadań wewnątrz tablicy.
                 .filter(theSpan -> theSpan.getText().contains(taskName)) //odfiltrowuje rezultaty, pozostawiając tylko takie, które zawierają w swoim wnętrzu tekst równy tytułowi zadania, przekazanemu jako parametr.
